@@ -1,4 +1,4 @@
-import { otpType } from "../types/otp.type"
+import { otpType } from "../types/sendOtp.type"
 
 type inputsType = {
     placeholder: string,

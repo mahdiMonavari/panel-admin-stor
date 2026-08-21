@@ -1,4 +1,4 @@
 import z from "zod";
-import { otpSchema } from "../schema/otp.schema";
+import { otpSchema } from "../schema/sendOtp.schema";
 
 export type otpType = z.infer<typeof otpSchema>

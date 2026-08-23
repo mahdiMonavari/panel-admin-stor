@@ -13,7 +13,7 @@ function SendOtp({ handleSendOtp, onChangePhone }: SendOtpProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<otpType>({
     resolver: zodResolver(otpSchema),
   });
@@ -63,17 +63,8 @@ function SendOtp({ handleSendOtp, onChangePhone }: SendOtpProps) {
 
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="mt-1 flex items-center justify-center gap-2 rounded-lg bg-[#5BC0BE] px-4 py-2.5 font-medium text-slate-950 transition hover:bg-[#4aa9a7] disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {isSubmitting && (
-            <span
-              aria-label="در حال ارسال"
-              className="h-4 w-4 animate-spin rounded-full border-2 border-slate-800/30 border-t-slate-950"
-            />
-          )}
-          {isSubmitting ? "در حال ارسال..." : "ارسال کد تأیید"}
-        </button>
+          className="mt-1 flex items-center justify-center gap-2 rounded-lg bg-brick-color px-4 py-2.5 font-medium text-white transition hover:bg-brick-color-dark disabled:cursor-not-allowed disabled:opacity-60"
+        ></button>
       </form>
     </div>
   );

@@ -66,64 +66,32 @@ function Register() {
   };
 
   return (
-    <div className="relative mx-auto w-full max-w-lg rounded-xl border border-slate-700/50 bg-slate-900 p-6 text-slate-100 shadow-xl">
+    <div className="relative mx-auto w-full max-w-lg rounded-xl border border-slate-700/50 bg-brick-color-light/80 p-6 text-slate-100 shadow-xl">
       {/* Stepper */}
-      <div className="mb-6 flex w-full items-center">
-        {stepOrder.map((s, i) => {
-          const isDone = i < currentStepIndex;
-          const isActive = i === currentStepIndex;
-
+      <div className="flex items-start justify-center mb-10">
+        {stepOrder.map((name, index) => {
+          const isDone = index < currentStepIndex;
+          const isActive = index === currentStepIndex;
           return (
-            <Fragment key={s}>
-              <div className="flex flex-col items-center gap-1">
-                <div
-                  className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors ${
-                    isDone
-                      ? "bg-[#5BC0BE] text-slate-950"
-                      : isActive
-                        ? "border-2 border-[#5BC0BE] text-[#5BC0BE]"
-                        : "border-2 border-slate-700 text-slate-600"
-                  }`}
-                >
-                  {isDone ? (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      className="h-4 w-4"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  ) : (
-                    i + 1
-                  )}
-                </div>
-                <span
-                  className={`text-[10px] ${
-                    isActive ? "text-[#5BC0BE]" : "text-slate-500"
-                  }`}
-                >
-                  {stepLabels[s]}
+            <Fragment key={name}>
+              <span
+                className={`flex items-center justify-center rounded-full  size-10 relative ${isDone ? "bg-brick-color" : isActive ? "bg-brick-color/60" : "bg-brick-color/30"}`}
+              >
+                {index + 1}
+                <span className="absolute top-full whitespace-nowrap text-xs mt-1 font-bold">
+                  {stepLabels[name]}
                 </span>
-              </div>
-
-              {i < stepOrder.length - 1 && (
-                <div
-                  className={`mb-4 h-px flex-1 transition-colors ${
-                    isDone ? "bg-[#5BC0BE]" : "bg-slate-700"
-                  }`}
-                />
+              </span>
+              {index < stepOrder.length - 1 && (
+                <span
+                  className={`flex-1 h-px mt-5 ${isDone ? "bg-brick-color" : isActive ? "bg-brick-color/60" : "bg-brick-color/30"}`}
+                ></span>
               )}
             </Fragment>
           );
         })}
       </div>
-      {/* Overlay loading */}
+      {/* Stepper */}
       {isPending && (
         <div
           className="absolute inset-0 z-50 flex items-center justify-center gap-2 rounded-xl bg-slate-900/70 text-sm text-slate-300 backdrop-blur-sm"
@@ -137,7 +105,6 @@ function Register() {
           />
         </div>
       )}
-      {/* Error */}
       {error && (
         <div
           role="alert"
@@ -146,6 +113,7 @@ function Register() {
           {error}
         </div>
       )}
+
       {/* Step content */}
       {step === "phone" && (
         <SendOtp onChangePhone={setPhone} handleSendOtp={handleSendOtp} />
@@ -159,7 +127,7 @@ function Register() {
       )}
       <div>
         <span>حساب کاربری دارید؟</span>
-        <Link className="text-amber-700" href={"/login"}>
+        <Link className="text-amber-500" href={"/login"}>
           وارد شوید
         </Link>
       </div>

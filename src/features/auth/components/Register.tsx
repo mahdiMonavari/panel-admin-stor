@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import Link from "next/link";
+import { Fragment, useEffect, useRef, useState, useTransition } from "react";
+import CreateUserForm from "./registerComponents/CreateUserForm";
 import SendOtp from "./SendOtp";
+import VerifyOtp from "./VerifyOtp";
 import { otpType } from "../types/sendOtp.type";
 import { otpVerifyType } from "../types/verifyOtptype";
 import { UserType } from "../types/register.type";
-import VerifyOtp from "./VerifyOtp";
-import CreateUserForm from "./registerComponents/CreateUserForm";
-import { Fragment } from "react";
-import Link from "next/link";
+import Image from "next/image";
 
 type RegisterStep = "phone" | "otp" | "form";
 
@@ -20,116 +20,215 @@ const stepLabels: Record<RegisterStep, string> = {
 
 const stepOrder: RegisterStep[] = ["phone", "otp", "form"];
 
+function getErrorMessage(error: unknown, fallback: string): string {
+  return error instanceof Error && error.message ? error.message : fallback;
+}
+
 function Register() {
   const [step, setStep] = useState<RegisterStep>("phone");
   const [phone, setPhone] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
-
   const currentStepIndex = stepOrder.indexOf(step);
+  const wallpaper = useRef<HTMLImageElement | null>(null);
+  const [cunter, setCunter] = useState<number>(100);
+  useEffect(() => {
+    const zoomInHandler = () => {
+      if (wallpaper.current) {
+        wallpaper.current.style.transform = "scale(1.2)";
+      }
+    };
+    const zoomOutHandler = () => {
+      if (wallpaper.current) {
+        wallpaper.current.style.transform = "scale(1)";
+      }
+    };
+    document.addEventListener("focusin", zoomInHandler);
+    document.addEventListener("focusout", zoomOutHandler);
+  }, []);
 
-  const handleSendOtp = (data: otpType) => {
+  function handleSendOtp(data: otpType) {
     setError(null);
     try {
       startTransition(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        // await sendOtpApi(data.phone);
+        await new Promise((resolve) => setTimeout(resolve, 800));
         setPhone(data.phone);
         setStep("otp");
       });
-    } catch (err: any) {
-      setError(err.message || "خطا در ارسال کد. دوباره تلاش کنید.");
+    } catch (caughtError: unknown) {
+      setError(
+        getErrorMessage(caughtError, "خطا در ارسال کد. دوباره تلاش کنید."),
+      );
     }
-  };
+  }
 
-  const handleVerifyOtp = (data: otpVerifyType) => {
+  function handleVerifyOtp(data: otpVerifyType) {
     setError(null);
     try {
       startTransition(async () => {
-        // await verifyOtpApi(phone, data.code);
+        await new Promise((resolve) => setTimeout(resolve, 800));
+        setStep("form");
       });
-      setStep("form");
-    } catch (err: any) {
-      setError(err.message || "خطا در تأیید کد. دوباره تلاش کنید.");
+    } catch (caughtError: unknown) {
+      setError(
+        getErrorMessage(caughtError, "خطا در ارسال کد. دوباره تلاش کنید."),
+      );
     }
-  };
+  }
 
-  const handleFinalRegister = (data: UserType) => {
+  function handleFinalRegister(data: UserType) {
     setError(null);
     try {
       startTransition(async () => {
-        // await registerApi({ phone, ...data });
+        await new Promise((resolve) => setTimeout(resolve, 800));
+        setPhone(data.phone);
       });
-    } catch (err: any) {
-      setError(err.message || "خطا در ثبت‌نام. دوباره تلاش کنید.");
+    } catch (caughtError: unknown) {
+      setError(
+        getErrorMessage(caughtError, "خطا در ارسال کد. دوباره تلاش کنید."),
+      );
     }
-  };
-
+  }
+  function handleChangeNumber(
+    e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
+  ) {
+    setStep("phone");
+    e.preventDefault();
+  }
   return (
-    <div className="relative mx-auto w-full max-w-lg rounded-xl border border-slate-700/50 bg-brick-color-light/80 p-6 text-slate-100 shadow-xl">
-      {/* Stepper */}
-      <div className="flex items-start justify-center mb-10">
-        {stepOrder.map((name, index) => {
-          const isDone = index < currentStepIndex;
-          const isActive = index === currentStepIndex;
-          return (
-            <Fragment key={name}>
-              <span
-                className={`flex items-center justify-center rounded-full  size-10 relative ${isDone ? "bg-brick-color" : isActive ? "bg-brick-color/60" : "bg-brick-color/30"}`}
-              >
-                {index + 1}
-                <span className="absolute top-full whitespace-nowrap text-xs mt-1 font-bold">
-                  {stepLabels[name]}
-                </span>
-              </span>
-              {index < stepOrder.length - 1 && (
-                <span
-                  className={`flex-1 h-px mt-5 ${isDone ? "bg-brick-color" : isActive ? "bg-brick-color/60" : "bg-brick-color/30"}`}
-                ></span>
-              )}
-            </Fragment>
-          );
-        })}
+    <div className={`${step === "form" ? "" : "overflow-hidden"}`}>
+      <div className="absolute -z-10 inset-0 h-full overflow-hidden">
+        <Image
+          src="/images/backGround.jpg"
+          ref={wallpaper}
+          className="transition-all duration-800 object-cover sm:hidden"
+          fill
+          alt=""
+        ></Image>
+        <div className="relative h-full">
+          <div className="absolute inset-0 bg-black/40 z-50 w-screen"></div>
+        </div>
       </div>
-      {/* Stepper */}
-      {isPending && (
-        <div
-          className="absolute inset-0 z-50 flex items-center justify-center gap-2 rounded-xl bg-slate-900/70 text-sm text-slate-300 backdrop-blur-sm"
-          aria-live="polite"
-        >
-          در حال پردازش
-          <span
-            role="status"
-            aria-label="در حال بارگذاری"
-            className="h-5 w-5 animate-spin rounded-full border-2 border-slate-600 border-t-[#5BC0BE]"
-          />
-        </div>
-      )}
-      {error && (
-        <div
-          role="alert"
-          className="mb-4 rounded-lg border border-red-500/20 bg-red-950/40 px-4 py-2.5 text-sm text-red-400"
-        >
-          {error}
-        </div>
-      )}
+      <div
+        className="relative mx-auto w-full sm:max-w-md max-w-75 rounded-3xl border border-cream-border/60 my-2
+     bg-cream-text/55 p-6 text-cream-text shadow-2xl shadow-cream-accent-dark/15 backdrop-blur-[2px] sm:p-6"
+      >
+        <h1 className="text-4xl font-serif font-bold text-cream-card text-center mb-5">
+          به فروشگاه ما خوش آمدید
+        </h1>
+        <div className="mx-auto mb-5 h-px w-10/12 bg-linear-to-r from-transparent via-cream-accent-bright to-transparent" />
+        <div className="mb-10 flex items-start justify-center">
+          {stepOrder.map((name, index) => {
+            const isDone = index < currentStepIndex;
+            const isActive = index === currentStepIndex;
 
-      {/* Step content */}
-      {step === "phone" && (
-        <SendOtp onChangePhone={setPhone} handleSendOtp={handleSendOtp} />
-      )}
-      {step === "otp" && <VerifyOtp handleVerifyOtp={handleVerifyOtp} />}
-      {step === "form" && (
-        <CreateUserForm
-          handleFinalRegister={handleFinalRegister}
-          phone={phone}
-        />
-      )}
-      <div>
-        <span>حساب کاربری دارید؟</span>
-        <Link className="text-amber-500" href={"/login"}>
-          وارد شوید
-        </Link>
+            return (
+              <Fragment key={name}>
+                <div className="relative flex flex-col items-center">
+                  <span
+                    className={`relative flex size-10 items-center justify-center rounded-full border border-cream-border/70 text-sm font-bold ${
+                      isDone
+                        ? "bg-cream-accent text-cream-surface"
+                        : isActive
+                          ? "bg-cream-accent/60 text-cream-text"
+                          : "bg-cream-card/60 text-cream-muted"
+                    }`}
+                  >
+                    {index + 1}
+                  </span>
+                  <span className="absolute top-full mt-1 whitespace-nowrap text-xs font-bold text-cream-card/80">
+                    {stepLabels[name]}
+                  </span>
+                </div>
+                {index < stepOrder.length - 1 && (
+                  <span
+                    className={`mt-5 h-px flex-1 ${
+                      isDone ? "bg-cream-accent" : "bg-cream-border/60"
+                    }`}
+                  />
+                )}
+              </Fragment>
+            );
+          })}
+        </div>
+
+        {isPending && (
+          <div
+            className="absolute inset-0 z-50 flex items-center justify-center gap-2 rounded-3xl bg-cream-surface/70 text-sm text-cream-muted backdrop-blur-md"
+            aria-live="polite"
+          >
+            در حال پردازش
+            <span
+              role="status"
+              aria-label="در حال بارگذاری"
+              className="h-5 w-5 animate-spin rounded-full border-2 border-cream-border border-t-cream-accent"
+            />
+          </div>
+        )}
+
+        {error && (
+          <div
+            role="alert"
+            className="mb-4 rounded-lg border border-cream-danger/25 bg-cream-danger/10 px-4 py-2.5 text-sm text-cream-danger"
+          >
+            {error}
+          </div>
+        )}
+
+        <div className="relative">
+          <div
+            aria-hidden={step !== "phone"}
+            inert={step !== "phone"}
+            className={`transition-[opacity,visibility] duration-500 ease-out ${
+              step === "phone"
+                ? "visible relative opacity-100"
+                : "invisible pointer-events-none absolute inset-0 opacity-0"
+            }`}
+          >
+            <SendOtp onChangePhone={setPhone} handleSendOtp={handleSendOtp} />
+          </div>
+          <div
+            aria-hidden={step !== "otp"}
+            inert={step !== "otp"}
+            className={`transition-[opacity,visibility] duration-500 ease-out ${
+              step === "otp"
+                ? "visible relative opacity-100"
+                : "invisible pointer-events-none absolute inset-0 opacity-0"
+            }`}
+          >
+            <VerifyOtp
+              handleChangeNumber={handleChangeNumber}
+              handleVerifyOtp={handleVerifyOtp}
+              isActive={currentStepIndex === 1}
+              cunter={cunter}
+              setCunter={setCunter}
+            />
+          </div>
+          <div
+            aria-hidden={step !== "form"}
+            inert={step !== "form"}
+            className={`transition-[opacity,visibility] duration-500 ease-out ${
+              step === "form"
+                ? "visible relative opacity-100"
+                : "invisible pointer-events-none absolute inset-0 opacity-0"
+            }`}
+          >
+            <CreateUserForm
+              handleFinalRegister={handleFinalRegister}
+              phone={phone}
+            />
+          </div>
+        </div>
+
+        <div className="mt-6 flex justify-center gap-1 text-sm text-cream-muted">
+          <span>حساب کاربری دارید؟</span>
+          <Link
+            className="text-cream-accent transition-colors hover:text-cream-accent-dark"
+            href="/login"
+          >
+            وارد شوید
+          </Link>
+        </div>
       </div>
     </div>
   );

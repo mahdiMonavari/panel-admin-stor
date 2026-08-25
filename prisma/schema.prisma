@@ -36,10 +36,13 @@ model UserInfo {
 }
 model RateLimit {
   id        String   @id @default(uuid())
-  key       String   @unique
+  key       String  
   phone     String
   count     Int      @default(1)
-  expiresAt DateTime // زمانی که این رکورد منقضی می‌شود
+  expiresAt DateTime 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  @@unique([phone, key])
+  @@index([expiresAt])
 }
+

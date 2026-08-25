@@ -5,15 +5,25 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --color-brick-color : #c7936b;
-  --color-brick-color-light : #c7b3a7;
-  --color-brick-color-dark : #622e17;
+  --color-cream-page: #f3ead8;
+  --color-cream-surface: #fffaf0;
+  --color-cream-card: #eadcc7;
+  --color-cream-border: #cbbda8;
+  --color-cream-text: #3b3026;
+  --color-cream-muted: #796b5d;
+ --color-cream-accent: #b87945;
+ --color-cream-accent-dark: #8d5731;
+  --color-cream-accent-bright: #d47a3a;
+  --color-cream-danger: #b94a48;
+  --color-cream-success: #4f7d5a;
 }
 
 @media (prefers-color-scheme: dark) {  
 }
 
 body {
+  background: var(--color-cream-page);
+  color: var(--color-cream-text);
   direction: rtl;
   font-family: sans-serif;
 }

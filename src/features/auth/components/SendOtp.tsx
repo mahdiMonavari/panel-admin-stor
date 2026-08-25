@@ -1,7 +1,7 @@
-import { useForm } from "react-hook-form";
-import { otpType } from "../types/sendOtp.type";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { otpSchema } from "../schema/sendOtp.schema";
+import { otpType } from "../types/sendOtp.type";
 import otpInputs from "../inputsStructure/otpSend.structure";
 
 type SendOtpProps = {
@@ -13,10 +13,8 @@ function SendOtp({ handleSendOtp, onChangePhone }: SendOtpProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<otpType>({
-    resolver: zodResolver(otpSchema),
-  });
+    formState: { errors, isSubmitting },
+  } = useForm<otpType>({ resolver: zodResolver(otpSchema) });
 
   const submitHandler = (data: otpType) => {
     onChangePhone(data.phone);
@@ -26,8 +24,11 @@ function SendOtp({ handleSendOtp, onChangePhone }: SendOtpProps) {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-1 text-center">
-        <h2 className="text-xl font-bold text-slate-100">ثبت‌نام</h2>
-        <p className="text-sm text-slate-400">شماره موبایل خود را وارد کنید</p>
+        <h2 className="text-2xl font-bold text-cream-card">ثبت‌نام</h2>
+        <div className="mx-auto mb-2 h-px w-5/12 bg-linear-to-r from-transparent via-cream-accent-bright to-transparent" />
+        <p className="text-sm text-cream-card/80">
+          شماره موبایل خود را وارد کنید
+        </p>
       </div>
 
       <form
@@ -35,26 +36,31 @@ function SendOtp({ handleSendOtp, onChangePhone }: SendOtpProps) {
         className="flex flex-col gap-4"
       >
         {otpInputs.map((input) => (
-          <div key={input.name} className="flex flex-col gap-1.5">
+          <div
+            key={input.name}
+            className="group relative flex flex-col gap-1.5"
+          >
             <label
               htmlFor={input.name}
-              className="text-sm font-medium text-slate-300"
+              className="text-sm font-medium text-cream-border"
             >
               {input.label}
             </label>
-
             <input
               id={input.name}
+              maxLength={11}
+              inputMode="numeric"
               placeholder={input.placeholder}
               type={input.type}
               {...register(input.name)}
-              className={`w-full rounded-lg border bg-slate-800 px-4 py-2.5 text-slate-100 outline-none transition-colors placeholder:text-slate-500 focus:border-[#5BC0BE] focus:ring-1 focus:ring-[#5BC0BE]/40 ${
-                errors[input.name] ? "border-red-500" : "border-slate-700"
+              className={`w-full border-b-4 bg-transparent px-1 py-1.5 text-sm text-cream-text/90 outline-none transition-all duration-500 placeholder:text-cream-muted/70 focus:border-cream-accent-bright group-hover:border-cream-muted ${
+                errors[input.name]
+                  ? "border-cream-danger"
+                  : "border-cream-border"
               }`}
             />
-
             {errors[input.name]?.message && (
-              <span className="text-xs text-red-400">
+              <span className="text-xs text-cream-danger">
                 {errors[input.name]?.message}
               </span>
             )}
@@ -63,8 +69,12 @@ function SendOtp({ handleSendOtp, onChangePhone }: SendOtpProps) {
 
         <button
           type="submit"
-          className="mt-1 flex items-center justify-center gap-2 rounded-lg bg-brick-color px-4 py-2.5 font-medium text-white transition hover:bg-brick-color-dark disabled:cursor-not-allowed disabled:opacity-60"
-        ></button>
+          disabled={isSubmitting}
+          className="mt-1 flex items-center justify-center gap-2 rounded-xl bg-cream-accent px-4 py-2.5 font-medium text-cream-surface 
+          transition hover:bg-cream-accent-dark disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {isSubmitting ? "در حال ارسال..." : "ارسال کد"}
+        </button>
       </form>
     </div>
   );

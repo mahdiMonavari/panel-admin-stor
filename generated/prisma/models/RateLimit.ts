@@ -246,16 +246,17 @@ export type RateLimitOrderByWithRelationInput = {
 
 export type RateLimitWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  key?: string
+  phone_key?: Prisma.RateLimitPhoneKeyCompoundUniqueInput
   AND?: Prisma.RateLimitWhereInput | Prisma.RateLimitWhereInput[]
   OR?: Prisma.RateLimitWhereInput[]
   NOT?: Prisma.RateLimitWhereInput | Prisma.RateLimitWhereInput[]
+  key?: Prisma.StringFilter<"RateLimit"> | string
   phone?: Prisma.StringFilter<"RateLimit"> | string
   count?: Prisma.IntFilter<"RateLimit"> | number
   expiresAt?: Prisma.DateTimeFilter<"RateLimit"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"RateLimit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"RateLimit"> | Date | string
-}, "id" | "key">
+}, "id" | "phone_key">
 
 export type RateLimitOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -355,6 +356,11 @@ export type RateLimitUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type RateLimitPhoneKeyCompoundUniqueInput = {
+  phone: string
+  key: string
+}
+
 export type RateLimitCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   key?: Prisma.SortOrder
@@ -391,14 +397,6 @@ export type RateLimitMinOrderByAggregateInput = {
 
 export type RateLimitSumOrderByAggregateInput = {
   count?: Prisma.SortOrder
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 

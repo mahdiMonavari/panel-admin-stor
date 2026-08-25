@@ -9,6 +9,7 @@ import { otpType } from "../types/sendOtp.type";
 import { otpVerifyType } from "../types/verifyOtptype";
 import { UserType } from "../types/register.type";
 import Image from "next/image";
+import sendOtp from "../actions/sendOtp.action";
 
 type RegisterStep = "phone" | "otp" | "form";
 
@@ -51,9 +52,21 @@ function Register() {
     setError(null);
     try {
       startTransition(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 800));
-        setPhone(data.phone);
-        setStep("otp");
+        const res = await sendOtp(data);
+        console.log(res);
+        if (res.success) {
+          if (res.cunter) {
+            setCunter(Math.ceil(res.cunter / 1000));
+          }
+          setPhone(data.phone);
+          setStep("otp");
+        } else {
+          if (res.fieldeError) {
+            setError(res.fieldeError.phoe);
+          } else {
+            setError(res.errorMessage || "خطای غیر منتظره ، دوباره تلاش کنید");
+          }
+        }
       });
     } catch (caughtError: unknown) {
       setError(

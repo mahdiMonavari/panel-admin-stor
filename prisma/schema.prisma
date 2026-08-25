@@ -7,6 +7,17 @@ datasource db {
   provider = "postgresql"
 }
 
+model Otp {
+  id        String   @id @default(uuid())
+  phone     String 
+  code      String  
+  expiresAt DateTime
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+  @@index([phone])
+}
+
+
 model User {
   id           String    @id @default(uuid())
   role         String

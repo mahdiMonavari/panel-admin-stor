@@ -13,22 +13,24 @@ type VerifyOtpProps = {
   handleChangeNumber: (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
   ) => void;
-  cunter: number;
-  setCunter: React.Dispatch<React.SetStateAction<number>>;
+  counter: number;
+  setCounter: React.Dispatch<React.SetStateAction<number>>;
+  phone: string;
 };
 
 function VerifyOtp({
   handleVerifyOtp,
   isActive,
   handleChangeNumber,
-  cunter,
-  setCunter,
+  counter,
+  setCounter,
+  phone,
 }: VerifyOtpProps) {
   const interVale = useRef<ReturnType<typeof setInterval>>(null);
   useEffect(() => {
-    if (isActive && cunter > 0) {
+    if (isActive && counter > 0) {
       interVale.current = setInterval(() => {
-        setCunter((prev) => prev - 1);
+        setCounter((prev) => prev - 1);
       }, 1000);
     }
     return () => {
@@ -37,18 +39,26 @@ function VerifyOtp({
         interVale.current = null;
       }
     };
-  }, [isActive, cunter]);
+  }, [isActive, counter]);
 
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<otpVerifyType>({ resolver: zodResolver(otpVerifySchema) });
+  useEffect(() => {
+    if (phone) {
+      setCounter(100);
+      reset({ phone, code: "" });
+    }
+  }, [phone]);
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-1 text-center">
         <h2 className="text-xl font-bold text-cream-card">تأیید کد</h2>
+        <div className="mx-auto my-2 h-px w-5/12 bg-linear-to-r from-transparent via-cream-accent-bright to-transparent" />
         <p className="text-sm text-cream-card/70">
           کد پنج رقمی ارسال‌شده را وارد کنید
         </p>
@@ -64,10 +74,8 @@ function VerifyOtp({
           >
             <label
               htmlFor={input.name}
-              className="text-sm font-medium text-cream-text"
-            >
-              {input.label}
-            </label>
+              className="text-sm font-medium text-cream-surface"
+            ></label>
             <div className="relative">
               <input
                 id={input.name}
@@ -86,10 +94,7 @@ function VerifyOtp({
                   }`}
               />
               <span
-                onClick={(e) => {
-                  handleChangeNumber(e);
-                  setCunter(100);
-                }}
+                onClick={handleChangeNumber}
                 className="text-cream-accent-dark font-bold rounded-md px-2 py-0.5 bg-cream-card hover:scale-98
               hover:bg-cream-page transition-all duration-300 cursor-pointer absolute left-0 top-1/2 transform -translate-y-1/2"
               >
@@ -114,11 +119,11 @@ function VerifyOtp({
       </form>
 
       <div className="flex flex-col items-center justify-center">
-        {cunter !== 0 ? (
+        {counter !== 0 ? (
           <div className="size-12">
             <CircularProgressbar
-              value={cunter}
-              text={`${cunter}`}
+              value={counter}
+              text={`${counter}`}
               styles={buildStyles({
                 strokeLinecap: "butt",
                 pathTransitionDuration: 1,

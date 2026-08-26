@@ -24,7 +24,7 @@ function SendOtp({ handleSendOtp, onChangePhone }: SendOtpProps) {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-1 text-center">
-        <h2 className="text-2xl font-bold text-cream-card">ثبت‌نام</h2>
+        <h2 className="text-2xl font-bold text-cream-card mb-2">ثبت‌نام</h2>
         <div className="mx-auto mb-2 h-px w-5/12 bg-linear-to-r from-transparent via-cream-accent-bright to-transparent" />
         <p className="text-sm text-cream-card/80">
           شماره موبایل خود را وارد کنید
@@ -43,9 +43,7 @@ function SendOtp({ handleSendOtp, onChangePhone }: SendOtpProps) {
             <label
               htmlFor={input.name}
               className="text-sm font-medium text-cream-border"
-            >
-              {input.label}
-            </label>
+            ></label>
             <input
               id={input.name}
               maxLength={11}

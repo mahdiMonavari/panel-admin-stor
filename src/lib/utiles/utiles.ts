@@ -1,4 +1,4 @@
-import { cookiesDate } from "@/types/types.global";
+import { cookiesDate } from "@/src/types/global.type";
 import { compare, hash } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 import { cookies } from "next/headers";

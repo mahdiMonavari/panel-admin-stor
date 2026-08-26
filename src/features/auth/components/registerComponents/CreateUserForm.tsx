@@ -2,6 +2,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { UserType } from "../../types/register.type";
 import { inputsCreateUser } from "../../inputsStructure/register.structure";
 import { useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { userSchema } from "../../schema/register.schema";
 
 type CreateUserFormProps = {
   handleFinalRegister: (data: UserType) => void;
@@ -15,28 +17,29 @@ function CreateUserForm({ handleFinalRegister, phone }: CreateUserFormProps) {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<UserType>({
-    mode: "onBlur",
+    resolver: zodResolver(userSchema),
+    mode: "onTouched",
   });
   useEffect(() => {
     if (phone) {
       reset({ phone });
     }
   }, [phone]);
-
-  const onSubmit: SubmitHandler<UserType> = (data) => handleFinalRegister(data);
-  console.log(errors);
-
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-1 text-center">
         <h2 className="text-xl font-bold text-cream-card">تکمیل اطلاعات</h2>
+        <div className="mx-auto my-2 h-px w-5/12 bg-linear-to-r from-transparent via-cream-accent-bright to-transparent" />
         <p className="text-sm text-cream-card/80">
           لطفاً اطلاعات خود را وارد کنید
         </p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <form
+        onSubmit={handleSubmit(handleFinalRegister)}
+        className="flex flex-col gap-5 sm:mt-5"
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {inputsCreateUser.map((input) => {
             const fieldName = input.name as keyof UserType;
             const fieldError = errors[fieldName];
@@ -45,7 +48,7 @@ function CreateUserForm({ handleFinalRegister, phone }: CreateUserFormProps) {
             return (
               <div
                 key={String(input.name)}
-                className="group relative flex min-w-0 flex-col gap-1.5"
+                className="group relative flex min-w-0 flex-col"
               >
                 <label
                   htmlFor={String(input.name)}

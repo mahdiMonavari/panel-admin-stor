@@ -7,7 +7,7 @@ import sendSms from "@/src/app/api/sendSms";
 
 type SendOtpResolteType={
     success:true
-    cunter ?: number
+    counter ?: number
 } |
 {success : false , errorMessage ?: string , fieldeError ?: {phoe : string}} 
 
@@ -46,13 +46,13 @@ export default async function sendOtp(rowData : unknown) : Promise<SendOtpResolt
             phone,            
         }
     })  
-    console.log("is otp exist" ,isOtpExist);
+    
       
     if(isOtpExist){        
         const residualTime = new Date(isOtpExist.expiresAt).getTime() - newDate.getTime()
         return{
             success:true,
-            cunter : residualTime
+            counter : residualTime
         }
     }    
     const key : limitRateKey= "otp"
@@ -93,7 +93,7 @@ export default async function sendOtp(rowData : unknown) : Promise<SendOtpResolt
       number_format: "english",
     };    
     const res = await sendSms(API_KEY , requestBody)
-    console.log(res);
+    
     
     if(!res){
         return {
@@ -128,13 +128,13 @@ export default async function sendOtp(rowData : unknown) : Promise<SendOtpResolt
             expiresAt : expiryDate
         }
     })
-    console.log("new otp model" ,newOtp);
+    
     
     return { 
         success:true
     }
     }catch(error){
-        console.log(error);
+        
         return{
             success:false,
             errorMessage : "ایراد از سمت سرور"

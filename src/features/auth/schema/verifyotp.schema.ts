@@ -9,5 +9,14 @@ export const otpVerifySchema = z.object({
     z.string().regex(
         /^\d{5}$/, "کد تأیید باید دقیقاً ۵ رقم باشد"
         )
-    )
+    ),
+    phone : z
+            .string()
+            .transform(toEnglishDigits) 
+            .pipe(
+            z.string().regex(
+                /^(?:\+98|0098|0)?9\d{9}$/,
+                "شماره موبایل معتبر نیست"
+            )
+            ),
 });

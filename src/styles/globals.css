@@ -22,8 +22,14 @@
 }
 
 body {
-  background: var(--color-cream-page);
-  color: var(--color-cream-text);
   direction: rtl;
   font-family: sans-serif;
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 12px
+  }
 }

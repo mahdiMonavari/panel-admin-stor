@@ -9,6 +9,7 @@ import { otpVerifyType } from "../../types/verifyOtptype";
 import { otpVerifySchema } from "../../schema/verifyotp.schema";
 import sendOtp from "../../actions/sendOtp.action";
 import { LoginOtpHandler } from "../../actions/verifyLoginOtp.action";
+import { useRouter } from "next/navigation";
 
 const OTP_COUNTDOWN = 100;
 
@@ -30,6 +31,7 @@ function LoginOtp({
   const [isPending, startTransition] = useTransition();
   const [counter, setCounter] = useState(OTP_COUNTDOWN);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (!isOtpSend) return;
@@ -107,7 +109,7 @@ function LoginOtp({
             res.errorMessage || "خطای غیر منتظره دوباره تلاش کنید",
           );
         }
-        return console.log("login success");
+        return router.push("/panel-admin");
       } catch (caughtError) {
         setError(
           getErrorMessage(caughtError, "خطا در ارسال کد. دوباره تلاش کنید."),

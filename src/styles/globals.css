@@ -93,4 +93,18 @@ body {
     margin-inline: auto;
     padding-inline: 12px
   }
+  .custom-scrollbar-panel::-webkit-scrollbar {
+  @apply w-1.5;
+}
+
+.custom-scrollbar-panel::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+.custom-scrollbar-panel::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-neutral-500 hover:bg-neutral-600 transition-all duration-300;  
+}
+.dark .custom-scrollbar-panel::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-neutral-300 hover:bg-neutral-200 transition-all duration-300;  
+}
 }

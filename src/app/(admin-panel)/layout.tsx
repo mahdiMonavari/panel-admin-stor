@@ -1,7 +1,5 @@
 import { getCookies } from "@/src/lib/utiles/utiles";
 import "@/src/styles/globals.css";
-import AdminPanelSidBar from "./components/AdminPanelSidBar";
-import AdminPanelTopBar from "./components/AdminPanelTopBar";
 import AdminShell from "./components/AdminShell";
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const theme = await getCookies("theme");

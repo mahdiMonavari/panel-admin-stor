@@ -1,7 +1,7 @@
 import React from "react";
 
 function AdminPanelTopBar() {
-  return <div>AdminPanelTopBar</div>;
+  return <div className="bg-neutral-400">top bar</div>;
 }
 
 export default AdminPanelTopBar;

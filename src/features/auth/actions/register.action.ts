@@ -1,79 +1,100 @@
-"use server";
+"use server"
 
 
-import { prisma } from "@/src/lib/prisma";
-import { userSchema } from "../schema/register.schema";
-import { PasswordService, TokenService } from "@/src/lib/utiles/utiles";
-import { cookies } from "next/headers";
+import { prisma } from "@/src/lib/prisma"
+import { userSchema } from "../schema/register.schema"
+import {
+    PasswordService,
+    setCookies,
+    updateRefreshToken,
+} from "@/src/lib/utiles/utiles"
+import { Prisma } from "@/generated/prisma/client"
 
-type createNewUserResolvType = {
-    success:true
-} | {
-    success:false;
-    errorMessage ?: string
-}
+type CreateNewUserResult =
+    | {
+          success: true
+      }
+    | {
+          success: false
+          errorMessage?: string
+      }
 
-export async function createNewUser(rowDate:unknown):Promise<createNewUserResolvType>{
-    const parsed = userSchema.safeParse(rowDate)
-    if(!parsed.success){
-        const errorMessage = parsed.error.issues[0].message
-        return { 
-            success:false,
-            errorMessage
+export async function createNewUser(rawData: unknown,): Promise<CreateNewUserResult> {
+    const parsed = userSchema.safeParse(rawData)
+    if (!parsed.success) {
+        return {
+            success: false,
+            errorMessage: parsed.error.issues[0]?.message,
         }
     }
-    try{
-        const {firstname,lastname,password,phone} = parsed.data
-        const usersCount = await prisma.user.count();
-        const role = usersCount === 0 ? "ADMIN" : "USER";
-        const alreadyExist = await prisma.user.findFirst({
-            where:{
-                phone
-            }
+
+    try {
+        const {
+            firstname,
+            lastname,
+            password,
+            phone,
+        } = parsed.data
+        const userCounts = await prisma.user.count()
+        const role = userCounts===0 ?"ADMIN":"USER"
+        const existingUser = await prisma.user.findUnique({
+            where: {
+                phone,
+            },
+            select: {
+                id: true,
+            },
         })
-        if(alreadyExist){
-            return{
-                success : false,
-                errorMessage:"این شماره از قبل در سایت وجود دارد"
+        if (existingUser) {
+            return {
+                success: false,
+                errorMessage: "این شماره از قبل در سایت وجود دارد",
             }
         }
-        const hashPassword = await PasswordService.hash(password)
-        const accessToken = TokenService.generateAccessToken({phone , role})
-        const refreshToken = TokenService.generateRefreshToken({phone})
-        const newUser = await prisma.user.create({
-            data:{
+
+        const hashedPassword = await PasswordService.hash(password)
+
+        const user = await prisma.user.create({
+            data: {
                 firstname,
                 lastname,
-                password:hashPassword,
+                password: hashedPassword,
                 phone,
                 role,
-                refreshToken,
-                fullname :`${firstname} ${lastname}`             
-            }
+                fullname: `${firstname} ${lastname}`,
+                refreshToken : ""
+            },
+            select: {
+                id: true,
+                role: true,
+                phone: true,
+            },
         })
-        const cookiesStore = await cookies()
-        cookiesStore.set("accessToken" ,accessToken,{
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            path: "/",
-            maxAge: 60 * 15
+
+        const refreshToken = await setCookies({
+            userId: user.id,
+            role: user.role,
         })
-        cookiesStore.set("refreshToken" , refreshToken , {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            path: "/",
-            maxAge: 60 * 60 * 24 * 15
-        })
+        updateRefreshToken({refreshToken , userId:user.id})
         return {
-            success:true
+            success: true,
         }
-    }catch(error){ 
-        console.log(error);               
-        return{
-            success:false,
-            errorMessage : "خطا سمت سرور دوباره تلاش کنید"
+    } catch (error) {
+        console.error("createNewUser error:", error)
+
+        if (
+            error instanceof Prisma.PrismaClientKnownRequestError &&
+            error.code === "P2002"
+        ) {
+            return {
+                success: false,
+                errorMessage: "این شماره از قبل در سایت وجود دارد",
+            }
+        }
+
+        return {
+            success: false,
+            errorMessage: "خطایی از سمت سرور رخ داد، دوباره تلاش کنید",
         }
     }
 }

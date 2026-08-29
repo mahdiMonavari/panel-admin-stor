@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme  {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -16,14 +18,73 @@
   --color-cream-accent-bright: #d47a3a;
   --color-cream-danger: #b94a48;
   --color-cream-success: #4f7d5a;
+  --font-Dana-DemiBold: "DemiBold";
+  --font-Dana-Medium: "Medium";
+  --font-Dana-Regular: "Regular";
+  --font-Morabba-Bold: "Morabba-Bold";
+  --font-Morabba-Medium: "Morabba-Medium";
+  --font-Morabba-Light: "Morabba-Light";
+  --font-shabnam: "shabnam";
+  --font-shabnam-bold: "shabnam-bold";
+  --font-shabnam-medium: "shabnam-medium";
+  --font-shabnam-thin: "shabnam-thin";
 }
 
-@media (prefers-color-scheme: dark) {  
+@layer base {
+  @font-face {
+    font-family: "DemiBold";
+    src: url("/fontsDana/woff2/DanaFaNum-DemiBold.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "Medium";
+    src: url("/fonts/Dana/woff2/DanaFaNum-Medium.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "Regular";
+    src: url("/fonts/Dana/woff2/DanaFaNum-Regular.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "Morabba-Bold";
+    src: url("/fonts/Morabba/woff2/Morabba-Bold.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "Morabba-Medium";
+    src: url("/fonts/Morabba/woff2/Morabba-Medium.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "Morabba-Light";
+    src: url("/fonts/Morabba/woff2/Morabba-Light.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "shabnam";
+    src: url("/fonts/shabnam/Shabnam.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "shabnam-bold";
+    src: url("/fonts/shabnam/Shabnam-Bold.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "shabnam-medium";
+    src: url("/fonts/shabnam/Shabnam-Medium.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "shabnam-thin";
+    src: url("/fonts/shabnam/Shabnam-Thin.woff2") format(truetype);
+  }
 }
 
 body {
   direction: rtl;
-  font-family: sans-serif;
+  font-family: "Morabba-Light";
 }
 
 @layer components {

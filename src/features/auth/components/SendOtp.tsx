@@ -51,7 +51,7 @@ function SendOtp({ handleSendOtp, onChangePhone }: SendOtpProps) {
               placeholder={input.placeholder}
               type={input.type}
               {...register(input.name)}
-              className={`w-full border-b-4 bg-transparent px-1 py-1.5 text-sm text-cream-text/90 outline-none transition-all duration-500 placeholder:text-cream-muted/70 focus:border-cream-accent-bright group-hover:border-cream-muted ${
+              className={`w-full border-b-4 bg-transparent px-1 py-1.5 text-sm text-cream-card outline-none transition-all duration-500 placeholder:text-cream-muted/70 focus:border-cream-accent-bright group-hover:border-cream-muted ${
                 errors[input.name]
                   ? "border-cream-danger"
                   : "border-cream-border"

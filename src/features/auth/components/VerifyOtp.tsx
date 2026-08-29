@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { inputVerifyOtp } from "../inputsStructure/otpVerify.structure";
 import { otpVerifySchema } from "../schema/verifyotp.schema";
 import { otpVerifyType } from "../types/verifyOtptype";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 

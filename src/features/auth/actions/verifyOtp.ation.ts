@@ -64,7 +64,12 @@ export async function verifyOtp (rowData : unknown) : Promise<VerfiyOtpResoltTyp
                 }
             }
             else{
-                errorMessage ="کد غیر فعال شد درخاست ارسال مجدد کد بدهید"
+                await prisma.otp.delete({
+                    where:{
+                        id:otpTarget.id
+                    }
+                })
+                errorMessage ="کد غیر فعال شد درخاست ارسال مجدد کد بدهید"                
                 return {
                     success: false,
                     errorMessage,

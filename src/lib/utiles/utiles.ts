@@ -2,6 +2,7 @@ import { cookiesDate } from "@/src/types/global.type";
 import { compare, hash } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { prisma } from "../prisma";
 
 
 const ACCESS_SECRET = process.env.ACCESS_TOKEN_PRIVATE_KEY;
@@ -53,4 +54,36 @@ export const TokenService = {
 export async function getCookies(target: string): Promise<string | null> {
   const cookiesStore = await cookies();
   return cookiesStore.get(target)?.value ?? null;
+}
+
+export async function setCookies <t extends cookiesDate>(data : t){
+    const accessToken = TokenService.generateAccessToken({...data})
+    const refreshToken = TokenService.generateRefreshToken({userId : data.userId})    
+    const cookiesStore = await cookies()
+        cookiesStore.set("accessToken" ,accessToken,{
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            path: "/",
+            maxAge: 60 * 15
+        })
+        cookiesStore.set("refreshToken" , refreshToken , {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            path: "/",
+            maxAge: 60 * 60 * 24 * 15
+        })
+        return refreshToken
+}
+
+export async function updateRefreshToken ({refreshToken, userId} : {refreshToken:string; userId:string}){
+  await prisma.user.update({
+    where:{
+      id : userId
+    },
+    data:{
+      refreshToken
+    }
+  })
 }

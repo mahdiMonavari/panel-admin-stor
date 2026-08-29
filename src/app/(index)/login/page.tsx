@@ -1,7 +1,11 @@
-import React from "react";
+import Login from "@/src/features/auth/components/Login";
 
 function page() {
-  return <div>page</div>;
+  return (
+    <div className="h-screen overflow-hidden flex items-center relative justify-center">
+      <Login />
+    </div>
+  );
 }
 
 export default page;

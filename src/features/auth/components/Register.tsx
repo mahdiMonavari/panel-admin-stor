@@ -40,7 +40,7 @@ function Register() {
   useEffect(() => {
     const zoomInHandler = () => {
       if (wallpaper.current) {
-        wallpaper.current.style.transform = "scale(1.2)";
+        wallpaper.current.style.transform = "scale(1.06)";
       }
     };
     const zoomOutHandler = () => {
@@ -86,10 +86,10 @@ function Register() {
         const res = await verifyOtp(data);
         if (!res.success) {
           if (res.counter === 0) {
-            setCounter(0);
+            return setCounter(0);
           }
           return setError(
-            res.errorMessage || "حطای غیر منتظره دوباره تلاش کنید",
+            res.errorMessage || "خطای غیر منتظره دوباره تلاش کنید",
           );
         }
         setStep("form");
@@ -145,8 +145,8 @@ function Register() {
           className="relative mx-auto w-full sm:max-w-md max-w-85 rounded-3xl border border-cream-border/60 my-2
      bg-cream-text/55 p-6 text-cream-text shadow-2xl shadow-cream-accent-dark/15 backdrop-blur-[2px] sm:p-6"
         >
-          <h1 className="text-4xl font-serif font-bold text-cream-card text-center mb-5">
-            به فروشگاه ما خوش آمدید
+          <h1 className="text-xl font-Morabba-Bold font-bold text-cream-card text-center mb-5">
+            به فروشگاه عشق چوبی خوش آمدید
           </h1>
           <div className="mx-auto mb-5 h-px w-10/12 bg-linear-to-r from-transparent via-cream-accent-bright to-transparent" />
           <div className="mb-10 flex items-start justify-center">
@@ -256,7 +256,7 @@ function Register() {
           <div className="mt-6 flex justify-center gap-1 text-sm text-cream-muted">
             <span>حساب کاربری دارید؟</span>
             <Link
-              className="text-cream-accent transition-colors hover:text-cream-accent-dark"
+              className="text-cream-accent transition-colors hover:text-cream-accent-bright"
               href="/login"
             >
               وارد شوید

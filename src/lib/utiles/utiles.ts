@@ -87,3 +87,9 @@ export async function updateRefreshToken ({refreshToken, userId} : {refreshToken
     }
   })
 }
+export function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  return "خطای ناشناخته‌ای رخ داده است";
+}

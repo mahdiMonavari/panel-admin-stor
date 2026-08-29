@@ -1,6 +1,7 @@
 import { prisma } from "@/src/lib/prisma";
 import { userFiltersSchema } from "../shemas/userFilter.shema";
 import { UserType } from "../types/user.type";
+import { getErrorMessage } from "@/src/lib/utiles/utiles";
 type getUsersResultType = {
     data: UserType[];
     meta: {
@@ -14,7 +15,6 @@ type getUsersResultType = {
     errorMessage: string;
 };
 
-
 export async function getUsers(rowParams: unknown): Promise<getUsersResultType> {
     const parsed = userFiltersSchema.safeParse(rowParams);
     if (!parsed.success) {
@@ -22,22 +22,19 @@ export async function getUsers(rowParams: unknown): Promise<getUsersResultType> 
     }
 
     const { limit, order, page, role, sort, search } = parsed.data;
-
+    try{
     const where = {
         ...(search && {
             fullName: { contains: search, mode: "insensitive" as const }
         }),
         ...(role !== "all" && { role })
     };
-
-    // ۱. اجرای موازی کوئری برای سرعت بیشتر (هم دیتا، هم تعداد کل)
     const [data, totalCount] = await Promise.all([
         prisma.user.findMany({
             where,
-            orderBy: { [sort]: order }, // نکته: اینجا دقت کن sort حتما باید با فیلد دیتابیس یکی باشد
+            orderBy: { [sort]: order },
             skip: (page - 1) * limit,
             take: limit,
-            // ۲. انتخاب فیلدهای امن
             select: {
                 id: true,
                 fullname: true,
@@ -50,7 +47,6 @@ export async function getUsers(rowParams: unknown): Promise<getUsersResultType> 
         prisma.user.count({ where })
     ]);
 
-    // ۳. تغییر ساختار بازگشتی برای شامل شدن متا‌دیتا
     return { 
         success: true, 
         data,
@@ -60,4 +56,10 @@ export async function getUsers(rowParams: unknown): Promise<getUsersResultType> 
             limit
         }
     };
+    }catch(error){
+        return{
+            success:false,
+            errorMessage:getErrorMessage(error)
+        }
+    }
 }

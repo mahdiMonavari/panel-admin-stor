@@ -1,0 +1,102 @@
+"use client";
+
+import React, { useEffect } from "react";
+
+interface ModalProps {
+  open: boolean;
+  setClose: (open: boolean) => void; // برای بستن
+  title?: string; // عنوان اختیاری
+  children: React.ReactNode; // محتوای داخل مودال (هرچیزی که بخوای)
+  onConfirm?: () => void; // کال‌بک برای دکمه تایید
+  confirmLabel?: string;
+  cancelLabel?: string;
+  showFooter?: boolean; // آیا فوتر (دکمه‌ها) نمایش داده شود؟
+  footer?: React.ReactNode; // اگر بخواهی دکمه‌های سفارشی بگذاری
+  isLoading?: boolean; // برای حالت لودینگ هنگام ارسال فرم
+}
+
+export default function Modal({
+  open,
+  setClose,
+  title,
+  children,
+  onConfirm,
+  confirmLabel = "تأیید",
+  cancelLabel = "انصراف",
+  showFooter = true,
+  footer,
+  isLoading = false,
+}: ModalProps) {
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [open]);
+  return (
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-[#020617]/80 backdrop-blur-sm p-4 transition-all duration-300
+        ${open ? "visible opacity-100" : "opacity-0 invisible"}`}
+      onClick={() => setClose(false)}
+    >
+      <div
+        className={`relative w-full max-w-lg bg-[#0f172a] border border-slate-700/50 rounded-2xl
+             shadow-2xl shadow-blue-500/10 transition-all duration-150 delay-200
+            ${
+              open
+                ? "scale-100 visible opacity-100"
+                : "scale-90 opacity-0 invisible"
+            }`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {title && (
+          <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-slate-800">
+            <h3 className="text-lg font-semibold text-slate-100">{title}</h3>
+            <button
+              onClick={() => setClose(false)}
+              className="text-slate-400 hover:text-white transition-colors duration-500"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+
+        <div className="px-6 py-6">{children}</div>
+        {showFooter && (
+          <div className="flex items-center justify-end gap-3 px-6 pb-6 pt-2 border-t border-slate-800">
+            {footer ? (
+              footer
+            ) : (
+              <>
+                <button
+                  onClick={() => setClose(false)}
+                  className="px-4 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 rounded-lg transition-colors duration-200"
+                >
+                  {cancelLabel}
+                </button>
+                <button
+                  onClick={onConfirm}
+                  disabled={isLoading}
+                  className="px-5 py-2 text-sm font-medium text-white bg-[#1e3a8a] hover:bg-[#1d4ed8] rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 shadow-lg shadow-blue-900/30"
+                >
+                  {isLoading ? (
+                    <span className="flex items-center gap-2">
+                      <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      در حال پردازش...
+                    </span>
+                  ) : (
+                    confirmLabel
+                  )}
+                </button>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

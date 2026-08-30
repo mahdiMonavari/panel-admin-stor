@@ -2,6 +2,7 @@ import { prisma } from "@/src/lib/prisma";
 import { userFiltersSchema } from "../shemas/userFilter.shema";
 import { UserType } from "../types/user.type";
 import { getErrorMessage } from "@/src/lib/utiles/utiles";
+import { Prisma } from "@/generated/prisma/client";
 type getUsersResultType = {
     data: UserType[];
     meta: {
@@ -23,11 +24,14 @@ export async function getUsers(rowParams: unknown): Promise<getUsersResultType> 
 
     const { limit, order, page, role, sort, search } = parsed.data;
     try{
-    const where = {
+    const where: Prisma.UserWhereInput = {
         ...(search && {
-            fullName: { contains: search, mode: "insensitive" as const }
+          OR: [
+            { fullname: { contains: search, mode: "insensitive" } },
+            { phone: { contains: search, mode: "insensitive" } },
+          ],
         }),
-        ...(role !== "all" && { role })
+        ...(role && role !== "all" && { role }),
     };
     const [data, totalCount] = await Promise.all([
         prisma.user.findMany({

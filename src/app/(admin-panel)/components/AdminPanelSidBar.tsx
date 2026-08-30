@@ -10,7 +10,7 @@ function AdminPanelSidBar({
   onToggleSidebar,
 }: AdminPanelSidBarType) {
   return (
-    <div className="dark:bg-neutral-800 bg-neutral-200 relative h-full pl-5">
+    <div className="dark:bg-neutral-800 bg-neutral-200 max-h-screen sticky relative h-full pl-5">
       <div
         className={`${isSidebarOpen ? "w-64 transition-all duration-300 delay-500" : "w-0"} overflow-hidden h-full`}
       >

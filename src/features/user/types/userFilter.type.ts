@@ -3,7 +3,7 @@ import { userFiltersSchema } from "../shemas/userFilter.shema";
 import { SortOrder } from "@/generated/prisma/internal/prismaNamespace";
 
 export const SORT_CONFIG ={
-    createdAt: "تاریخ ثب تنام",
+    createdAt: "تاریخ ثبت نام",
     lastname: "حروف الفبا",
 } as const
 export type SortField = keyof typeof SORT_CONFIG;

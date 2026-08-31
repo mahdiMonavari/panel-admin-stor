@@ -10,9 +10,9 @@ export type SortField = keyof typeof SORT_CONFIG;
 export const SORT_FIELDS = Object.keys(SORT_CONFIG) as [SortField, ...SortField[]];
 
 
-export const ORDER_CONFIG = {
+export const ORDER_CONFIG = {    
+    desc : "نزولی",
     asc : "سعودی",
-    desc : "نزولی"
 } as const;
 export type SortOrders = keyof typeof ORDER_CONFIG
 export const SORT_ORDERS = Object.keys(ORDER_CONFIG) as [SortOrders , ...SortOrder[]]

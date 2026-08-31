@@ -10,14 +10,13 @@ type SearchInputProps = {
 };
 
 function SearchInput({
-  queryKey = "q",
+  queryKey = "search",
   placeholder = "جستجو بر اساس نام یا شماره تماس...",
 }: SearchInputProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
-
   const initialValue = searchParams.get(queryKey) ?? "";
   const [search, setSearch] = useState(initialValue);
 

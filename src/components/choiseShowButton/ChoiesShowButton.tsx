@@ -19,7 +19,7 @@ function ViewToggle({ isCardView, setIsCardView }: ViewToggleProps) {
           className={`flex items-center gap-x-2 rounded-lg px-4 py-1.5 text-sm font-medium transition-all duration-200 ${
             !isCardView
               ? "bg-neutral-900 text-white shadow dark:bg-white dark:text-neutral-900"
-              : "text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-900"
+              : "text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800"
           }`}
         >
           <FaTableCells className="h-4 w-4" />
@@ -31,7 +31,7 @@ function ViewToggle({ isCardView, setIsCardView }: ViewToggleProps) {
           className={`flex items-center gap-x-2 rounded-lg px-4 py-1.5 text-sm font-medium transition-all duration-200 ${
             isCardView
               ? "bg-neutral-900 text-white shadow dark:bg-white dark:text-neutral-900"
-              : "text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-900"
+              : "text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800"
           }`}
         >
           <FaIdCard className="h-4 w-4" />

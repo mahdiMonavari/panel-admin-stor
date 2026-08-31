@@ -38,7 +38,6 @@ function SortSelect({ queryKey, options }: SortSelectProps) {
     setIsOpen(false);
   };
 
-  // بستن منو در صورت کلیک به خارج از کامپوننت
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -60,11 +59,13 @@ function SortSelect({ queryKey, options }: SortSelectProps) {
 
   return (
     <div ref={dropdownRef} className="relative inline-block text-right">
-      {/* دکمه تریگر */}
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex cursor-pointer items-center justify-between gap-x-2 rounded-xl border border-neutral-200 bg-white px-4 h-11 text-sm font-medium text-neutral-700 shadow-sm transition-all hover:bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-200 dark:hover:bg-neutral-900"
+        className="flex cursor-pointer items-center justify-between gap-x-2 rounded-xl border
+         border-neutral-200 bg-white px-4 h-11 text-sm font-medium text-neutral-700 shadow-sm
+          transition-all hover:bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-950
+           dark:text-neutral-200 dark:hover:bg-neutral-800"
       >
         <span>{currentOption?.label || "انتخاب کنید"}</span>
         <FaChevronDown
@@ -86,7 +87,7 @@ function SortSelect({ queryKey, options }: SortSelectProps) {
             <li
               key={option.value}
               onClick={() => handleSelect(option.value)}
-              className={`cursor-pointer px-3 mx-2 rounded-lg py-2 my-0.5 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900 ${
+              className={`cursor-pointer px-3 mx-2 rounded-lg py-2 my-0.5 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800 ${
                 currentValue === option.value
                   ? "bg-neutral-100 font-semibold text-neutral-900 dark:bg-neutral-900 dark:text-white"
                   : ""

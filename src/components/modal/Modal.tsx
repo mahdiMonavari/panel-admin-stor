@@ -39,12 +39,12 @@ export default function Modal({
   }, [open]);
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-[#020617]/80 backdrop-blur-sm p-4 transition-all duration-300
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4 transition-all duration-300
         ${open ? "visible opacity-100" : "opacity-0 invisible"}`}
       onClick={() => setClose(false)}
     >
       <div
-        className={`relative w-full max-w-lg bg-[#0f172a] border border-slate-700/50 rounded-2xl
+        className={`relative w-full max-w-lg dark:bg-neutral-900 bg-neutral-200 border border-slate-700/50 rounded-2xl
              shadow-2xl shadow-blue-500/10 transition-all duration-150 delay-200
             ${
               open
@@ -74,7 +74,7 @@ export default function Modal({
               <>
                 <button
                   onClick={() => setClose(false)}
-                  className="px-4 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 rounded-lg transition-colors duration-200"
+                  className="px-4 py-2 text-sm font-medium text-slate-300 bg-slate-400 dark:bg-slate-700 hover:bg-slate-800 rounded-lg transition-colors duration-200"
                 >
                   {cancelLabel}
                 </button>

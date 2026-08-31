@@ -6,7 +6,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`h-full antialiased ${theme === "ligth" ? "dark" : ""}`}
+      className={`h-full antialiased overflow-x-hidden ${theme === "ligth" ? "dark" : ""}`}
     >
       <body className="min-h-full flex flex-col">
         <AdminShell>{children}</AdminShell>

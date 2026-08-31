@@ -13,7 +13,7 @@ type DataTabelType<T> = {
   actions?: (row: T) => React.ReactNode;
 };
 
-function DataTabel<T>({ columns, data, actions }: DataTabelType<T>) {
+function DataTabel<T>({ data, actions, columns }: DataTabelType<T>) {
   return (
     <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06),0_10px_28px_-14px_rgba(15,23,42,0.18)] dark:border-slate-800 dark:bg-slate-950 dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_10px_28px_-14px_rgba(0,0,0,0.6)]">
       <div className="overflow-x-auto">
@@ -36,7 +36,7 @@ function DataTabel<T>({ columns, data, actions }: DataTabelType<T>) {
               {actions && (
                 <th
                   scope="col"
-                  className="whitespace-nowrap px-2 py-4 pl-6 text-center"
+                  className="whitespace-nowrap px-2 py-4 text-center"
                 >
                   عملیات
                 </th>
@@ -53,7 +53,6 @@ function DataTabel<T>({ columns, data, actions }: DataTabelType<T>) {
                 >
                   {columns.map((column, colIdx) => {
                     const value = row[column.key];
-
                     return (
                       <td
                         key={String(column.key) || colIdx}
@@ -73,7 +72,6 @@ function DataTabel<T>({ columns, data, actions }: DataTabelType<T>) {
                   {actions && (
                     <td className="whitespace-nowrap px-2 py-4">
                       <div className="flex items-center justify-center gap-x-2">
-                        {/* پاس دادن row به اکشن 👇 */}
                         {actions(row)}
                       </div>
                     </td>

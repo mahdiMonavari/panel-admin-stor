@@ -1,13 +1,29 @@
 import Modal from "@/src/components/modal/Modal";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
+import { deleteUser } from "../actions/user.delete";
 
 type DeleteUserProps = {
   userId: string;
   userFullname: string;
 };
 function DeleteUser({ userId, userFullname }: DeleteUserProps) {
+  const [isPending, startTransition] = useTransition();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleDelete = () => {};
+  const [errorMesage, setErrorMessage] = useState<null | string>(null);
+  const handleDelete = () => {
+    try {
+      startTransition(async () => {
+        const res = await deleteUser(userId);
+        if (res.success) {
+          setIsModalOpen(false);
+        } else {
+          setErrorMessage(res.errorMesage);
+        }
+      });
+    } catch (error) {
+      setErrorMessage(error as string);
+    }
+  };
   return (
     <>
       <button
@@ -18,15 +34,20 @@ function DeleteUser({ userId, userFullname }: DeleteUserProps) {
       </button>
 
       <Modal
+        isLoading={isPending}
         open={isModalOpen}
         setClose={() => setIsModalOpen(false)}
         onConfirm={handleDelete}
+        errorMessage={errorMesage}
       >
-        <div className="flex items-center gap-2 font-Morabba-Bold text-lg">
+        <form
+          onSubmit={handleDelete}
+          className="flex items-center gap-2 font-Morabba-Bold text-lg"
+        >
           <span>آیا از حذف</span>
           <span className="text-rose-600">{userFullname}</span>
           <span>مطمئن هستید؟</span>
-        </div>
+        </form>
       </Modal>
     </>
   );

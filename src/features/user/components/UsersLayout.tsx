@@ -9,6 +9,7 @@ import DataTabel, { columns } from "@/src/components/dataTabel/DataTabel";
 import SortSelect from "@/src/components/sortSelect/SortSelect";
 import DeleteUser from "./DeleteUser";
 import DataCard from "@/src/components/dataCard/DataCard";
+import UpdateUser from "./UpdateUser";
 
 type FormattedUser = Omit<UserType, "createdAt" | "isBan"> & {
   createdAt: string;
@@ -130,11 +131,82 @@ function UsersLayout({ users }: { users: UserType[] }) {
           actions={(user) => (
             <div className="flex items-center justify-center gap-2">
               <DeleteUser userFullname={user.fullname} userId={user.id} />
+              <UpdateUser
+                fullname={user.fullname}
+                userId={user.id}
+                role={user.role}
+                isActive={user.isBan}
+              />
             </div>
           )}
         />
       ) : (
-        <DataCard />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {formattedData.length > 0 ? (
+            formattedData.map((user) => (
+              <div
+                key={user.id}
+                className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-950"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-slate-800/80">
+                    <span className="font-Morabba-Bold text-base text-slate-900 dark:text-white">
+                      {user.fullname}
+                    </span>
+                    <span
+                      className={`flex h-6 items-center rounded-md px-2 font-Morabba-Medium text-xs ${
+                        user.role === "ADMIN"
+                          ? "border border-red-500/30 bg-red-500/10 text-red-600 dark:bg-red-500/20 dark:text-red-400"
+                          : "border border-amber-500/30 bg-amber-500/10 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400"
+                      }`}
+                    >
+                      {user.role}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                    <span>شماره تماس:</span>
+                    <span>{user.phone}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                    <span>تاریخ ثبت‌نام:</span>
+                    <span className="flex h-5 items-center rounded border border-blue-600/30 bg-blue-500/10 px-1.5 font-Morabba-Medium text-[11px] text-blue-600 dark:bg-blue-500/20 dark:text-blue-400">
+                      {user.createdAt}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                    <span>وضعیت حساب:</span>
+                    <span
+                      className={`flex h-5 items-center rounded px-2 font-Morabba-Medium text-[11px] ${
+                        user.isBan === "فعال"
+                          ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400"
+                          : "border border-rose-500/30 bg-rose-500/10 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400"
+                      }`}
+                    >
+                      {user.isBan}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex items-center justify-end border-t border-slate-100 pt-3 dark:border-slate-800/80">
+                  <DeleteUser userFullname={user.fullname} userId={user.id} />
+                  <UpdateUser
+                    fullname={user.fullname}
+                    userId={user.id}
+                    role={user.role}
+                    isActive={user.isBan}
+                  />
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="col-span-full py-10 text-center text-sm text-slate-500 dark:text-slate-400">
+              کاربری برای نمایش یافت نشد.
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

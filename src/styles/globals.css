@@ -94,7 +94,7 @@ body {
     padding-inline: 12px
   }
   .custom-scrollbar-panel::-webkit-scrollbar {
-  @apply w-1.5;
+  @apply w-1.5 h-1.5; 
 }
 
 .custom-scrollbar-panel::-webkit-scrollbar-track {

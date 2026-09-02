@@ -15,8 +15,8 @@ type DataTabelType<T> = {
 
 function DataTabel<T>({ data, actions, columns }: DataTabelType<T>) {
   return (
-    <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06),0_10px_28px_-14px_rgba(15,23,42,0.18)] dark:border-slate-800 dark:bg-slate-950 dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_10px_28px_-14px_rgba(0,0,0,0.6)]">
-      <div className="overflow-x-auto">
+    <div className="w-full overflow-auto custom custom-scrollbar-panel rounded-2xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06),0_10px_28px_-14px_rgba(15,23,42,0.18)] dark:border-slate-800 dark:bg-slate-950 dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_10px_28px_-14px_rgba(0,0,0,0.6)]">
+      <div className="overflow-x-auto min-w-200">
         <table className="w-full text-right text-sm">
           <thead
             className="border-b border-slate-200 bg-slate-100 font-Morabba-Bold font-semibold tracking-wide text-slate-900
@@ -68,7 +68,6 @@ function DataTabel<T>({ data, actions, columns }: DataTabelType<T>) {
                       </td>
                     );
                   })}
-
                   {actions && (
                     <td className="whitespace-nowrap px-2 py-4">
                       <div className="flex items-center justify-center gap-x-2">

@@ -76,7 +76,7 @@ function SortSelect({ queryKey, options }: SortSelectProps) {
       </button>
 
       <div
-        className={`absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-lg transition-all duration-200 ease-out dark:border-neutral-800 dark:bg-neutral-950 ${
+        className={`absolute right-0 top-full z-20 mt-2 w-48 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-lg transition-all duration-200 ease-out dark:border-neutral-800 dark:bg-neutral-950 ${
           isOpen
             ? "visible translate-y-0 opacity-100 scale-100"
             : "invisible -translate-y-2 opacity-0 scale-95 pointer-events-none"

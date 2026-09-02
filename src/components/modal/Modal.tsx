@@ -13,6 +13,7 @@ interface ModalProps {
   showFooter?: boolean; // آیا فوتر (دکمه‌ها) نمایش داده شود؟
   footer?: React.ReactNode; // اگر بخواهی دکمه‌های سفارشی بگذاری
   isLoading?: boolean; // برای حالت لودینگ هنگام ارسال فرم
+  errorMessage?: string | null;
 }
 
 export default function Modal({
@@ -26,6 +27,7 @@ export default function Modal({
   showFooter = true,
   footer,
   isLoading = false,
+  errorMessage,
 }: ModalProps) {
   useEffect(() => {
     if (open) {
@@ -43,6 +45,14 @@ export default function Modal({
         ${open ? "visible opacity-100" : "opacity-0 invisible"}`}
       onClick={() => setClose(false)}
     >
+      {errorMessage && (
+        <span
+          className="w-full rounded-md bg-rose-800/50 border border-rose-900 h-8
+      flex items-center"
+        >
+          {errorMessage}
+        </span>
+      )}
       <div
         className={`relative w-full max-w-lg dark:bg-neutral-900 bg-neutral-200 border border-slate-700/50 rounded-2xl
              shadow-2xl shadow-blue-500/10 transition-all duration-150 delay-200

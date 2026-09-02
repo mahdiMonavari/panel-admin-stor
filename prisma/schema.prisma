@@ -7,6 +7,7 @@ datasource db {
   provider = "postgresql"
 }
 
+
 model Otp {
   id        String   @id @default(uuid())
   phone     String 
@@ -57,3 +58,37 @@ model RateLimit {
   @@index([expiresAt])
 }
 
+model Category {
+  id         String   @id @default(uuid())
+  name       String  
+  parentId   String?
+  parent     Category? @relation("CategoryTree" , fields:[parentId] , references:[id])
+  children   Category[] @relation("CategoryTree")
+  attributes CategoryAttribute[]
+}
+
+model Attribute {
+  id        String   @id @default(uuid())
+  name      String  
+  type      String
+  values    AttributeValue[]
+  categories CategoryAttribute[]
+}
+
+model AttributeValue {
+  id          String   @id @default(uuid()) 
+  value       String
+  label       String 
+  attributeId String
+  code        String?
+  attribute   Attribute @relation(fields:[attributeId],references:[id],onDelete : Cascade)
+  @@unique([attributeId, value])
+}
+
+model CategoryAttribute{  
+  categoryId  String   
+  attributeId String   
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)  
+  @@id([categoryId, attributeId])
+}

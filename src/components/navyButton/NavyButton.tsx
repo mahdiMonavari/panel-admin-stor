@@ -1,12 +1,15 @@
 "use client";
 
+import React from "react";
+
 type NavyButtonType = {
   text: string;
   onClick?: () => void;
   isLoading?: boolean;
+  Icon?: React.ReactNode;
 };
 
-const NavyButton = ({ text, onClick, isLoading }: NavyButtonType) => {
+const NavyButton = ({ text, onClick, isLoading, Icon }: NavyButtonType) => {
   return (
     <button
       onClick={onClick}
@@ -20,7 +23,10 @@ const NavyButton = ({ text, onClick, isLoading }: NavyButtonType) => {
           در حال پردازش...
         </span>
       ) : (
-        text
+        <span className="flex items-center gap-2">
+          {text}
+          {Icon}
+        </span>
       )}
     </button>
   );

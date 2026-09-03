@@ -71,6 +71,7 @@ model Attribute {
   id        String   @id @default(uuid())
   name      String  
   type      String
+  label     String
   values    AttributeValue[]
   categories CategoryAttribute[]
 }

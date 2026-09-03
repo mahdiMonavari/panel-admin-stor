@@ -23,10 +23,11 @@ const AddNewCategory = ({ categories }: AddNewType) => {
   } = useForm<CreateCategoryType>({
     resolver: zodResolver(CreateCategorySchema),
   });
+
   return (
     <div>
       <Modal open={isAddOpen} setClose={setIsAddOpen}>
-        <div></div>
+        <form></form>
       </Modal>
       <NavyButton
         text="ایجاد دسته بندی جدید"

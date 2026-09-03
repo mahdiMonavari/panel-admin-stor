@@ -37,3 +37,23 @@ export type UserInfo = Prisma.UserInfoModel
  * 
  */
 export type RateLimit = Prisma.RateLimitModel
+/**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
+/**
+ * Model Attribute
+ * 
+ */
+export type Attribute = Prisma.AttributeModel
+/**
+ * Model AttributeValue
+ * 
+ */
+export type AttributeValue = Prisma.AttributeValueModel
+/**
+ * Model CategoryAttribute
+ * 
+ */
+export type CategoryAttribute = Prisma.CategoryAttributeModel

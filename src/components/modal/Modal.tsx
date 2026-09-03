@@ -31,17 +31,21 @@ export default function Modal({
 }: ModalProps) {
   useEffect(() => {
     if (open) {
+      document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
     }
+
     return () => {
-      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
     };
   }, [open]);
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4 transition-all duration-300
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 dark:bg-slate-900/10 backdrop-blur-sm p-4 transition-all duration-300
         ${open ? "visible opacity-100" : "opacity-0 invisible"}`}
       onClick={() => setClose(false)}
     >

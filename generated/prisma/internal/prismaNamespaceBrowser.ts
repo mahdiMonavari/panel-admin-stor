@@ -54,7 +54,11 @@ export const ModelName = {
   Otp: 'Otp',
   User: 'User',
   UserInfo: 'UserInfo',
-  RateLimit: 'RateLimit'
+  RateLimit: 'RateLimit',
+  Category: 'Category',
+  Attribute: 'Attribute',
+  AttributeValue: 'AttributeValue',
+  CategoryAttribute: 'CategoryAttribute'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -129,6 +133,44 @@ export const RateLimitScalarFieldEnum = {
 export type RateLimitScalarFieldEnum = (typeof RateLimitScalarFieldEnum)[keyof typeof RateLimitScalarFieldEnum]
 
 
+export const CategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  parentId: 'parentId'
+} as const
+
+export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+
+
+export const AttributeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  type: 'type',
+  label: 'label'
+} as const
+
+export type AttributeScalarFieldEnum = (typeof AttributeScalarFieldEnum)[keyof typeof AttributeScalarFieldEnum]
+
+
+export const AttributeValueScalarFieldEnum = {
+  id: 'id',
+  value: 'value',
+  label: 'label',
+  attributeId: 'attributeId',
+  code: 'code'
+} as const
+
+export type AttributeValueScalarFieldEnum = (typeof AttributeValueScalarFieldEnum)[keyof typeof AttributeValueScalarFieldEnum]
+
+
+export const CategoryAttributeScalarFieldEnum = {
+  categoryId: 'categoryId',
+  attributeId: 'attributeId'
+} as const
+
+export type CategoryAttributeScalarFieldEnum = (typeof CategoryAttributeScalarFieldEnum)[keyof typeof CategoryAttributeScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -143,4 +185,12 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

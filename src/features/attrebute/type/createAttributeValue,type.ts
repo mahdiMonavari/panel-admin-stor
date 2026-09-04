@@ -1,4 +1,4 @@
 import z from "zod";
-import { attributeValueItemSchema } from "../schema/createAttrbuteValue.schema";
+import { attributeValueItemSchema } from "../../attributeValue/schema/createAttrbuteValue.schema";
 
-export type createAttributeValueType = z.infer <typeof attributeValueItemSchema>
+export type createAttributeValueType = z.infer<typeof attributeValueItemSchema>;

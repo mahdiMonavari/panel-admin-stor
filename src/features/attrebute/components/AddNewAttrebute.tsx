@@ -12,7 +12,7 @@ import {
   AttrebuteEnumType,
   createAttributeSchema,
 } from "../schema/createAttribute.schema";
-import { createAttribute } from "../actions/attribute.create.action";
+import { createAttribute } from "../actions/attribute.create";
 
 function AddNewAttrebute() {
   const [isAddOpen, setIsAddOPen] = useState(false);
@@ -55,8 +55,10 @@ function AddNewAttrebute() {
         await new Promise((result) => setTimeout(result, 500));
         reset();
         setIsAddOPen(false);
+        setSuccess(false);
         return;
       }
+      setError(res.errorMessage as string);
     });
   };
 

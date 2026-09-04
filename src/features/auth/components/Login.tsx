@@ -34,7 +34,6 @@ function Login() {
       const res = await verifyUserLogin(data);
       if (res.success) {
         return router.push("/panel-admin");
-        location.reload();
       }
       setError(res.errorMessage || "خطا از سرور دوباره تلاش کنید");
     });

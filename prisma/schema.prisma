@@ -74,6 +74,9 @@ model Attribute {
   label     String
   values    AttributeValue[]
   categories CategoryAttribute[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  @@unique([name, type])
 }
 
 model AttributeValue {

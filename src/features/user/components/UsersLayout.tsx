@@ -8,7 +8,6 @@ import SearchInput from "@/src/components/searchInput/SearchInput";
 import DataTabel, { columns } from "@/src/components/dataTabel/DataTabel";
 import SortSelect from "@/src/components/sortSelect/SortSelect";
 import DeleteUser from "./DeleteUser";
-import DataCard from "@/src/components/dataCard/DataCard";
 import UpdateUser from "./UpdateUser";
 
 type FormattedUser = Omit<UserType, "createdAt" | "isBan"> & {
@@ -21,10 +20,12 @@ const SORT_OPTIONS = Object.entries(SORT_CONFIG).map(([value, label]) => ({
   label,
 }));
 
-const ORDER_OPTIONS = Object.entries(ORDER_CONFIG).map(([value, label]) => ({
-  value,
-  label,
-}));
+export const ORDER_OPTIONS = Object.entries(ORDER_CONFIG).map(
+  ([value, label]) => ({
+    value,
+    label,
+  }),
+);
 
 function UsersLayout({ users }: { users: UserType[] }) {
   const [isCardView, setIsCardView] = useState(false);
@@ -110,7 +111,10 @@ function UsersLayout({ users }: { users: UserType[] }) {
 
   return (
     <div className="min-h-screen bg-gray-50 p-8 dark:bg-neutral-900 sm:p-6 lg:p-8">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+      <div
+        className="rounded-2xl border relative z-30 mb-6 flex flex-wrap items-center justify-between gap-4
+       border-slate-200/80 bg-white/60 p-4 shadow-sm backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/60"
+      >
         <div className="flex flex-wrap items-center gap-3">
           <div className="hidden md:block">
             <ChoiesShowButton
@@ -120,8 +124,8 @@ function UsersLayout({ users }: { users: UserType[] }) {
           </div>
           <SortSelect options={SORT_OPTIONS} queryKey="sort" />
           <SortSelect options={ORDER_OPTIONS} queryKey="order" />
-          <SearchInput />
         </div>
+        <SearchInput />
       </div>
 
       {!isCardView ? (

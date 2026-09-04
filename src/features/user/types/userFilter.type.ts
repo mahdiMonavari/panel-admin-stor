@@ -1,20 +1,24 @@
 import z from "zod";
 import { userFiltersSchema } from "../shemas/userFilter.shema";
-import { SortOrder } from "@/generated/prisma/internal/prismaNamespace";
 
-export const SORT_CONFIG ={
-    createdAt: "تاریخ ثبت نام",
-    lastname: "حروف الفبا",
-} as const
-export type SortField = keyof typeof SORT_CONFIG;
-export const SORT_FIELDS = Object.keys(SORT_CONFIG) as [SortField, ...SortField[]];
-
-
-export const ORDER_CONFIG = {    
-    desc : "نزولی",
-    asc : "سعودی",
+export const SORT_CONFIG = {
+  createdAt: "تاریخ ثبت نام",
+  lastname: "حروف الفبا",
 } as const;
-export type SortOrders = keyof typeof ORDER_CONFIG
-export const SORT_ORDERS = Object.keys(ORDER_CONFIG) as [SortOrders , ...SortOrder[]]
+export type SortField = keyof typeof SORT_CONFIG;
+export const SORT_FIELDS = Object.keys(SORT_CONFIG) as [
+  SortField,
+  ...SortField[],
+];
 
-export type UserFilterType = z.infer<typeof userFiltersSchema>
+export const ORDER_CONFIG = {
+  desc: "نزولی",
+  asc: "سعودی",
+} as const;
+export type SortOrders = keyof typeof ORDER_CONFIG;
+export const SORT_ORDERS = Object.keys(ORDER_CONFIG) as [
+  SortOrders,
+  ...SortOrders[],
+];
+
+export type UserFilterType = z.infer<typeof userFiltersSchema>;

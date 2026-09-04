@@ -16,6 +16,7 @@ async function page({
       </div>
     );
   }
+
   return (
     <div>
       <UsersLayout users={users.data} />

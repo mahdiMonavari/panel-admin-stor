@@ -34,7 +34,6 @@ export async function deleteAttribute(
       },
     });
 
-    // اگر رکوردی حذف نشد (یعنی شرط برقرار نبوده یا آیدی پیدا نشده)
     if (result.count === 0) {
       return {
         success: false,
@@ -43,8 +42,7 @@ export async function deleteAttribute(
       };
     }
 
-    // رفرش کردن کش صفحه بعد از حذف موفق
-    revalidatePath("/admin/attributes");
+    revalidatePath("/panel-admin/categories/attrebute");
 
     return {
       success: true,

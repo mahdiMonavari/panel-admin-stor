@@ -207,6 +207,7 @@ export type AttributeOrderByWithRelationInput = {
 
 export type AttributeWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  name_type?: Prisma.AttributeNameTypeCompoundUniqueInput
   AND?: Prisma.AttributeWhereInput | Prisma.AttributeWhereInput[]
   OR?: Prisma.AttributeWhereInput[]
   NOT?: Prisma.AttributeWhereInput | Prisma.AttributeWhereInput[]
@@ -217,7 +218,7 @@ export type AttributeWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Attribute"> | Date | string
   values?: Prisma.AttributeValueListRelationFilter
   categories?: Prisma.CategoryAttributeListRelationFilter
-}, "id">
+}, "id" | "name_type">
 
 export type AttributeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -312,6 +313,11 @@ export type AttributeUncheckedUpdateManyInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type AttributeNameTypeCompoundUniqueInput = {
+  name: string
+  type: string
 }
 
 export type AttributeCountOrderByAggregateInput = {

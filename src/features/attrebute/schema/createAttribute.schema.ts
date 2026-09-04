@@ -1,6 +1,5 @@
 import z from "zod";
 import { attributeValueItemSchema } from "../../attributeValue/schema/createAttrbuteValue.schema";
-import categorySchema from "../../category/schema/category.shema";
 
 export const AttrebuteEnum = ["TEXT", "COLOR", "SELECT", "NUMBER"] as const;
 export type AttrebuteEnumType = typeof AttrebuteEnum;

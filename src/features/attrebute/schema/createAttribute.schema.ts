@@ -1,5 +1,5 @@
 import z from "zod";
-import { attributeValueItemSchema } from "../../attributeValue/schema/createAttrbuteValue.schema";
+import { attributeValueItemSchema } from "../../attributeValue/schema/create.schema";
 
 export const AttrebuteEnum = ["TEXT", "COLOR", "SELECT", "NUMBER"] as const;
 export type AttrebuteEnumType = typeof AttrebuteEnum;
@@ -17,6 +17,5 @@ export const createAttributeSchema = z.object({
     .string()
     .min(1, "عنوان ویژگی الزامی است")
     .min(2, "عنوان ویژگی باید حداقل ۲ کاراکتر باشد"),
-
   values: z.array(attributeValueItemSchema).optional(),
 });

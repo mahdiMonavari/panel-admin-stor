@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import { RiCloseFill } from "react-icons/ri";
 
 interface ModalProps {
   open: boolean;
@@ -69,12 +70,15 @@ export default function Modal({
       >
         {title && (
           <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-slate-800">
-            <h3 className="text-lg font-semibold text-slate-100">{title}</h3>
+            <h3 className="text-lg font-semibold dark:text-slate-100 text-slate-800">
+              {title}
+            </h3>
             <button
               onClick={() => setClose(false)}
-              className="text-slate-400 hover:text-white transition-colors duration-500"
+              className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-full
+               transition-colors duration-500 hover:bg-slate-400 h-5 w-5 flex items-center justify-center"
             >
-              ✕
+              <RiCloseFill size={50} />
             </button>
           </div>
         )}

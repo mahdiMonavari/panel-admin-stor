@@ -1,7 +1,11 @@
-import React from "react";
+import AddNewValue from "./AddNewValue";
 
 function ValueAttributeLayout() {
-  return <div>ValueAttributeLayout</div>;
+  return (
+    <div>
+      <AddNewValue />
+    </div>
+  );
 }
 
 export default ValueAttributeLayout;

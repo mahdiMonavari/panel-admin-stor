@@ -15,5 +15,11 @@ export const attributeValueItemSchema = z.object({
           "مقدار فقط باید شامل حروف، اعداد انگلیسی، خط تیره یا زیرخط باشد",
         ),
     ),
-  code: z.string().optional(), // کد رنگ
+  code: z
+    .string()
+    .regex(
+      /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
+      "فرمت کد رنگ اشتباه است (مثال: #ffffff)",
+    )
+    .optional(),
 });

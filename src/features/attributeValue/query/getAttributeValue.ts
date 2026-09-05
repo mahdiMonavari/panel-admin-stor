@@ -2,14 +2,26 @@ import { prisma } from "@/src/lib/prisma";
 import { filterAttributeValueSchema } from "../type/attributeValueFilters.type";
 import { Prisma } from "@/generated/prisma/client";
 
-export default async function getAttributeValues(queries: unknown) {
+type getAttributeValues =
+  | {
+      success: true;
+      attributeValues: Prisma.AttributeValueGetPayload<{}>[];
+      totalCount: number;
+    }
+  | {
+      success: false;
+      message: string;
+    };
+
+export default async function getAttributeValues(
+  queries: unknown,
+): Promise<getAttributeValues> {
   const parsed = filterAttributeValueSchema.safeParse(queries);
 
   if (!parsed.success) {
     return {
       success: false,
       message: "پارامترهای جستجو نامعتبر است",
-      errors: parsed.error.flatten().fieldErrors,
     };
   }
 

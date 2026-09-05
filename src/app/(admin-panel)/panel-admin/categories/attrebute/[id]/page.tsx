@@ -79,69 +79,71 @@ async function Page({ params, searchParams }: PageProps) {
   };
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6 p-8 sm:p-6 lg:p-8">
-      {/* هدر صفحه: دکمه بازگشت و اطلاعات ویژگی */}
-      <div
-        className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border
+    <div className="p-8 dark:bg-neutral-900 min-h-screen bg-gray-50">
+      <div className="mx-auto max-w-7xl space-y-6 p-8 sm:p-6 lg:p-8">
+        {/* هدر صفحه: دکمه بازگشت و اطلاعات ویژگی */}
+        <div
+          className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border
        border-slate-200/80 bg-white/70 px-4 py-3 shadow-xs backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/70"
-      >
-        <div className="flex items-center gap-4">
-          <Link
-            href="/panel-admin/categories/attrebute"
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition-all hover:border-teal-500 hover:text-teal-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-teal-400 dark:hover:text-teal-400"
-            title="بازگشت"
-          >
-            <FaArrowRight className="text-sm" />
-          </Link>
+        >
+          <div className="flex items-center gap-4">
+            <Link
+              href="/panel-admin/categories/attrebute"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition-all hover:border-teal-500 hover:text-teal-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-teal-400 dark:hover:text-teal-400"
+              title="بازگشت"
+            >
+              <FaArrowRight className="text-sm" />
+            </Link>
 
-          <div>
-            <div className="flex items-center gap-2.5">
-              <h1 className="font-Morabba-Bold text-xl font-bold text-slate-900 dark:text-white">
-                {attribute.label || attribute.name}
-              </h1>
-              <span
-                className={`rounded-lg border px-2.5 py-0.5 text-xs font-semibold ${badge.className}`}
-              >
-                {badge.label}
-              </span>
+            <div>
+              <div className="flex items-center gap-2.5">
+                <h1 className="font-Morabba-Bold text-xl font-bold text-slate-900 dark:text-white">
+                  {attribute.label || attribute.name}
+                </h1>
+                <span
+                  className={`rounded-lg border px-2.5 py-0.5 text-xs font-semibold ${badge.className}`}
+                >
+                  {badge.label}
+                </span>
+              </div>
+              <p className="text-xs text-slate-400 dark:text-slate-500 mt-2 flex items-center gap-2">
+                نام سیستمی:{" "}
+                <span className="font-mono text-slate-600 dark:text-slate-300">
+                  {attribute.name}
+                </span>
+              </p>
             </div>
-            <p className="text-xs text-slate-400 dark:text-slate-500 mt-2 flex items-center gap-2">
-              نام سیستمی:{" "}
-              <span className="font-mono text-slate-600 dark:text-slate-300">
-                {attribute.name}
-              </span>
-            </p>
           </div>
         </div>
-      </div>
 
-      {/* بخش مدیریت دسته‌بندی‌های متصل */}
-      <section className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-        <CategoriesAttributeLayout />
-      </section>
-
-      {/* بخش مقادیر ویژگی */}
-      {isVariable ? (
+        {/* بخش مدیریت دسته‌بندی‌های متصل */}
         <section className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-          <ValueAttributeLayout queries={queryParamers} />
+          <CategoriesAttributeLayout />
         </section>
-      ) : (
-        <div className="flex items-center gap-3.5 rounded-2xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-amber-800 dark:border-amber-400/20 dark:bg-amber-950/20 dark:text-amber-300">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400">
-            <FaInfoCircle className="text-lg" />
+
+        {/* بخش مقادیر ویژگی */}
+        {isVariable ? (
+          <section className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
+            <ValueAttributeLayout queries={queryParamers} />
+          </section>
+        ) : (
+          <div className="flex items-center gap-3.5 rounded-2xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-amber-800 dark:border-amber-400/20 dark:bg-amber-950/20 dark:text-amber-300">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400">
+              <FaInfoCircle className="text-lg" />
+            </div>
+            <div>
+              <h4 className="font-Morabba-Bold text-sm font-bold">
+                عدم نیاز به تعریف مقادیر
+              </h4>
+              <p className="mt-0.5 text-sm opacity-90">
+                این ویژگی از نوع <b className="font-semibold">{badge.label}</b>{" "}
+                است و مقادیر آن به صورت دستی توسط ادمین در زمان ایجاد محصول
+                تایین میشود
+              </p>
+            </div>
           </div>
-          <div>
-            <h4 className="font-Morabba-Bold text-sm font-bold">
-              عدم نیاز به تعریف مقادیر
-            </h4>
-            <p className="mt-0.5 text-sm opacity-90">
-              این ویژگی از نوع <b className="font-semibold">{badge.label}</b>{" "}
-              است و مقادیر آن به صورت دستی توسط ادمین در زمان ایجاد محصول تایین
-              میشود
-            </p>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

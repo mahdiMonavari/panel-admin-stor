@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const attributeValueSortConfig = {
   createdAt: "تاریخ ایجاد",
-  name: "بر اساس حروف الفبا",
+  value: "بر اساس حروف الفبا",
 } as const;
 
 export type AttributeValueType = keyof typeof attributeValueSortConfig;
@@ -17,6 +17,6 @@ export const filterAttributeValueSchema = filters(
   "createdAt",
 );
 
-export type FilterAttributeValueSchema = z.infer<
+export type FilterAttributeValueType = z.infer<
   typeof filterAttributeValueSchema
 >;

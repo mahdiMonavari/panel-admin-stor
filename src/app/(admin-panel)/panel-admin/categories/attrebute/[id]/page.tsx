@@ -7,9 +7,11 @@ import {
 import { getAttribute } from "@/src/features/attrebute/actions/attribute.get";
 import CategoriesAttributeLayout from "@/src/features/attributeValue/components/CategoriesAttributeLayout";
 import ValueAttributeLayout from "@/src/features/attributeValue/components/ValueAttributeLayout";
+import { FilterAttributeValueType } from "@/src/features/attributeValue/type/attributeValueFilters.type";
 
 type PageProps = {
   params: Promise<{ id: string }>;
+  searchParams: Promise<Partial<FilterAttributeValueType>>;
 };
 
 // نگاشت تایپ‌های ویژگی به عنوان‌های فارسی و رنگ
@@ -36,11 +38,11 @@ const TYPE_BADGES: Record<string, { label: string; className: string }> = {
   },
 };
 
-async function Page({ params }: PageProps) {
+async function Page({ params, searchParams }: PageProps) {
+  const queryParamers = await searchParams;
   const { id } = await params;
   const attributeRes = await getAttribute(id);
 
-  // در صورت بروز خطا یا نبودن ویژگی
   if (!attributeRes.success) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center p-8">
@@ -121,7 +123,7 @@ async function Page({ params }: PageProps) {
       {/* بخش مقادیر ویژگی */}
       {isVariable ? (
         <section className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-          <ValueAttributeLayout />
+          <ValueAttributeLayout queries={queryParamers} />
         </section>
       ) : (
         <div className="flex items-center gap-3.5 rounded-2xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-amber-800 dark:border-amber-400/20 dark:bg-amber-950/20 dark:text-amber-300">

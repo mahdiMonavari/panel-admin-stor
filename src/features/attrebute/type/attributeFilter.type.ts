@@ -5,7 +5,7 @@ export const AttributeSortConfig = {
   createdAt: "تاریخ ایجاد",
   values: "تعداد مقادیر",
   categories: "تعداد دسته بندیهای استفاده",
-  name: "بر اثاث اسم",
+  name: "بر اثاث حروف الفبا",
 } as const;
 export type AttributeSortType = keyof typeof AttributeSortConfig;
 export const AttributeSortFields = Object.keys(AttributeSortConfig) as [

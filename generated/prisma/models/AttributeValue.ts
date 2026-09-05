@@ -30,6 +30,8 @@ export type AttributeValueMinAggregateOutputType = {
   label: string | null
   attributeId: string | null
   code: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type AttributeValueMaxAggregateOutputType = {
@@ -38,6 +40,8 @@ export type AttributeValueMaxAggregateOutputType = {
   label: string | null
   attributeId: string | null
   code: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type AttributeValueCountAggregateOutputType = {
@@ -46,6 +50,8 @@ export type AttributeValueCountAggregateOutputType = {
   label: number
   attributeId: number
   code: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -56,6 +62,8 @@ export type AttributeValueMinAggregateInputType = {
   label?: true
   attributeId?: true
   code?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type AttributeValueMaxAggregateInputType = {
@@ -64,6 +72,8 @@ export type AttributeValueMaxAggregateInputType = {
   label?: true
   attributeId?: true
   code?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type AttributeValueCountAggregateInputType = {
@@ -72,6 +82,8 @@ export type AttributeValueCountAggregateInputType = {
   label?: true
   attributeId?: true
   code?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -153,6 +165,8 @@ export type AttributeValueGroupByOutputType = {
   label: string
   attributeId: string
   code: string | null
+  createdAt: Date
+  updatedAt: Date
   _count: AttributeValueCountAggregateOutputType | null
   _min: AttributeValueMinAggregateOutputType | null
   _max: AttributeValueMaxAggregateOutputType | null
@@ -182,6 +196,8 @@ export type AttributeValueWhereInput = {
   label?: Prisma.StringFilter<"AttributeValue"> | string
   attributeId?: Prisma.StringFilter<"AttributeValue"> | string
   code?: Prisma.StringNullableFilter<"AttributeValue"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"AttributeValue"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"AttributeValue"> | Date | string
   attribute?: Prisma.XOR<Prisma.AttributeScalarRelationFilter, Prisma.AttributeWhereInput>
 }
 
@@ -191,6 +207,8 @@ export type AttributeValueOrderByWithRelationInput = {
   label?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
   code?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   attribute?: Prisma.AttributeOrderByWithRelationInput
 }
 
@@ -204,6 +222,8 @@ export type AttributeValueWhereUniqueInput = Prisma.AtLeast<{
   label?: Prisma.StringFilter<"AttributeValue"> | string
   attributeId?: Prisma.StringFilter<"AttributeValue"> | string
   code?: Prisma.StringNullableFilter<"AttributeValue"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"AttributeValue"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"AttributeValue"> | Date | string
   attribute?: Prisma.XOR<Prisma.AttributeScalarRelationFilter, Prisma.AttributeWhereInput>
 }, "id" | "attributeId_value">
 
@@ -213,6 +233,8 @@ export type AttributeValueOrderByWithAggregationInput = {
   label?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
   code?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.AttributeValueCountOrderByAggregateInput
   _max?: Prisma.AttributeValueMaxOrderByAggregateInput
   _min?: Prisma.AttributeValueMinOrderByAggregateInput
@@ -227,6 +249,8 @@ export type AttributeValueScalarWhereWithAggregatesInput = {
   label?: Prisma.StringWithAggregatesFilter<"AttributeValue"> | string
   attributeId?: Prisma.StringWithAggregatesFilter<"AttributeValue"> | string
   code?: Prisma.StringNullableWithAggregatesFilter<"AttributeValue"> | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"AttributeValue"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AttributeValue"> | Date | string
 }
 
 export type AttributeValueCreateInput = {
@@ -234,6 +258,8 @@ export type AttributeValueCreateInput = {
   value: string
   label: string
   code?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   attribute: Prisma.AttributeCreateNestedOneWithoutValuesInput
 }
 
@@ -243,6 +269,8 @@ export type AttributeValueUncheckedCreateInput = {
   label: string
   attributeId: string
   code?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AttributeValueUpdateInput = {
@@ -250,6 +278,8 @@ export type AttributeValueUpdateInput = {
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attribute?: Prisma.AttributeUpdateOneRequiredWithoutValuesNestedInput
 }
 
@@ -259,6 +289,8 @@ export type AttributeValueUncheckedUpdateInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   attributeId?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AttributeValueCreateManyInput = {
@@ -267,6 +299,8 @@ export type AttributeValueCreateManyInput = {
   label: string
   attributeId: string
   code?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AttributeValueUpdateManyMutationInput = {
@@ -274,6 +308,8 @@ export type AttributeValueUpdateManyMutationInput = {
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AttributeValueUncheckedUpdateManyInput = {
@@ -282,6 +318,8 @@ export type AttributeValueUncheckedUpdateManyInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   attributeId?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AttributeValueListRelationFilter = {
@@ -305,6 +343,8 @@ export type AttributeValueCountOrderByAggregateInput = {
   label?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
   code?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type AttributeValueMaxOrderByAggregateInput = {
@@ -313,6 +353,8 @@ export type AttributeValueMaxOrderByAggregateInput = {
   label?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
   code?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type AttributeValueMinOrderByAggregateInput = {
@@ -321,6 +363,8 @@ export type AttributeValueMinOrderByAggregateInput = {
   label?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
   code?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type AttributeValueCreateNestedManyWithoutAttributeInput = {
@@ -370,6 +414,8 @@ export type AttributeValueCreateWithoutAttributeInput = {
   value: string
   label: string
   code?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AttributeValueUncheckedCreateWithoutAttributeInput = {
@@ -377,6 +423,8 @@ export type AttributeValueUncheckedCreateWithoutAttributeInput = {
   value: string
   label: string
   code?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AttributeValueCreateOrConnectWithoutAttributeInput = {
@@ -414,6 +462,8 @@ export type AttributeValueScalarWhereInput = {
   label?: Prisma.StringFilter<"AttributeValue"> | string
   attributeId?: Prisma.StringFilter<"AttributeValue"> | string
   code?: Prisma.StringNullableFilter<"AttributeValue"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"AttributeValue"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"AttributeValue"> | Date | string
 }
 
 export type AttributeValueCreateManyAttributeInput = {
@@ -421,6 +471,8 @@ export type AttributeValueCreateManyAttributeInput = {
   value: string
   label: string
   code?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AttributeValueUpdateWithoutAttributeInput = {
@@ -428,6 +480,8 @@ export type AttributeValueUpdateWithoutAttributeInput = {
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AttributeValueUncheckedUpdateWithoutAttributeInput = {
@@ -435,6 +489,8 @@ export type AttributeValueUncheckedUpdateWithoutAttributeInput = {
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AttributeValueUncheckedUpdateManyWithoutAttributeInput = {
@@ -442,6 +498,8 @@ export type AttributeValueUncheckedUpdateManyWithoutAttributeInput = {
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -452,6 +510,8 @@ export type AttributeValueSelect<ExtArgs extends runtime.Types.Extensions.Intern
   label?: boolean
   attributeId?: boolean
   code?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   attribute?: boolean | Prisma.AttributeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attributeValue"]>
 
@@ -461,6 +521,8 @@ export type AttributeValueSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   label?: boolean
   attributeId?: boolean
   code?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   attribute?: boolean | Prisma.AttributeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attributeValue"]>
 
@@ -470,6 +532,8 @@ export type AttributeValueSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   label?: boolean
   attributeId?: boolean
   code?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   attribute?: boolean | Prisma.AttributeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attributeValue"]>
 
@@ -479,9 +543,11 @@ export type AttributeValueSelectScalar = {
   label?: boolean
   attributeId?: boolean
   code?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type AttributeValueOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "value" | "label" | "attributeId" | "code", ExtArgs["result"]["attributeValue"]>
+export type AttributeValueOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "value" | "label" | "attributeId" | "code" | "createdAt" | "updatedAt", ExtArgs["result"]["attributeValue"]>
 export type AttributeValueInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   attribute?: boolean | Prisma.AttributeDefaultArgs<ExtArgs>
 }
@@ -503,6 +569,8 @@ export type $AttributeValuePayload<ExtArgs extends runtime.Types.Extensions.Inte
     label: string
     attributeId: string
     code: string | null
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["attributeValue"]>
   composites: {}
 }
@@ -932,6 +1000,8 @@ export interface AttributeValueFieldRefs {
   readonly label: Prisma.FieldRef<"AttributeValue", 'String'>
   readonly attributeId: Prisma.FieldRef<"AttributeValue", 'String'>
   readonly code: Prisma.FieldRef<"AttributeValue", 'String'>
+  readonly createdAt: Prisma.FieldRef<"AttributeValue", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"AttributeValue", 'DateTime'>
 }
     
 

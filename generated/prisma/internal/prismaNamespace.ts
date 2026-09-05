@@ -1137,7 +1137,9 @@ export const AttributeValueScalarFieldEnum = {
   value: 'value',
   label: 'label',
   attributeId: 'attributeId',
-  code: 'code'
+  code: 'code',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type AttributeValueScalarFieldEnum = (typeof AttributeValueScalarFieldEnum)[keyof typeof AttributeValueScalarFieldEnum]

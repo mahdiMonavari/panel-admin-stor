@@ -21,5 +21,6 @@ export const attributeValueItemSchema = z.object({
       /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
       "فرمت کد رنگ اشتباه است (مثال: #ffffff)",
     )
+    .or(z.literal(""))
     .optional(),
 });

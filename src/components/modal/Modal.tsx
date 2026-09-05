@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import { FiAlertCircle } from "react-icons/fi";
 import { RiCloseFill } from "react-icons/ri";
 
 interface ModalProps {
@@ -50,14 +51,6 @@ export default function Modal({
         ${open ? "visible opacity-100" : "opacity-0 invisible"}`}
       onClick={() => setClose(false)}
     >
-      {errorMessage && (
-        <span
-          className="w-full rounded-md bg-rose-800/50 border border-rose-900 h-8
-      flex items-center"
-        >
-          {errorMessage}
-        </span>
-      )}
       <div
         className={`relative w-full max-w-lg dark:bg-neutral-900 bg-neutral-200 border border-slate-700/50 rounded-2xl
              shadow-2xl shadow-blue-500/10 transition-all duration-150 delay-200
@@ -85,7 +78,7 @@ export default function Modal({
 
         <div className="px-6 py-6">{children}</div>
         {showFooter && (
-          <div className="flex items-center justify-end gap-3 px-6 pb-6 pt-2 border-t border-slate-800">
+          <div className="flex items-center justify-end gap-3 px-6 pb-3 pt-2 border-t border-slate-800">
             {footer ? (
               footer
             ) : (
@@ -112,6 +105,19 @@ export default function Modal({
                 </button>
               </>
             )}
+          </div>
+        )}
+        {errorMessage && (
+          <div className="px-6">
+            <div
+              className="flex items-center gap-2 w-full px-3.5 py-2.5 mb-3 rounded-xl
+             bg-rose-500/10 border border-rose-500/20 text-rose-500
+             text-xs sm:text-sm font-medium leading-relaxed
+             backdrop-blur-sm shadow-xs transition-all animate-in fade-in zoom-in-95 duration-200"
+            >
+              <FiAlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
+              <span>{errorMessage}</span>
+            </div>
           </div>
         )}
       </div>

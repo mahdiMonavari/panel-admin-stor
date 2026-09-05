@@ -1,7 +1,7 @@
 "use client";
 import Modal from "@/src/components/modal/Modal";
 import NavyButton from "@/src/components/navyButton/NavyButton";
-import React, { useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { FaPlus } from "react-icons/fa";
 import { createAttibuteValueInputs } from "../inputs/create.inputs";
 import Input from "@/src/components/input/Input";
@@ -9,13 +9,17 @@ import { useForm } from "react-hook-form";
 import { CreateAttributeValue } from "../type/create.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { attributeValueItemSchema } from "../schema/create.schema";
+import { useParams } from "next/navigation";
+import generateAttributeValue from "../actions/attribute.Valuecreate";
 
 function AddNewValue() {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<null | string>(null);
   const openHandler = () => setIsOpen(true);
+  const params = useParams();
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors },
@@ -23,8 +27,22 @@ function AddNewValue() {
     resolver: zodResolver(attributeValueItemSchema),
     mode: "onTouched",
   });
-  const createNewValue = () => {};
-  console.log(errors);
+  useEffect(() => {
+    if (isOpen === false) {
+      reset();
+    }
+  }, [isOpen]);
+  const createNewValue = (data: CreateAttributeValue) => {
+    setError(null);
+    startTransition(async () => {
+      const { id } = params;
+      const res = await generateAttributeValue({ ...data, attributeId: id });
+      if (!res.success) {
+        return setError(res.message);
+      }
+      setIsOpen(false);
+    });
+  };
 
   return (
     <div>
@@ -35,6 +53,7 @@ function AddNewValue() {
           onClick={openHandler}
         />
         <Modal
+          isLoading={isPending}
           open={isOpen}
           onConfirm={() => handleSubmit(createNewValue)()}
           setClose={setIsOpen}

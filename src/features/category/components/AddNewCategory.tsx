@@ -1,6 +1,6 @@
 import Modal from "@/src/components/modal/Modal";
 import NavyButton from "@/src/components/navyButton/NavyButton";
-import { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa";
 import { CreateCategoryType } from "../type/create.type";
@@ -11,8 +11,17 @@ import { createInputs } from "./inputs/create/inputs";
 import Input from "@/src/components/input/Input";
 import generateNewCategory from "../actions/create.action";
 
-const AddNewCategory = () => {
-  const [isAddOpen, setIsAddOpen] = useState(false);
+const AddNewCategory = ({
+  isAddOpen,
+  setIsAddOpen,
+  id,
+  title,
+}: {
+  isAddOpen: boolean;
+  setIsAddOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  id: null | string;
+  title: string;
+}) => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const formId = "create-new-parent-category";
@@ -26,7 +35,7 @@ const AddNewCategory = () => {
   const createNewCategory = (data: CreateCategoryType) => {
     setError(null);
     startTransition(async () => {
-      const res = await generateNewCategory(data);
+      const res = await generateNewCategory({ ...data, parentId: id });
       if (!res.success) {
         setError(res.message);
       } else {
@@ -36,7 +45,7 @@ const AddNewCategory = () => {
   };
 
   return (
-    <div>
+    <div className="">
       <Modal
         form={formId}
         open={isAddOpen}
@@ -46,9 +55,7 @@ const AddNewCategory = () => {
         onConfirm={() => handleSubmit(createNewCategory)()}
       >
         <div className="flex items-center justify-between">
-          <h2 className="text-red-500 text-2xl font-Morabba-Bold">
-            ایجاد دسته بندی والد
-          </h2>
+          <h2 className="text-red-500 text-2xl font-Morabba-Bold">{title}</h2>
           <span>
             <button
               onClick={() => setIsAddOpen(false)}
@@ -76,11 +83,6 @@ const AddNewCategory = () => {
           ))}
         </form>
       </Modal>
-      <NavyButton
-        text="ایجاد دسته بندی جدید"
-        onClick={() => setIsAddOpen(true)}
-        Icon={<FaPlus />}
-      />
     </div>
   );
 };

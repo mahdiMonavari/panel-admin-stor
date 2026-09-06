@@ -1,13 +1,22 @@
 "use client";
 import AddNewCategory from "./AddNewCategory";
 
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaPlus } from "react-icons/fa";
 import Link from "next/link";
 import CategoryTree from "./CategoryTree";
 import { Prisma } from "@/generated/prisma/client";
-type categories = Prisma.CategoryGetPayload<{}>;
+import NavyButton from "@/src/components/navyButton/NavyButton";
+import { useState } from "react";
+export type categories = Prisma.CategoryGetPayload<{
+  include: {
+    children: true;
+  };
+}>;
 
 const CategoryLayout = ({ categories }: { categories: categories[] }) => {
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  console.log(categories);
+
   return (
     <div>
       <div
@@ -25,16 +34,26 @@ const CategoryLayout = ({ categories }: { categories: categories[] }) => {
           </Link>
         </div>
       </div>
-      <AddNewCategory />
+      <NavyButton
+        text="ایجاد دسته بندی جدید"
+        onClick={() => setIsAddOpen(true)}
+        Icon={<FaPlus />}
+      />
+      <AddNewCategory
+        isAddOpen={isAddOpen}
+        setIsAddOpen={setIsAddOpen}
+        id={null}
+        title="ایجاد دسته بندی والد"
+      />
       <div className="mt-6">
-        {/* <CategoryTree
+        <CategoryTree
           categories={categories}
           onEdit={(cat) => console.log("ویرایش", cat)}
           onDelete={(cat) => console.log("حذف", cat)}
           onAddChild={async (parentId, name) => {
             // اینجا API رو صدا بزن (POST categories)
           }}
-        /> */}
+        />
       </div>
     </div>
   );

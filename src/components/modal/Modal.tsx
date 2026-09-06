@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 import { RiCloseFill } from "react-icons/ri";
+import { createPortal } from "react-dom";
 
 interface ModalProps {
   open: boolean;
@@ -47,7 +48,10 @@ export default function Modal({
       document.body.style.overflow = "";
     };
   }, [open]);
-  return (
+  if (typeof document === "undefined") {
+    return null;
+  }
+  return createPortal(
     <div
       className={`fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 dark:bg-slate-900/10 backdrop-blur-sm p-4 transition-all duration-300
         ${open ? "visible opacity-100" : "opacity-0 invisible"}`}
@@ -125,6 +129,7 @@ export default function Modal({
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

@@ -12,7 +12,11 @@ type getCategories =
     };
 
 export default async function getCategories(): Promise<getCategories> {
-  const categories = await prisma.category.findMany();
+  const categories = await prisma.category.findMany({
+    include: {
+      children: true,
+    },
+  });
   if (!categories) {
     return {
       success: false,

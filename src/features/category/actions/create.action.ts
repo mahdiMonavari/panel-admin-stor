@@ -1,6 +1,7 @@
 "use server";
 import { prisma } from "@/src/lib/prisma";
 import CreateCategorySchema from "../schema/create.shema";
+import { revalidatePath } from "next/cache";
 
 type generateNewCategoryResult =
   | {
@@ -29,6 +30,7 @@ export default async function generateNewCategory(
       message: "خطای ناشناخته دوباره تلاش کنید",
     };
   }
+  revalidatePath("/panel-admin/categories/category");
   return {
     success: true,
   };

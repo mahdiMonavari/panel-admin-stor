@@ -16,6 +16,7 @@ interface ModalProps {
   footer?: React.ReactNode; // اگر بخواهی دکمه‌های سفارشی بگذاری
   isLoading?: boolean; // برای حالت لودینگ هنگام ارسال فرم
   errorMessage?: string | null;
+  form?: string;
 }
 
 export default function Modal({
@@ -30,6 +31,7 @@ export default function Modal({
   footer,
   isLoading = false,
   errorMessage,
+  form,
 }: ModalProps) {
   useEffect(() => {
     if (open) {
@@ -90,7 +92,9 @@ export default function Modal({
                   {cancelLabel}
                 </button>
                 <button
+                  type="submit"
                   onClick={onConfirm}
+                  form={form}
                   disabled={isLoading}
                   className="px-5 py-2 text-sm font-medium text-white bg-[#1e3a8a] hover:bg-[#1d4ed8] rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 shadow-lg shadow-blue-900/30"
                 >

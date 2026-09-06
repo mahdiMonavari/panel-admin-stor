@@ -15,6 +15,7 @@ type getAttributeValues =
 
 export default async function getAttributeValues(
   queries: unknown,
+  id: string,
 ): Promise<getAttributeValues> {
   const parsed = filterAttributeValueSchema.safeParse(queries);
 
@@ -27,7 +28,9 @@ export default async function getAttributeValues(
 
   const { limit, order, page, sort, search } = parsed.data;
   const skip = (page - 1) * limit;
+
   const where: Prisma.AttributeValueWhereInput = {
+    attributeId: id,
     ...(search && {
       OR: [
         { label: { contains: search, mode: "insensitive" } },

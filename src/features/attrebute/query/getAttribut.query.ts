@@ -40,8 +40,6 @@ export async function getAttributes(
     };
   }
   const { limit, order, page, sort, search } = parsed.data;
-  console.log(order, sort);
-
   const where: Prisma.AttributeWhereInput = {
     ...(search && {
       OR: [
@@ -59,8 +57,9 @@ export async function getAttributes(
       },
     };
   } else {
+    const sortEdited = sort === "name" ? "label" : sort;
     orderBy = {
-      [sort]: order,
+      [sortEdited]: order,
     };
   }
   try {

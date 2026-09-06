@@ -124,7 +124,7 @@ async function Page({ params, searchParams }: PageProps) {
         {/* بخش مقادیر ویژگی */}
         {isVariable ? (
           <section className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-            <ValueAttributeLayout queries={queryParamers} />
+            <ValueAttributeLayout queries={queryParamers} id={id} />
           </section>
         ) : (
           <div className="flex items-center gap-3.5 rounded-2xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-amber-800 dark:border-amber-400/20 dark:bg-amber-950/20 dark:text-amber-300">

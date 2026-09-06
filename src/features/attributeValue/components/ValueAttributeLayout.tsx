@@ -10,11 +10,12 @@ import { FaTrash } from "react-icons/fa";
 
 async function ValueAttributeLayout({
   queries,
+  id,
 }: {
   queries: Partial<FilterAttributeValueType>;
+  id: string;
 }) {
-  const attributeValue = await getAttributeValue(queries);
-
+  const attributeValue = await getAttributeValue(queries, id);
   const sortOptions = Object.entries(attributeValueSortConfig).map(
     ([value, label]) => ({ value, label }),
   );

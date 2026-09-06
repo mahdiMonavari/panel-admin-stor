@@ -18,6 +18,7 @@ function AddNewValue() {
   const [error, setError] = useState<null | string>(null);
   const openHandler = () => setIsOpen(true);
   const params = useParams();
+  const form = "create-new-value";
   const {
     reset,
     register,
@@ -59,10 +60,12 @@ function AddNewValue() {
           setClose={setIsOpen}
           errorMessage={error}
           title="ایجاد مقدار جدید"
+          form={form}
         >
           <form
             className="flex flex-col gap-5"
             onSubmit={handleSubmit(createNewValue)}
+            id={form}
           >
             {createAttibuteValueInputs.map((input) => (
               <Input<CreateAttributeValue>

@@ -118,7 +118,7 @@ async function Page({ params, searchParams }: PageProps) {
 
         {/* بخش مدیریت دسته‌بندی‌های متصل */}
         <section className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-          <CategoriesAttributeLayout />
+          <CategoriesAttributeLayout params={id} />
         </section>
 
         {/* بخش مقادیر ویژگی */}

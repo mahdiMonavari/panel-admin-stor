@@ -130,7 +130,11 @@ export default function AddNewAtribute({ id, title }: AddNewAttributeProps) {
   const handleSave = async () => {
     setIsSaving(true);
     const res = await createIntermediateTable(id, selected);
+    if (!res.success) {
+      return setError(res.message);
+    }
     setIsOpen(false);
+    setIsSaving(false);
   };
 
   return (
@@ -289,12 +293,12 @@ export default function AddNewAtribute({ id, title }: AddNewAttributeProps) {
             </button>
             <button
               type="button"
-              disabled={isSaving || isPending || selected.length === 0}
+              disabled={isSaving || isPending}
               onClick={handleSave}
               className="flex items-center gap-2 rounded-xl bg-teal-600 px-5 py-2 text-xs font-medium text-white shadow-md shadow-teal-500/20 transition-all hover:bg-teal-700 active:scale-[0.98] disabled:opacity-50 dark:bg-teal-500 dark:text-slate-950 dark:hover:bg-teal-400"
             >
-              {isSaving && <FiLoader className="h-3.5 w-3.5 animate-spin" />}
               <span>ذخیره تغییرات ({selected.length})</span>
+              {isSaving && <FiLoader className="h-3.5 w-3.5 animate-spin" />}
             </button>
           </div>
         </div>

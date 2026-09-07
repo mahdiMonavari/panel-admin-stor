@@ -57,7 +57,7 @@ function Register() {
     try {
       startTransition(async () => {
         const res = await sendOtp(data);
-        console.log(res);
+
         if (res.success) {
           if (res.counter) {
             setCounter(Math.ceil(res.counter / 1000));

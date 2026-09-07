@@ -1,7 +1,7 @@
 import { prisma } from "@/src/lib/prisma";
 import { categories } from "../components/CategoryLayout";
 
-type getCategories =
+type GetCategoriesResult =
   | {
       success: true;
       data: categories[];
@@ -11,18 +11,25 @@ type getCategories =
       message: string;
     };
 
-export default async function getCategories(): Promise<getCategories> {
+export default async function getCategories(
+  id?: string,
+): Promise<GetCategoriesResult> {
   const categories = await prisma.category.findMany({
+    where: {
+      ...(id && {
+        attributes: {
+          some: {
+            attributeId: id,
+          },
+        },
+      }),
+    },
     include: {
+      attributes: true,
       children: true,
     },
   });
-  if (!categories) {
-    return {
-      success: false,
-      message: "خطا در دریافت اطلاعات دوباره تلاش کنید",
-    };
-  }
+
   return {
     success: true,
     data: categories,

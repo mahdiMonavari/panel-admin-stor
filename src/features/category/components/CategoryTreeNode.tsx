@@ -13,7 +13,6 @@ interface CategoryTreeNodeProps {
 const CategoryTreeNode = ({ category, depth }: CategoryTreeNodeProps) => {
   const [expanded, setExpanded] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
-  console.log(category);
 
   const hasChildren = category.children.length > 0;
 

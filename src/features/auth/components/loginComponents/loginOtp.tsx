@@ -73,7 +73,6 @@ function LoginOtp({
     startTransition(async () => {
       try {
         const res = await sendOtp(data);
-        console.log(res);
 
         if (res.success) {
           const remainingSeconds = res.counter

@@ -86,7 +86,6 @@ export async function verifyOtp(
       success: true,
     };
   } catch (error) {
-    console.log(error);
     return {
       success: false,
       errorMessage: "خطا از سمت سرور دوباره تلاش کنید",

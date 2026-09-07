@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 import { RiCloseFill } from "react-icons/ri";
 import { createPortal } from "react-dom";
@@ -48,6 +48,13 @@ export default function Modal({
       document.body.style.overflow = "";
     };
   }, [open]);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => {};
+  }, []);
+  if (!mounted) return null;
   if (typeof document === "undefined") {
     return null;
   }

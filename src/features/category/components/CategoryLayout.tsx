@@ -15,8 +15,6 @@ export type categories = Prisma.CategoryGetPayload<{
 
 const CategoryLayout = ({ categories }: { categories: categories[] }) => {
   const [isAddOpen, setIsAddOpen] = useState(false);
-  console.log(categories);
-
   return (
     <div>
       <div
@@ -46,14 +44,7 @@ const CategoryLayout = ({ categories }: { categories: categories[] }) => {
         title="ایجاد دسته بندی والد"
       />
       <div className="mt-6">
-        <CategoryTree
-          categories={categories}
-          onEdit={(cat) => console.log("ویرایش", cat)}
-          onDelete={(cat) => console.log("حذف", cat)}
-          onAddChild={async (parentId, name) => {
-            // اینجا API رو صدا بزن (POST categories)
-          }}
-        />
+        <CategoryTree categories={categories} />
       </div>
     </div>
   );

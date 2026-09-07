@@ -39,17 +39,9 @@ function buildCategoryTree(categories: CategoryFlat[]): CategoryNode[] {
 
 interface CategoryTreeProps {
   categories: CategoryFlat[];
-  onEdit?: (category: CategoryNode) => void;
-  onDelete?: (category: CategoryNode) => void;
-  onAddChild?: (parentId: string, name: string) => void | Promise<void>;
 }
 
-const CategoryTree = ({
-  categories,
-  onEdit,
-  onDelete,
-  onAddChild,
-}: CategoryTreeProps) => {
+const CategoryTree = ({ categories, onEdit, onDelete }: CategoryTreeProps) => {
   const tree = useMemo(() => buildCategoryTree(categories), [categories]);
 
   return (
@@ -58,14 +50,7 @@ const CategoryTree = ({
      shadow-sm backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/60"
     >
       {tree.map((category) => (
-        <CategoryTreeNode
-          key={category.id}
-          category={category}
-          onEdit={onEdit}
-          onDelete={onDelete}
-          onAddChild={onAddChild}
-          depth={0}
-        />
+        <CategoryTreeNode key={category.id} category={category} depth={0} />
       ))}
     </ul>
   );

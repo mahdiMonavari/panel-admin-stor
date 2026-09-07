@@ -2,22 +2,15 @@ import { ChevronDown, Pencil, Trash, FolderPlus } from "lucide-react";
 import AddNewCategory from "./AddNewCategory";
 import { useState } from "react";
 import { CategoryNode } from "./CategoryTree";
+import IconButton from "./IconButton";
+import AddNewAtribute from "./AddNewAtribute";
 
 interface CategoryTreeNodeProps {
   category: CategoryNode;
-  onEdit?: (category: CategoryNode) => void;
-  onDelete?: (category: CategoryNode) => void;
-  onAddChild?: (parentId: string, name: string) => void | Promise<void>;
   depth: number;
 }
 
-const CategoryTreeNode = ({
-  category,
-  onEdit,
-  onDelete,
-  onAddChild,
-  depth,
-}: CategoryTreeNodeProps) => {
+const CategoryTreeNode = ({ category, depth }: CategoryTreeNodeProps) => {
   const [expanded, setExpanded] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
   console.log(category);
@@ -68,18 +61,15 @@ const CategoryTreeNode = ({
           >
             <FolderPlus className="h-4 w-4" />
           </IconButton>
+          <AddNewAtribute id={category.id} />
 
-          <IconButton title="ویرایش" onClick={() => onEdit?.(category)}>
-            <Pencil className="h-4 w-4" />
-          </IconButton>
-
-          <IconButton
+          {/* <IconButton
             title="حذف"
             variant="danger"
-            onClick={() => onDelete?.(category)}
+            onClick={() => onDelete?.(category.id)}
           >
             <Trash className="h-4 w-4" />
-          </IconButton>
+          </IconButton> */}
         </div>
       </div>
 
@@ -102,9 +92,6 @@ const CategoryTreeNode = ({
                 <CategoryTreeNode
                   key={child.id}
                   category={child}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                  onAddChild={onAddChild}
                   depth={depth + 1}
                 />
               ))}
@@ -115,31 +102,5 @@ const CategoryTreeNode = ({
     </li>
   );
 };
-
-const IconButton = ({
-  title,
-  variant = "default",
-  onClick,
-  children,
-}: {
-  title: string;
-  variant?: "default" | "danger";
-  onClick?: () => void;
-  children: React.ReactNode;
-}) => (
-  <button
-    type="button"
-    title={title}
-    aria-label={title}
-    onClick={onClick}
-    className={`flex h-8 w-8 items-center justify-center rounded-lg border transition-all ${
-      variant === "danger"
-        ? "border-slate-200 bg-white text-slate-500 hover:border-red-500 hover:text-red-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-red-500/50 dark:hover:text-red-400"
-        : "border-slate-200 bg-white text-slate-500 hover:border-teal-500 hover:text-teal-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-teal-400 dark:hover:text-teal-400"
-    }`}
-  >
-    {children}
-  </button>
-);
 
 export default CategoryTreeNode;

@@ -61,7 +61,7 @@ const CategoryTreeNode = ({ category, depth }: CategoryTreeNodeProps) => {
           >
             <FolderPlus className="h-4 w-4" />
           </IconButton>
-          <AddNewAtribute id={category.id} />
+          <AddNewAtribute id={category.id} title={category.name} />
 
           {/* <IconButton
             title="حذف"

@@ -18,6 +18,8 @@ import IconButton from "./IconButton";
 import { Prisma } from "@/generated/prisma/client";
 import { getAttributes } from "../../attrebute/query/getAttribut.query";
 import { AttrebuteEnum } from "../../attrebute/schema/createAttribute.schema";
+import { createIntermediateTable } from "../actions/generateIntermediateTabel";
+import { getSelectedAttributes } from "../actions/getAttributsCategory.action";
 
 type AttributeType = (typeof AttrebuteEnum)[number];
 
@@ -32,35 +34,36 @@ const TYPE_CONFIG: Record<AttributeType, TypeConfig> = {
   TEXT: {
     label: "متن",
     icon: Type,
-    badge: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
-    activeBadge: "bg-blue-500/20 text-blue-300 border-blue-400/30",
+    badge: "bg-blue-500/10 text-blue-900 dark:text-blue-400 border-blue-500/20",
+    activeBadge: "bg-blue-500/20 text-blue-900 border-blue-400/30",
   },
   COLOR: {
     label: "رنگ",
     icon: Palette,
-    badge: "bg-pink-500/10 text-pink-600 dark:text-pink-400 border-pink-500/20",
-    activeBadge: "bg-pink-500/20 text-pink-300 border-pink-400/30",
+    badge: "bg-pink-500/10 text-pink-900 dark:text-pink-400 border-pink-500/20",
+    activeBadge: "bg-pink-500/20 text-pink-900 border-pink-400/30",
   },
   SELECT: {
     label: "انتخابی",
     icon: ListFilter,
-    badge: "bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20",
-    activeBadge: "bg-teal-500/20 text-teal-300 border-teal-400/30",
+    badge: "bg-teal-500/10 text-teal-900 dark:text-teal-400 border-teal-500/20",
+    activeBadge: "bg-teal-500/20 text-teal-900 border-teal-400/30",
   },
   NUMBER: {
     label: "عددی",
     icon: Hash,
     badge:
-      "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
-    activeBadge: "bg-amber-500/20 text-amber-300 border-amber-400/30",
+      "bg-amber-500/10 text-amber-900 dark:text-amber-400 border-amber-500/20",
+    activeBadge: "bg-amber-500/20 text-amber-900 border-amber-400/30",
   },
 };
 
 type AddNewAttributeProps = {
   id: string;
+  title: string;
 };
 
-export default function AddNewAtribute({ id }: AddNewAttributeProps) {
+export default function AddNewAtribute({ id, title }: AddNewAttributeProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [isSaving, setIsSaving] = useState(false);
@@ -72,17 +75,27 @@ export default function AddNewAtribute({ id }: AddNewAttributeProps) {
   >([]);
 
   useEffect(() => {
+    setError(null);
+    startTransition(async () => {
+      const res = await getAttributes({});
+      if (!res.success || !res.data) {
+        return setError("خطا در دریافت لیست ویژگی‌ها");
+      }
+      setAttributes(res.data);
+    });
+  }, []);
+
+  useEffect(() => {
     if (isOpen) {
-      setError(null);
       startTransition(async () => {
-        const res = await getAttributes({});
-        if (!res.success || !res.data) {
-          return setError("خطا در دریافت لیست ویژگی‌ها");
+        const res = await getSelectedAttributes(id);
+        if (!res.success) {
+          return setError(res.message as string);
         }
-        setAttributes(res.data);
+        if (res.success && res.data) {
+          setSelected(res.data);
+        }
       });
-    } else {
-      setSearchQuery("");
     }
   }, [isOpen]);
 
@@ -114,11 +127,9 @@ export default function AddNewAtribute({ id }: AddNewAttributeProps) {
       setSelected(filteredAttributes.map((attr) => attr.id));
     }
   };
-
   const handleSave = async () => {
     setIsSaving(true);
-    //   await onSave(selected);
-    await new Promise((r) => setTimeout(r, 1000));
+    const res = await createIntermediateTable(id, selected);
     setIsOpen(false);
   };
 
@@ -138,7 +149,7 @@ export default function AddNewAtribute({ id }: AddNewAttributeProps) {
               </div>
               <div>
                 <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                  انتخاب ویژگی‌های دسته‌بندی
+                  انتخاب ویژگی‌های دسته‌بندی برای {title}
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   ویژگی‌های مورد نظر را برای اتصال به این دسته‌بندی تیک بزنید.
@@ -250,7 +261,7 @@ export default function AddNewAtribute({ id }: AddNewAttributeProps) {
 
                       {/* بج نوع ویژگی */}
                       <div
-                        className={`flex items-center gap-1 shrink-0 rounded-md border px-2 py-0.5 text-[10px] font-medium ${
+                        className={`flex items-center gap-1 shrink-0 rounded-md border px-2 py-0.5 text-xs font-Morabba-Bold font-medium ${
                           isChecked
                             ? currentType.activeBadge
                             : currentType.badge

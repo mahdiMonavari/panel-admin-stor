@@ -86,6 +86,7 @@ export default function AddNewAtribute({ id, title }: AddNewAttributeProps) {
   }, []);
 
   useEffect(() => {
+    setError(null);
     if (isOpen) {
       startTransition(async () => {
         const res = await getSelectedAttributes(id);
@@ -130,11 +131,14 @@ export default function AddNewAtribute({ id, title }: AddNewAttributeProps) {
   const handleSave = async () => {
     setIsSaving(true);
     const res = await createIntermediateTable(id, selected);
+
     if (!res.success) {
-      return setError(res.message);
+      setError(res.message);
+      return;
     }
-    setIsOpen(false);
+    console.log(res.data);
     setIsSaving(false);
+    setIsOpen(false);
   };
 
   return (
@@ -167,7 +171,6 @@ export default function AddNewAtribute({ id, title }: AddNewAttributeProps) {
               </span>
             )}
           </div>
-
           {/* نوار جستجو و ابزار انتخاب همگانی */}
           {!isPending && attributes.length > 0 && (
             <div className="flex items-center justify-between gap-3">
@@ -193,7 +196,6 @@ export default function AddNewAtribute({ id, title }: AddNewAttributeProps) {
               </button>
             </div>
           )}
-
           {/* محتوا و گرید آیتم‌ها */}
           <div className="min-h-65 max-h-[50vh] overflow-y-auto px-0.5 py-1">
             {isPending ? (
@@ -202,11 +204,6 @@ export default function AddNewAtribute({ id, title }: AddNewAttributeProps) {
                 <span className="text-sm font-medium">
                   در حال دریافت لیست ویژگی‌ها...
                 </span>
-              </div>
-            ) : error ? (
-              <div className="flex h-56 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-red-200 bg-red-50/50 text-red-600 dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-400">
-                <AlertCircle className="h-6 w-6" />
-                <p className="text-sm font-medium">{error}</p>
               </div>
             ) : filteredAttributes.length === 0 ? (
               <div className="flex h-56 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 text-slate-400 dark:border-slate-800 dark:text-slate-500">
@@ -280,12 +277,17 @@ export default function AddNewAtribute({ id, title }: AddNewAttributeProps) {
               </div>
             )}
           </div>
-
           {/* فوتر مودال (اکشن‌ها) */}
+          {error && (
+            <div className="flex py-2 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-red-200 bg-red-50/50 text-red-600 dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-400">
+              <AlertCircle className="h-6 w-6" />
+              <p className="text-sm font-medium">{error}</p>
+            </div>
+          )}
+
           <div className="flex items-center justify-end gap-2.5 border-t border-slate-200/80 pt-4 dark:border-slate-800">
             <button
               type="button"
-              disabled={isSaving}
               onClick={() => setIsOpen(false)}
               className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-medium text-slate-600 transition-all hover:bg-slate-100 hover:text-slate-900 disabled:opacity-50 dark:border-slate-800 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
             >

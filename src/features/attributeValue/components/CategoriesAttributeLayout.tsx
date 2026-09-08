@@ -46,7 +46,7 @@ export default async function CategoriesAttributeLayout({
         <div className="flex flex-wrap gap-2 pt-1">
           {categories.map((category) => (
             <span
-              key={category.id}
+              key={category.name}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg 
                          bg-teal-50 text-teal-700 border border-teal-200/60
                          dark:bg-teal-950/40 dark:text-teal-300 dark:border-teal-800/50

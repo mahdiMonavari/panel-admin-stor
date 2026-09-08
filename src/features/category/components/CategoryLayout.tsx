@@ -7,11 +7,7 @@ import CategoryTree from "./CategoryTree";
 import { Prisma } from "@/generated/prisma/client";
 import NavyButton from "@/src/components/navyButton/NavyButton";
 import { useState } from "react";
-export type categories = Prisma.CategoryGetPayload<{
-  include: {
-    children: true;
-  };
-}>;
+import { categories } from "../type/category.type";
 
 const CategoryLayout = ({ categories }: { categories: categories[] }) => {
   const [isAddOpen, setIsAddOpen] = useState(false);

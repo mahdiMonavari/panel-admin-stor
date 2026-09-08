@@ -3,50 +3,56 @@ import { compare, hash } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { prisma } from "../prisma";
-
+import { CategoryWithRelations } from "@/src/features/category/type/category.type";
+import { CategoryTreeItem } from "@/src/features/category/actions/generateIntermediateTabel";
 
 const ACCESS_SECRET = process.env.ACCESS_TOKEN_PRIVATE_KEY;
 const REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET_KEY;
 
 if (!ACCESS_SECRET || !REFRESH_SECRET) {
-  throw new Error("Critical Error: JWT Secret keys are not defined in environment variables.");
+  throw new Error(
+    "Critical Error: JWT Secret keys are not defined in environment variables.",
+  );
 }
 
-
-
 export const PasswordService = {
-  async hash(password : string):Promise<string> {
-    return await hash(password , 12)
+  async hash(password: string): Promise<string> {
+    return await hash(password, 12);
   },
-  async compare(password : string , hash:string) : Promise<boolean>{
-    return await compare(password , hash)
-  }
+  async compare(password: string, hash: string): Promise<boolean> {
+    return await compare(password, hash);
+  },
 };
 
-
 export const TokenService = {
-  generateAccessToken<t extends cookiesDate>(data:t) : string{
-    return sign({...data} , ACCESS_SECRET , {expiresIn : "1d"})
+  generateAccessToken<t extends cookiesDate>(data: t): string {
+    return sign({ ...data }, ACCESS_SECRET, { expiresIn: "1d" });
   },
-  generateRefreshToken <t extends cookiesDate>(data : t) : string {
-    return sign({...data} , REFRESH_SECRET , {expiresIn : "15d"})
+  generateRefreshToken<t extends cookiesDate>(data: t): string {
+    return sign({ ...data }, REFRESH_SECRET, { expiresIn: "15d" });
   },
-  verifyAccessToken<t extends cookiesDate>(token : string):t|null{
-      try{
-          const payload = verify(token , ACCESS_SECRET) as t
-          return payload
-      }catch(err){
-          console.error("Access Token Verification Failed:", err instanceof Error ? err.message : err);
-          return null; 
-      }
+  verifyAccessToken<t extends cookiesDate>(token: string): t | null {
+    try {
+      const payload = verify(token, ACCESS_SECRET) as t;
+      return payload;
+    } catch (err) {
+      console.error(
+        "Access Token Verification Failed:",
+        err instanceof Error ? err.message : err,
+      );
+      return null;
+    }
   },
-  verifyRefreshToken<t extends cookiesDate>(token:string) : t | null{
-    try{
-        const payload = verify(token , REFRESH_SECRET) as t
-        return payload
-    }catch(err){
-        console.error("Access Token Verification Failed:", err instanceof Error ? err.message : err);
-        return null; 
+  verifyRefreshToken<t extends cookiesDate>(token: string): t | null {
+    try {
+      const payload = verify(token, REFRESH_SECRET) as t;
+      return payload;
+    } catch (err) {
+      console.error(
+        "Access Token Verification Failed:",
+        err instanceof Error ? err.message : err,
+      );
+      return null;
     }
   },
 };
@@ -56,36 +62,44 @@ export async function getCookies(target: string): Promise<string | null> {
   return cookiesStore.get(target)?.value ?? null;
 }
 
-export async function setCookies <t extends cookiesDate>(data : t){
-    const accessToken = TokenService.generateAccessToken({...data})
-    const refreshToken = TokenService.generateRefreshToken({userId : data.userId})    
-    const cookiesStore = await cookies()
-        cookiesStore.set("accessToken" ,accessToken,{
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            path: "/",
-            maxAge: 60 * 15
-        })
-        cookiesStore.set("refreshToken" , refreshToken , {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            path: "/",
-            maxAge: 60 * 60 * 24 * 15
-        })
-        return refreshToken
+export async function setCookies<t extends cookiesDate>(data: t) {
+  const accessToken = TokenService.generateAccessToken({ ...data });
+  const refreshToken = TokenService.generateRefreshToken({
+    userId: data.userId,
+  });
+  const cookiesStore = await cookies();
+  cookiesStore.set("accessToken", accessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 15,
+  });
+  cookiesStore.set("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 15,
+  });
+  return refreshToken;
 }
 
-export async function updateRefreshToken ({refreshToken, userId} : {refreshToken:string; userId:string}){
+export async function updateRefreshToken({
+  refreshToken,
+  userId,
+}: {
+  refreshToken: string;
+  userId: string;
+}) {
   await prisma.user.update({
-    where:{
-      id : userId
+    where: {
+      id: userId,
     },
-    data:{
-      refreshToken
-    }
-  })
+    data: {
+      refreshToken,
+    },
+  });
 }
 export function getErrorMessage(error: unknown): string {
   if (error instanceof Error) {
@@ -93,3 +107,20 @@ export function getErrorMessage(error: unknown): string {
   }
   return "خطای ناشناخته‌ای رخ داده است";
 }
+
+export const createCategoryTree = (categories: CategoryWithRelations[]) => {
+  const map = new Map<string, CategoryTreeItem>();
+  const roots: CategoryTreeItem[] = [];
+  for (const item of categories) {
+    map.set(item.id, { ...item, children: [] });
+  }
+  for (const item of categories) {
+    const node = map.get(item.id)!;
+    if (item.parentId && map.has(item.parentId)) {
+      map.get(item.parentId)!.children.push(node);
+    } else if (!item.parentId) {
+      roots.push(node);
+    }
+  }
+  return roots;
+};

@@ -1,37 +1,70 @@
 import { prisma } from "@/src/lib/prisma";
-import { categories } from "../components/CategoryLayout";
+import { Prisma } from "@/generated/prisma/client";
+import { CategoryWithRelations } from "../type/category.type";
 
-type GetCategoriesResult =
-  | {
-      success: true;
-      data: categories[];
-    }
-  | {
-      success: false;
-      message: string;
-    };
+// ۲. تایپ ساده
+export type CategorySimple = {
+  id: string;
+  name: string;
+};
 
+// ۳. تعریف انواع خروجی
+type GetCategoriesFullResult =
+  | { success: true; data: CategoryWithRelations[] }
+  | { success: false; message: string };
+
+type GetCategoriesSimpleResult =
+  | { success: true; data: CategorySimple[] }
+  | { success: false; message: string };
+
+// ۴. امضای توابع (Overloads)
+export default async function getCategories(): Promise<GetCategoriesFullResult>;
+export default async function getCategories(
+  id: string,
+): Promise<GetCategoriesSimpleResult>;
+
+// ۵. پیاده‌سازی اصلی تابع
 export default async function getCategories(
   id?: string,
-): Promise<GetCategoriesResult> {
-  const categories = await prisma.category.findMany({
-    where: {
-      ...(id && {
-        attributes: {
-          some: {
-            attributeId: id,
+): Promise<GetCategoriesFullResult | GetCategoriesSimpleResult> {
+  try {
+    if (id) {
+      const categories = await prisma.category.findMany({
+        where: {
+          attributes: {
+            some: {
+              attributeId: id,
+            },
           },
         },
-      }),
-    },
-    include: {
-      attributes: true,
-      children: true,
-    },
-  });
+        select: {
+          id: true,
+          name: true,
+        },
+      });
 
-  return {
-    success: true,
-    data: categories,
-  };
+      return {
+        success: true,
+        data: categories,
+      };
+    }
+
+    const allCategories = await prisma.category.findMany({
+      include: {
+        attributes: true,
+        children: true,
+      },
+    });
+
+    return {
+      success: true,
+      data: allCategories,
+    };
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return {
+      success: false,
+      message: "خطا در دریافت اطلاعات دسته‌بندی‌ها",
+    };
+  }
 }

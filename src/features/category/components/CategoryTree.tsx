@@ -1,48 +1,15 @@
-"use client";
-
 import { useMemo } from "react";
 import CategoryTreeNode from "./CategoryTreeNode";
 
-export interface CategoryFlat {
-  id: string;
-  name: string;
-  parentId: string | null;
-}
-
-export interface CategoryNode extends CategoryFlat {
-  children: CategoryNode[];
-}
-
-function buildCategoryTree(categories: CategoryFlat[]): CategoryNode[] {
-  const nodeMap = new Map<string, CategoryNode>();
-  const roots: CategoryNode[] = [];
-
-  categories.forEach((category) => {
-    nodeMap.set(category.id, { ...category, children: [] });
-  });
-
-  categories.forEach((category) => {
-    const node = nodeMap.get(category.id)!;
-    const parent = category.parentId
-      ? nodeMap.get(category.parentId)
-      : undefined;
-
-    if (parent) {
-      parent.children.push(node);
-    } else {
-      roots.push(node);
-    }
-  });
-
-  return roots;
-}
+import { CategoryWithRelations } from "../type/category.type";
+import { createCategoryTree } from "@/src/lib/utiles/createRoot";
 
 interface CategoryTreeProps {
-  categories: CategoryFlat[];
+  categories: CategoryWithRelations[];
 }
 
-const CategoryTree = ({ categories, onEdit, onDelete }: CategoryTreeProps) => {
-  const tree = useMemo(() => buildCategoryTree(categories), [categories]);
+const CategoryTree = ({ categories }: CategoryTreeProps) => {
+  const tree = useMemo(() => createCategoryTree(categories), [categories]);
 
   return (
     <ul

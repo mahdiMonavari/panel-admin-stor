@@ -19,7 +19,7 @@ import { Prisma } from "@/generated/prisma/client";
 import { getAttributes } from "../../attrebute/query/getAttribut.query";
 import { AttrebuteEnum } from "../../attrebute/schema/createAttribute.schema";
 import { createIntermediateTable } from "../actions/generateIntermediateTabel";
-import { getSelectedAttributes } from "../actions/getAttributsCategory.action";
+import getCategories from "../query/categories.get";
 
 type AttributeType = (typeof AttrebuteEnum)[number];
 
@@ -76,26 +76,35 @@ export default function AddNewAtribute({ id, title }: AddNewAttributeProps) {
 
   useEffect(() => {
     setError(null);
-    startTransition(async () => {
-      const res = await getAttributes({});
-      if (!res.success || !res.data) {
-        return setError("خطا در دریافت لیست ویژگی‌ها");
-      }
-      setAttributes(res.data);
-    });
-  }, []);
-
-  useEffect(() => {
-    setError(null);
     if (isOpen) {
       startTransition(async () => {
-        const res = await getSelectedAttributes(id);
-        if (!res.success) {
-          return setError(res.message as string);
+        const [attributes, categories] = await Promise.all([
+          await getAttributes({}),
+          await getCategories(),
+        ]);
+
+        if (
+          !attributes.success ||
+          !attributes.data ||
+          !categories.success ||
+          !categories.data
+        ) {
+          return setError("خطا در دریافت لیست ویژگی‌ها");
         }
-        if (res.success && res.data) {
-          setSelected(res.data);
+        const categoryMap = new Map(categories.data.map((c) => [c.id, c]));
+        const inheritedAttributes = new Set<string>();
+        let current = categoryMap.get(id);
+
+        while (current) {
+          current.attributes?.forEach((attr) =>
+            inheritedAttributes.add(attr.attributeId),
+          );
+          current = current.parentId
+            ? categoryMap.get(current.parentId)
+            : undefined;
         }
+        setSelected(Array.from(inheritedAttributes));
+        setAttributes(attributes.data);
       });
     }
   }, [isOpen]);
@@ -136,7 +145,6 @@ export default function AddNewAtribute({ id, title }: AddNewAttributeProps) {
       setError(res.message);
       return;
     }
-    console.log(res.data);
     setIsSaving(false);
     setIsOpen(false);
   };

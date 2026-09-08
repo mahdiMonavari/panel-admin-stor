@@ -4,12 +4,15 @@ import AddNewCategory from "./AddNewCategory";
 import { FaArrowRight, FaPlus } from "react-icons/fa";
 import Link from "next/link";
 import CategoryTree from "./CategoryTree";
-import { Prisma } from "@/generated/prisma/client";
 import NavyButton from "@/src/components/navyButton/NavyButton";
 import { useState } from "react";
-import { categories } from "../type/category.type";
+import { CategoryWithRelations } from "../type/category.type";
 
-const CategoryLayout = ({ categories }: { categories: categories[] }) => {
+const CategoryLayout = ({
+  categories,
+}: {
+  categories: CategoryWithRelations[];
+}) => {
   const [isAddOpen, setIsAddOpen] = useState(false);
   return (
     <div>

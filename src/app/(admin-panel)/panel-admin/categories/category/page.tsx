@@ -1,6 +1,4 @@
-import CategoryLayout, {
-  categories,
-} from "@/src/features/category/components/CategoryLayout";
+import CategoryLayout from "@/src/features/category/components/CategoryLayout";
 import getCategories from "@/src/features/category/query/categories.get";
 
 async function page() {

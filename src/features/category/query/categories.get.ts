@@ -1,5 +1,5 @@
+"use server";
 import { prisma } from "@/src/lib/prisma";
-import { Prisma } from "@/generated/prisma/client";
 import { CategoryWithRelations } from "../type/category.type";
 
 // ۲. تایپ ساده

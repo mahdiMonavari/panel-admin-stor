@@ -1,20 +1,21 @@
-import { ChevronDown, Pencil, Trash, FolderPlus } from "lucide-react";
+import { ChevronDown, FolderPlus } from "lucide-react";
 import AddNewCategory from "./AddNewCategory";
 import { useState } from "react";
-import { CategoryNode } from "./CategoryTree";
 import IconButton from "./IconButton";
 import AddNewAtribute from "./AddNewAtribute";
+import { CategoryTreeNodeType } from "../type/category.type";
 
 interface CategoryTreeNodeProps {
-  category: CategoryNode;
+  category: CategoryTreeNodeType;
   depth: number;
 }
 
 const CategoryTreeNode = ({ category, depth }: CategoryTreeNodeProps) => {
   const [expanded, setExpanded] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
-
-  const hasChildren = category.children.length > 0;
+  const hasChildren = Boolean(
+    category.children && category.children.length > 0,
+  );
 
   return (
     <li>
@@ -48,7 +49,7 @@ const CategoryTreeNode = ({ category, depth }: CategoryTreeNodeProps) => {
           </span>
           {hasChildren && (
             <span className="text-xs text-slate-400 dark:text-slate-500">
-              ({category.children.length})
+              ({category.children?.length})
             </span>
           )}
         </div>
@@ -61,14 +62,6 @@ const CategoryTreeNode = ({ category, depth }: CategoryTreeNodeProps) => {
             <FolderPlus className="h-4 w-4" />
           </IconButton>
           <AddNewAtribute id={category.id} title={category.name} />
-
-          {/* <IconButton
-            title="حذف"
-            variant="danger"
-            onClick={() => onDelete?.(category.id)}
-          >
-            <Trash className="h-4 w-4" />
-          </IconButton> */}
         </div>
       </div>
 
@@ -87,7 +80,7 @@ const CategoryTreeNode = ({ category, depth }: CategoryTreeNodeProps) => {
         >
           <div className="overflow-hidden">
             <ul className="flex flex-col gap-2 mt-1">
-              {category.children.map((child) => (
+              {category.children?.map((child) => (
                 <CategoryTreeNode
                   key={child.id}
                   category={child}

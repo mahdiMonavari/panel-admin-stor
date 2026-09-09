@@ -1,7 +1,7 @@
 import z from "zod";
 import { attributeValueItemSchema } from "../../attributeValue/schema/create.schema";
 
-export const AttrebuteEnum = ["TEXT", "COLOR", "SELECT", "NUMBER"] as const;
+export const AttrebuteEnum = ["TEXT", "SELECT", "NUMBER"] as const;
 export type AttrebuteEnumType = typeof AttrebuteEnum;
 
 export const createAttributeSchema = z.object({

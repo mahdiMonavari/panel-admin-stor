@@ -192,6 +192,7 @@ export type AttributeWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Attribute"> | Date | string
   values?: Prisma.AttributeValueListRelationFilter
   categories?: Prisma.CategoryAttributeListRelationFilter
+  productStaticAttributes?: Prisma.ProductStaticAttributeListRelationFilter
 }
 
 export type AttributeOrderByWithRelationInput = {
@@ -203,6 +204,7 @@ export type AttributeOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   values?: Prisma.AttributeValueOrderByRelationAggregateInput
   categories?: Prisma.CategoryAttributeOrderByRelationAggregateInput
+  productStaticAttributes?: Prisma.ProductStaticAttributeOrderByRelationAggregateInput
 }
 
 export type AttributeWhereUniqueInput = Prisma.AtLeast<{
@@ -218,6 +220,7 @@ export type AttributeWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Attribute"> | Date | string
   values?: Prisma.AttributeValueListRelationFilter
   categories?: Prisma.CategoryAttributeListRelationFilter
+  productStaticAttributes?: Prisma.ProductStaticAttributeListRelationFilter
 }, "id" | "name_type">
 
 export type AttributeOrderByWithAggregationInput = {
@@ -253,6 +256,7 @@ export type AttributeCreateInput = {
   updatedAt?: Date | string
   values?: Prisma.AttributeValueCreateNestedManyWithoutAttributeInput
   categories?: Prisma.CategoryAttributeCreateNestedManyWithoutAttributeInput
+  productStaticAttributes?: Prisma.ProductStaticAttributeCreateNestedManyWithoutAttributeInput
 }
 
 export type AttributeUncheckedCreateInput = {
@@ -264,6 +268,7 @@ export type AttributeUncheckedCreateInput = {
   updatedAt?: Date | string
   values?: Prisma.AttributeValueUncheckedCreateNestedManyWithoutAttributeInput
   categories?: Prisma.CategoryAttributeUncheckedCreateNestedManyWithoutAttributeInput
+  productStaticAttributes?: Prisma.ProductStaticAttributeUncheckedCreateNestedManyWithoutAttributeInput
 }
 
 export type AttributeUpdateInput = {
@@ -275,6 +280,7 @@ export type AttributeUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   values?: Prisma.AttributeValueUpdateManyWithoutAttributeNestedInput
   categories?: Prisma.CategoryAttributeUpdateManyWithoutAttributeNestedInput
+  productStaticAttributes?: Prisma.ProductStaticAttributeUpdateManyWithoutAttributeNestedInput
 }
 
 export type AttributeUncheckedUpdateInput = {
@@ -286,6 +292,7 @@ export type AttributeUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   values?: Prisma.AttributeValueUncheckedUpdateManyWithoutAttributeNestedInput
   categories?: Prisma.CategoryAttributeUncheckedUpdateManyWithoutAttributeNestedInput
+  productStaticAttributes?: Prisma.ProductStaticAttributeUncheckedUpdateManyWithoutAttributeNestedInput
 }
 
 export type AttributeCreateManyInput = {
@@ -380,6 +387,20 @@ export type AttributeUpdateOneRequiredWithoutCategoriesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AttributeUpdateToOneWithWhereWithoutCategoriesInput, Prisma.AttributeUpdateWithoutCategoriesInput>, Prisma.AttributeUncheckedUpdateWithoutCategoriesInput>
 }
 
+export type AttributeCreateNestedOneWithoutProductStaticAttributesInput = {
+  create?: Prisma.XOR<Prisma.AttributeCreateWithoutProductStaticAttributesInput, Prisma.AttributeUncheckedCreateWithoutProductStaticAttributesInput>
+  connectOrCreate?: Prisma.AttributeCreateOrConnectWithoutProductStaticAttributesInput
+  connect?: Prisma.AttributeWhereUniqueInput
+}
+
+export type AttributeUpdateOneRequiredWithoutProductStaticAttributesNestedInput = {
+  create?: Prisma.XOR<Prisma.AttributeCreateWithoutProductStaticAttributesInput, Prisma.AttributeUncheckedCreateWithoutProductStaticAttributesInput>
+  connectOrCreate?: Prisma.AttributeCreateOrConnectWithoutProductStaticAttributesInput
+  upsert?: Prisma.AttributeUpsertWithoutProductStaticAttributesInput
+  connect?: Prisma.AttributeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AttributeUpdateToOneWithWhereWithoutProductStaticAttributesInput, Prisma.AttributeUpdateWithoutProductStaticAttributesInput>, Prisma.AttributeUncheckedUpdateWithoutProductStaticAttributesInput>
+}
+
 export type AttributeCreateWithoutValuesInput = {
   id?: string
   name: string
@@ -388,6 +409,7 @@ export type AttributeCreateWithoutValuesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   categories?: Prisma.CategoryAttributeCreateNestedManyWithoutAttributeInput
+  productStaticAttributes?: Prisma.ProductStaticAttributeCreateNestedManyWithoutAttributeInput
 }
 
 export type AttributeUncheckedCreateWithoutValuesInput = {
@@ -398,6 +420,7 @@ export type AttributeUncheckedCreateWithoutValuesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   categories?: Prisma.CategoryAttributeUncheckedCreateNestedManyWithoutAttributeInput
+  productStaticAttributes?: Prisma.ProductStaticAttributeUncheckedCreateNestedManyWithoutAttributeInput
 }
 
 export type AttributeCreateOrConnectWithoutValuesInput = {
@@ -424,6 +447,7 @@ export type AttributeUpdateWithoutValuesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.CategoryAttributeUpdateManyWithoutAttributeNestedInput
+  productStaticAttributes?: Prisma.ProductStaticAttributeUpdateManyWithoutAttributeNestedInput
 }
 
 export type AttributeUncheckedUpdateWithoutValuesInput = {
@@ -434,6 +458,7 @@ export type AttributeUncheckedUpdateWithoutValuesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.CategoryAttributeUncheckedUpdateManyWithoutAttributeNestedInput
+  productStaticAttributes?: Prisma.ProductStaticAttributeUncheckedUpdateManyWithoutAttributeNestedInput
 }
 
 export type AttributeCreateWithoutCategoriesInput = {
@@ -444,6 +469,7 @@ export type AttributeCreateWithoutCategoriesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   values?: Prisma.AttributeValueCreateNestedManyWithoutAttributeInput
+  productStaticAttributes?: Prisma.ProductStaticAttributeCreateNestedManyWithoutAttributeInput
 }
 
 export type AttributeUncheckedCreateWithoutCategoriesInput = {
@@ -454,6 +480,7 @@ export type AttributeUncheckedCreateWithoutCategoriesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   values?: Prisma.AttributeValueUncheckedCreateNestedManyWithoutAttributeInput
+  productStaticAttributes?: Prisma.ProductStaticAttributeUncheckedCreateNestedManyWithoutAttributeInput
 }
 
 export type AttributeCreateOrConnectWithoutCategoriesInput = {
@@ -480,6 +507,7 @@ export type AttributeUpdateWithoutCategoriesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   values?: Prisma.AttributeValueUpdateManyWithoutAttributeNestedInput
+  productStaticAttributes?: Prisma.ProductStaticAttributeUpdateManyWithoutAttributeNestedInput
 }
 
 export type AttributeUncheckedUpdateWithoutCategoriesInput = {
@@ -490,6 +518,67 @@ export type AttributeUncheckedUpdateWithoutCategoriesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   values?: Prisma.AttributeValueUncheckedUpdateManyWithoutAttributeNestedInput
+  productStaticAttributes?: Prisma.ProductStaticAttributeUncheckedUpdateManyWithoutAttributeNestedInput
+}
+
+export type AttributeCreateWithoutProductStaticAttributesInput = {
+  id?: string
+  name: string
+  type: string
+  label: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  values?: Prisma.AttributeValueCreateNestedManyWithoutAttributeInput
+  categories?: Prisma.CategoryAttributeCreateNestedManyWithoutAttributeInput
+}
+
+export type AttributeUncheckedCreateWithoutProductStaticAttributesInput = {
+  id?: string
+  name: string
+  type: string
+  label: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  values?: Prisma.AttributeValueUncheckedCreateNestedManyWithoutAttributeInput
+  categories?: Prisma.CategoryAttributeUncheckedCreateNestedManyWithoutAttributeInput
+}
+
+export type AttributeCreateOrConnectWithoutProductStaticAttributesInput = {
+  where: Prisma.AttributeWhereUniqueInput
+  create: Prisma.XOR<Prisma.AttributeCreateWithoutProductStaticAttributesInput, Prisma.AttributeUncheckedCreateWithoutProductStaticAttributesInput>
+}
+
+export type AttributeUpsertWithoutProductStaticAttributesInput = {
+  update: Prisma.XOR<Prisma.AttributeUpdateWithoutProductStaticAttributesInput, Prisma.AttributeUncheckedUpdateWithoutProductStaticAttributesInput>
+  create: Prisma.XOR<Prisma.AttributeCreateWithoutProductStaticAttributesInput, Prisma.AttributeUncheckedCreateWithoutProductStaticAttributesInput>
+  where?: Prisma.AttributeWhereInput
+}
+
+export type AttributeUpdateToOneWithWhereWithoutProductStaticAttributesInput = {
+  where?: Prisma.AttributeWhereInput
+  data: Prisma.XOR<Prisma.AttributeUpdateWithoutProductStaticAttributesInput, Prisma.AttributeUncheckedUpdateWithoutProductStaticAttributesInput>
+}
+
+export type AttributeUpdateWithoutProductStaticAttributesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  values?: Prisma.AttributeValueUpdateManyWithoutAttributeNestedInput
+  categories?: Prisma.CategoryAttributeUpdateManyWithoutAttributeNestedInput
+}
+
+export type AttributeUncheckedUpdateWithoutProductStaticAttributesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  values?: Prisma.AttributeValueUncheckedUpdateManyWithoutAttributeNestedInput
+  categories?: Prisma.CategoryAttributeUncheckedUpdateManyWithoutAttributeNestedInput
 }
 
 
@@ -500,11 +589,13 @@ export type AttributeUncheckedUpdateWithoutCategoriesInput = {
 export type AttributeCountOutputType = {
   values: number
   categories: number
+  productStaticAttributes: number
 }
 
 export type AttributeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   values?: boolean | AttributeCountOutputTypeCountValuesArgs
   categories?: boolean | AttributeCountOutputTypeCountCategoriesArgs
+  productStaticAttributes?: boolean | AttributeCountOutputTypeCountProductStaticAttributesArgs
 }
 
 /**
@@ -531,6 +622,13 @@ export type AttributeCountOutputTypeCountCategoriesArgs<ExtArgs extends runtime.
   where?: Prisma.CategoryAttributeWhereInput
 }
 
+/**
+ * AttributeCountOutputType without action
+ */
+export type AttributeCountOutputTypeCountProductStaticAttributesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProductStaticAttributeWhereInput
+}
+
 
 export type AttributeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -541,6 +639,7 @@ export type AttributeSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   updatedAt?: boolean
   values?: boolean | Prisma.Attribute$valuesArgs<ExtArgs>
   categories?: boolean | Prisma.Attribute$categoriesArgs<ExtArgs>
+  productStaticAttributes?: boolean | Prisma.Attribute$productStaticAttributesArgs<ExtArgs>
   _count?: boolean | Prisma.AttributeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attribute"]>
 
@@ -575,6 +674,7 @@ export type AttributeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 export type AttributeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   values?: boolean | Prisma.Attribute$valuesArgs<ExtArgs>
   categories?: boolean | Prisma.Attribute$categoriesArgs<ExtArgs>
+  productStaticAttributes?: boolean | Prisma.Attribute$productStaticAttributesArgs<ExtArgs>
   _count?: boolean | Prisma.AttributeCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AttributeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -585,6 +685,7 @@ export type $AttributePayload<ExtArgs extends runtime.Types.Extensions.InternalA
   objects: {
     values: Prisma.$AttributeValuePayload<ExtArgs>[]
     categories: Prisma.$CategoryAttributePayload<ExtArgs>[]
+    productStaticAttributes: Prisma.$ProductStaticAttributePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -989,6 +1090,7 @@ export interface Prisma__AttributeClient<T, Null = never, ExtArgs extends runtim
   readonly [Symbol.toStringTag]: "PrismaPromise"
   values<T extends Prisma.Attribute$valuesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Attribute$valuesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttributeValuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   categories<T extends Prisma.Attribute$categoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Attribute$categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CategoryAttributePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  productStaticAttributes<T extends Prisma.Attribute$productStaticAttributesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Attribute$productStaticAttributesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductStaticAttributePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1462,6 +1564,30 @@ export type Attribute$categoriesArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.CategoryAttributeScalarFieldEnum | Prisma.CategoryAttributeScalarFieldEnum[]
+}
+
+/**
+ * Attribute.productStaticAttributes
+ */
+export type Attribute$productStaticAttributesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProductStaticAttribute
+   */
+  select?: Prisma.ProductStaticAttributeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProductStaticAttribute
+   */
+  omit?: Prisma.ProductStaticAttributeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProductStaticAttributeInclude<ExtArgs> | null
+  where?: Prisma.ProductStaticAttributeWhereInput
+  orderBy?: Prisma.ProductStaticAttributeOrderByWithRelationInput | Prisma.ProductStaticAttributeOrderByWithRelationInput[]
+  cursor?: Prisma.ProductStaticAttributeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProductStaticAttributeScalarFieldEnum | Prisma.ProductStaticAttributeScalarFieldEnum[]
 }
 
 /**

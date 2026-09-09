@@ -37,12 +37,6 @@ const TYPE_CONFIG: Record<AttributeType, TypeConfig> = {
     badge: "bg-blue-500/10 text-blue-900 dark:text-blue-400 border-blue-500/20",
     activeBadge: "bg-blue-500/20 text-blue-900 border-blue-400/30",
   },
-  COLOR: {
-    label: "رنگ",
-    icon: Palette,
-    badge: "bg-pink-500/10 text-pink-900 dark:text-pink-400 border-pink-500/20",
-    activeBadge: "bg-pink-500/20 text-pink-900 border-pink-400/30",
-  },
   SELECT: {
     label: "انتخابی",
     icon: ListFilter,
@@ -94,6 +88,7 @@ export default function AddNewAtribute({ id, title }: AddNewAttributeProps) {
         const categoryMap = new Map(categories.data.map((c) => [c.id, c]));
         const inheritedAttributes = new Set<string>();
         let current = categoryMap.get(id);
+        console.log(current);
 
         while (current) {
           current.attributes?.forEach((attr) =>
@@ -103,7 +98,7 @@ export default function AddNewAtribute({ id, title }: AddNewAttributeProps) {
             ? categoryMap.get(current.parentId)
             : undefined;
         }
-        setSelected(Array.from(inheritedAttributes));
+        setSelected([...new Set(inheritedAttributes)]);
         setAttributes(attributes.data);
       });
     }

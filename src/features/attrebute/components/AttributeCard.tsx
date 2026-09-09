@@ -14,11 +14,6 @@ const TYPE_BADGES: Record<string, { label: string; className: string }> = {
     className:
       "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
   },
-  COLOR: {
-    label: "رنگ",
-    className:
-      "bg-pink-500/10 text-pink-600 dark:text-pink-400 border-pink-500/20",
-  },
   SELECT: {
     label: "انتخابی",
     className:
@@ -38,8 +33,9 @@ type AttributeCardProps = {
 
 export default function AttributeCard({ attr, onError }: AttributeCardProps) {
   const [isPending, startTransition] = useTransition();
+  console.log(attr);
 
-  const isVariable = attr.type === "COLOR" || attr.type === "SELECT";
+  const isVariable = attr.type === "SELECT";
   const hasCategories = attr.categories.length > 0;
   const hasValues = attr.values.length > 0;
   const isDeletable = !hasCategories && !hasValues;
@@ -112,9 +108,11 @@ export default function AttributeCard({ attr, onError }: AttributeCardProps) {
           </div>
 
           {/* بخش میانی: دسته‌بندی‌های متصل */}
-          <div className="mt-4 flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-400">
-            <FaFolder className="text-teal-500" />
-            <span>دسته‌بندی‌های متصل:</span>
+          <div className="mt-4 flex items-center justify-between text-xs font-medium text-slate-600 dark:text-slate-400">
+            <div className="flex items-center gap-2">
+              <FaFolder className="text-teal-500" />
+              <span>دسته‌های اصلی متصل:</span>
+            </div>
             <span className="rounded-md bg-slate-100 px-2 py-0.5 font-bold text-slate-800 dark:bg-slate-800 dark:text-slate-200">
               {attr.categories.length} دسته
             </span>

@@ -58,7 +58,12 @@ export const ModelName = {
   Category: 'Category',
   Attribute: 'Attribute',
   AttributeValue: 'AttributeValue',
-  CategoryAttribute: 'CategoryAttribute'
+  CategoryAttribute: 'CategoryAttribute',
+  Product: 'Product',
+  ProductInfo: 'ProductInfo',
+  ProductVariant: 'ProductVariant',
+  ProductStaticAttribute: 'ProductStaticAttribute',
+  ProductVariantAttributeValue: 'ProductVariantAttributeValue'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -175,12 +180,67 @@ export const CategoryAttributeScalarFieldEnum = {
 export type CategoryAttributeScalarFieldEnum = (typeof CategoryAttributeScalarFieldEnum)[keyof typeof CategoryAttributeScalarFieldEnum]
 
 
+export const ProductScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  categoryId: 'categoryId',
+  infoId: 'infoId'
+} as const
+
+export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+export const ProductInfoScalarFieldEnum = {
+  id: 'id',
+  data: 'data'
+} as const
+
+export type ProductInfoScalarFieldEnum = (typeof ProductInfoScalarFieldEnum)[keyof typeof ProductInfoScalarFieldEnum]
+
+
+export const ProductVariantScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  price: 'price',
+  stock: 'stock'
+} as const
+
+export type ProductVariantScalarFieldEnum = (typeof ProductVariantScalarFieldEnum)[keyof typeof ProductVariantScalarFieldEnum]
+
+
+export const ProductStaticAttributeScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  attributeId: 'attributeId',
+  attributeValueId: 'attributeValueId',
+  value: 'value'
+} as const
+
+export type ProductStaticAttributeScalarFieldEnum = (typeof ProductStaticAttributeScalarFieldEnum)[keyof typeof ProductStaticAttributeScalarFieldEnum]
+
+
+export const ProductVariantAttributeValueScalarFieldEnum = {
+  productVariantId: 'productVariantId',
+  attributeValueId: 'attributeValueId'
+} as const
+
+export type ProductVariantAttributeValueScalarFieldEnum = (typeof ProductVariantAttributeValueScalarFieldEnum)[keyof typeof ProductVariantAttributeValueScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -197,4 +257,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

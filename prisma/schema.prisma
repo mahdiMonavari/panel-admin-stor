@@ -58,43 +58,115 @@ model RateLimit {
   @@index([expiresAt])
 }
 
+// ---------- دسته‌بندی ----------
 model Category {
   id         String   @id @default(uuid())
-  name       String  
+  name       String
   parentId   String?
-  parent     Category? @relation("CategoryTree" , fields:[parentId] , references:[id])
+  parent     Category? @relation("CategoryTree", fields: [parentId], references: [id])
   children   Category[] @relation("CategoryTree")
   attributes CategoryAttribute[]
+  products   Product[]
 }
 
+// ---------- ویژگی ----------
 model Attribute {
   id        String   @id @default(uuid())
-  name      String  
+  name      String
   type      String
   label     String
   values    AttributeValue[]
   categories CategoryAttribute[]
+
+  productStaticAttributes ProductStaticAttribute[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   @@unique([name, type])
 }
 
+// ---------- مقدار ویژگی ----------
 model AttributeValue {
-  id          String   @id @default(uuid()) 
+  id          String   @id @default(uuid())
   value       String
-  label       String 
+  label       String
   attributeId String
   code        String?
-  attribute   Attribute @relation(fields:[attributeId],references:[id],onDelete : Cascade)
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+
+  variantValues    ProductVariantAttributeValue[]
+  staticAttributes ProductStaticAttribute[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   @@unique([attributeId, value])
 }
 
-model CategoryAttribute{  
-  categoryId  String   
-  attributeId String   
+// ---------- اتصال دسته-ویژگی ----------
+model CategoryAttribute {
+  categoryId  String
+  attributeId String
   category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)  
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
   @@id([categoryId, attributeId])
+}
+
+// ---------- محصول ----------
+model Product {
+  id               String      @id @default(uuid())
+  name             String
+  description      String
+  categoryId       String
+  category         Category    @relation(fields: [categoryId], references: [id])
+
+  infoId           String      @unique
+  info             ProductInfo @relation(fields: [infoId], references: [id], onDelete: Cascade)
+
+  variants         ProductVariant[]
+  staticAttributes ProductStaticAttribute[]
+}
+
+// ---------- اطلاعات تکمیلی محصول ----------
+model ProductInfo {
+  id      String  @id @default(uuid())
+  data    Json
+  product Product?
+}
+
+// ---------- ورینت محصول ----------
+model ProductVariant {
+  id        String  @id @default(uuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  price  Decimal
+  stock  Int
+  values ProductVariantAttributeValue[]
+}
+
+// ---------- ویژگی ثابت محصول ----------
+model ProductStaticAttribute {
+  id               String @id @default(uuid())
+  productId        String
+  attributeId      String
+  attributeValueId String?
+
+  product        Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  attribute      Attribute       @relation(fields: [attributeId], references: [id])
+  attributeValue AttributeValue? @relation(fields: [attributeValueId], references: [id], onDelete: SetNull)
+
+  value String?
+
+  @@unique([productId, attributeId])
+}
+
+// ---------- مقدارِ ویژگیِ متغیرِ ورینت ----------
+model ProductVariantAttributeValue {
+  productVariantId String
+  attributeValueId String
+
+  productVariant ProductVariant  @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
+  attributeValue AttributeValue @relation(fields: [attributeValueId], references: [id])
+
+  @@id([productVariantId, attributeValueId])
 }

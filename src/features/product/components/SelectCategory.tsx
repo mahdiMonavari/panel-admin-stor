@@ -11,6 +11,14 @@ import {
   CategoryTreeNodeType,
   CategoryWithRelations,
 } from "../../category/type/category.type";
+import {
+  FieldErrors,
+  UseFormHandleSubmit,
+  UseFormRegister,
+} from "react-hook-form";
+import { createProductType } from "../type/product.type";
+import { createProductInput } from "./inputs/create";
+import Input from "@/src/components/input/Input";
 
 // دریافت فرزندان مستقیم یک دسته‌بندی
 const getCategoryChildren = (
@@ -50,11 +58,17 @@ const getCategoryPath = (
 type SelectCategoryProps = {
   categories: CategoryWithRelations[];
   onSelect?: (categoryId: string) => void;
+  register: UseFormRegister<createProductType>;
+  handleSubmit: UseFormHandleSubmit<createProductType>;
+  errors: FieldErrors<createProductType>;
 };
 
 export default function SelectCategory({
   categories,
   onSelect,
+  errors,
+  handleSubmit,
+  register,
 }: SelectCategoryProps) {
   const [currentCategoryId, setCurrentCategoryId] = useState("");
   const [input, setInput] = useState("");
@@ -240,6 +254,37 @@ export default function SelectCategory({
           </div>
         </div>
       )}
+      <form className="mt-3 space-y-3">
+        {createProductInput.map((input) =>
+          input.type === "text" ? (
+            <Input
+              key={input.name}
+              errors={errors}
+              label={input.label}
+              name={input.name}
+              placeholder={input.placeholder}
+              register={register}
+            />
+          ) : (
+            <div className="flex flex-col gap-2">
+              <textarea
+                {...register(input.name)}
+                placeholder={input.placeholder}
+                className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-2.5 text-sm
+                         text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-teal-500
+                          focus:bg-white focus:ring-4 focus:ring-teal-500/10 dark:border-slate-800 dark:bg-slate-900/60
+                           dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:bg-slate-900
+                            dark:focus:ring-teal-400/10"
+              />
+              {errors[input.name] && (
+                <span className="text-xs font-medium text-rose-500 dark:text-rose-400">
+                  {errors[input.name]?.message as string}
+                </span>
+              )}
+            </div>
+          ),
+        )}
+      </form>
     </div>
   );
 }

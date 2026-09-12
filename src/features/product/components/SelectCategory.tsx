@@ -21,7 +21,6 @@ import { createProductType } from "../type/product.type";
 import { createProductInput } from "./inputs/create";
 import Input from "@/src/components/input/Input";
 
-// دریافت فرزندان مستقیم یک دسته‌بندی
 const getCategoryChildren = (
   id: string,
   map: Map<string, CategoryTreeNodeType>,
@@ -35,7 +34,6 @@ const getCategoryChildren = (
   return result;
 };
 
-// دریافت مسیر کامل از والد ریشه تا نود فعلی (Root -> Leaf)
 const getCategoryPath = (
   id: string,
   map: Map<string, CategoryTreeNodeType>,
@@ -126,18 +124,15 @@ export default function SelectCategory({
     setCurrentCategoryId(cate.id);
     setIsOpen(false);
 
-    // بررسی آیا این کتگوری فرزندی دارد یا خیر
     const directChildren = getCategoryChildren(cate.id, categoryMap);
 
     if (directChildren.length === 0) {
-      // اگر زیرمجموعه نداشت: مقدار فیلد فرم ست می‌شود
       setValue("categoryId", cate.id, {
         shouldValidate: true,
         shouldDirty: true,
       });
       onSelect?.(cate.id);
     } else {
-      // اگر فرزند داشت: مقدار فرم پاک می‌شود تا کاربر مجبور به انتخاب مرحله نهایی شود
       setValue("categoryId", "", {
         shouldValidate: true,
         shouldDirty: true,
@@ -196,7 +191,6 @@ export default function SelectCategory({
           </button>
         )}
 
-        {/* لیست دراپ‌داون */}
         {isOpen && (
           <ul className="absolute z-30 top-full mt-2 w-full max-h-60 overflow-y-auto rounded-xl bg-white shadow-xl border border-slate-100 dark:bg-slate-900 dark:border-slate-800 py-1.5 divide-y divide-slate-100/70 dark:divide-slate-800/60">
             {filteredCategories.length > 0 ? (
@@ -220,14 +214,12 @@ export default function SelectCategory({
         )}
       </div>
 
-      {/* خطای فیلد اجباری: فقط در صورتی نمایش داده می‌شود که اصلاً دسته‌ای انتخاب نشده باشد */}
       {errors.categoryId && !currentCategoryId && (
         <span className="block text-xs font-medium text-rose-500 dark:text-rose-400">
           {"انتخاب دسته‌بندی کالا الزامی است"}
         </span>
       )}
 
-      {/* نمایش مسیر انتخاب‌شده (Breadcrumb) */}
       {path.length > 0 && (
         <div className="flex items-center gap-1.5 flex-wrap rounded-lg bg-slate-100/70 dark:bg-slate-800/50 px-3 py-2 text-xs text-slate-600 dark:text-slate-300 border border-slate-200/60 dark:border-slate-800">
           <span className="font-semibold text-slate-400 dark:text-slate-500">
@@ -252,7 +244,6 @@ export default function SelectCategory({
         </div>
       )}
 
-      {/* باکس انتخاب زیردسته‌ها (در صورتی که دسته‌بندی انتخاب شده دارای فرزند باشد) */}
       {children.length > 0 && (
         <div className="rounded-2xl border border-amber-200/80 bg-amber-50/50 p-3.5 dark:border-amber-900/40 dark:bg-amber-950/20 space-y-2.5">
           <div className="flex items-center gap-1.5 text-xs font-medium text-amber-700 dark:text-amber-400">

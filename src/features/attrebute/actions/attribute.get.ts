@@ -1,3 +1,4 @@
+"use server";
 import { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/src/lib/prisma";
 type GetAttributeResult =

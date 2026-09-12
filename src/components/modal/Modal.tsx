@@ -66,7 +66,7 @@ export default function Modal({
     >
       <div
         className={`relative w-full max-w-lg dark:bg-neutral-900 bg-neutral-200 border border-slate-700/50 rounded-2xl
-             shadow-2xl shadow-blue-500/10 transition-all duration-150 delay-200 my-3
+             shadow-2xl shadow-blue-500/10 transition-all duration-150 delay-200 my-3 max-h-150 overflow-y-auto
             ${
               open
                 ? "scale-100 visible opacity-100"

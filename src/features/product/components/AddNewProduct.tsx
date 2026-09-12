@@ -5,7 +5,9 @@ import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import Modal from "@/src/components/modal/Modal";
 import SelectCategory from "./SelectCategory";
-import FillAttributeValue from "./FillAttributeValue";
+import FillAttributeValue, {
+  SelectedAttributesState,
+} from "./FillAttributeValue";
 import { useForm } from "react-hook-form";
 import { createProductType } from "../type/product.type";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,9 +22,13 @@ function AddNewProduct({ categories }: AddProductProp) {
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
   const [error, setError] = useState<string | null>();
+  const [selectedValues, setSelectedValues] = useState<SelectedAttributesState>(
+    {},
+  );
   const nextHandler = () => setStep(2);
   const prevHandler = () => setStep(1);
   const {
+    getValues,
     setValue,
     register,
     handleSubmit,
@@ -31,6 +37,7 @@ function AddNewProduct({ categories }: AddProductProp) {
     resolver: zodResolver(createProductSchema),
     mode: "onTouched",
   });
+  console.log(selectedValues);
 
   return (
     <>
@@ -79,7 +86,11 @@ function AddNewProduct({ categories }: AddProductProp) {
             setValue={setValue}
           />
         ) : (
-          <FillAttributeValue />
+          <FillAttributeValue
+            categoryId={getValues("categoryId")}
+            selectedValues={selectedValues}
+            setSelectedValues={setSelectedValues}
+          />
         )}
 
         <div className="mt-6 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 pt-4">

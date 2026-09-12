@@ -60,13 +60,13 @@ export default function Modal({
   }
   return createPortal(
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 dark:bg-slate-900/10 backdrop-blur-sm p-4 transition-all duration-300
+      className={`fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-900/70 dark:bg-slate-900/10 backdrop-blur-sm p-4 transition-all duration-300
         ${open ? "visible opacity-100" : "opacity-0 invisible"}`}
       onClick={() => setClose(false)}
     >
       <div
         className={`relative w-full max-w-lg dark:bg-neutral-900 bg-neutral-200 border border-slate-700/50 rounded-2xl
-             shadow-2xl shadow-blue-500/10 transition-all duration-150 delay-200
+             shadow-2xl shadow-blue-500/10 transition-all duration-150 delay-200 my-3
             ${
               open
                 ? "scale-100 visible opacity-100"

@@ -19,12 +19,11 @@ type AddProductProp = {
 function AddNewProduct({ categories }: AddProductProp) {
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
-  const [categoryId, setCategoryId] = useState<null | string>();
   const [error, setError] = useState<string | null>();
   const nextHandler = () => setStep(2);
   const prevHandler = () => setStep(1);
-  const onSelectCategoryId = (id: string) => setCategoryId(id);
   const {
+    setValue,
     register,
     handleSubmit,
     formState: { errors },
@@ -74,10 +73,10 @@ function AddNewProduct({ categories }: AddProductProp) {
         {step === 1 ? (
           <SelectCategory
             categories={categories}
-            onSelect={onSelectCategoryId}
             register={register}
             handleSubmit={handleSubmit}
             errors={errors}
+            setValue={setValue}
           />
         ) : (
           <FillAttributeValue />
@@ -102,7 +101,9 @@ function AddNewProduct({ categories }: AddProductProp) {
           {step === 1 ? (
             <button
               type="button"
-              disabled={!!(errors.name || errors.description || !categoryId)}
+              disabled={
+                !!(errors.name || errors.description || errors.categoryId)
+              }
               onClick={nextHandler}
               className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all
                  bg-teal-600 hover:bg-teal-700 active:scale-95 

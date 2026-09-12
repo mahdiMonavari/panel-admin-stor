@@ -11,4 +11,5 @@ export const createProductSchema = z.object({
     .trim()
     .min(30, { message: "توضیحات کوتاه محصول باید حداقل ۳ کاراکتر باشد" })
     .max(40, "توضیحات کوتاه محصول باید حداکثر 40 کاراکتر باشد"),
+  categoryId: z.string().uuid(),
 });

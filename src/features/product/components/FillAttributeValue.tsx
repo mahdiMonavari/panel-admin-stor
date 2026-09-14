@@ -6,13 +6,16 @@ import { ClipLoader } from "react-spinners";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
 import { Prisma } from "@/generated/prisma/client";
 import { CategoryWithRelations } from "../../category/type/category.type";
+import { useFormContext } from "react-hook-form";
+import { createProductType } from "../type/product.type";
+import { register } from "module";
 
 type AttributeItem = Prisma.AttributeGetPayload<{
   include: { values: true };
 }>;
 
 export type SelectedAttributesState = {
-  [attributeId: string]: string | string[];
+  [attributeId: string]: string | string[] | number;
 };
 
 interface FillAttributeValueProps {
@@ -27,11 +30,17 @@ function FillAttributeValue({
   const [attributes, setAttributes] = useState<AttributeItem[]>([]);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<null | string>(null);
-
+  const {
+    setValue,
+    formState: { errors },
+    getValues,
+    register,
+  } = useFormContext<createProductType>();
   useEffect(() => {
     if (!categoryId) return;
 
     setError(null);
+    console.log(getValues("attributes"));
 
     startTransition(async () => {
       try {
@@ -49,8 +58,6 @@ function FillAttributeValue({
             break;
           }
         }
-        console.log(path);
-
         const res = await GetAttributesByCategoryId(path);
 
         if (!res.success) {
@@ -67,9 +74,41 @@ function FillAttributeValue({
     });
   }, [categoryId]);
 
-  const handleToggleSelectValue = (attributeId: string, valId: string) => {};
+  const handleToggleSelectValue = (attributeId: string, valId: string) => {
+    const prevAttributes = (getValues("attributes") || {}) as Record<
+      string,
+      string[]
+    >;
+    const currentValues = prevAttributes[attributeId] || [];
 
-  const handleInputChange = (attributeId: string, val: string) => {};
+    // بررسی تکراری بودن جهت toggle
+    const isSelected = currentValues.includes(valId);
+    const updatedValues = isSelected
+      ? currentValues.filter((id) => id !== valId)
+      : [...currentValues, valId];
+
+    // کپی سطحی تمیز برای پرهیز از mutate مستقیم
+    const newAttributes = { ...prevAttributes };
+
+    // اگر مقداری باقی نمونده بود، ویژگی کلاً حذف بشه؛ در غیر این صورت مقدار جدید بشینه
+    if (updatedValues.length === 0) {
+      delete newAttributes[attributeId];
+    } else {
+      newAttributes[attributeId] = updatedValues;
+    }
+
+    setValue("attributes", newAttributes, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    console.log(getValues("attributes"));
+  };
+
+  const handleInputChange = (attributeId: string, val: string) => {
+    const prevAttributes = getValues("attributes") || {};
+    setValue("attributes", { ...prevAttributes, [attributeId]: val });
+    console.log(getValues("attributes"));
+  };
 
   if (isPending) {
     return (
@@ -83,7 +122,7 @@ function FillAttributeValue({
   if (error) {
     return (
       <div className="flex items-center gap-2.5 p-4 rounded-xl border border-rose-200 bg-rose-50 dark:bg-rose-950/30 dark:border-rose-900 text-rose-600 dark:text-rose-400 text-sm">
-        <HiOutlineExclamationCircle className="w-5 h-5 flex-shrink-0" />
+        <HiOutlineExclamationCircle className="w-5 h-5 shrink-0" />
         <span>{error}</span>
       </div>
     );
@@ -102,11 +141,6 @@ function FillAttributeValue({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {attributes.map((attr) => {
           const isSelectType = attr.type === "SELECT";
-
-          const currentSelected = [];
-
-          const currentInputVal = "";
-
           return (
             <div
               key={attr.id}
@@ -148,8 +182,11 @@ function FillAttributeValue({
                 <div className="grid grid-cols-2 gap-1">
                   {attr.values && attr.values.length > 0 ? (
                     attr.values.map((item) => {
-                      const isSelected = currentSelected.includes(item.id);
-
+                      const x = getValues("attributes") as Record<
+                        string,
+                        string[]
+                      >;
+                      const isSelected = x[attr.id].includes(item.id);
                       return (
                         <button
                           key={item.id}
@@ -194,7 +231,7 @@ function FillAttributeValue({
               ) : (
                 <input
                   type={attr.type === "NUMBER" ? "number" : "text"}
-                  value={currentInputVal}
+                  {...register(`attributes.${attr.id}`)}
                   onChange={(e) => handleInputChange(attr.id, e.target.value)}
                   placeholder="مقدار را وارد کنید..."
                   className="

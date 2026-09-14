@@ -8,7 +8,7 @@ import SelectCategory from "./SelectCategory";
 import FillAttributeValue, {
   SelectedAttributesState,
 } from "./FillAttributeValue";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { createProductType } from "../type/product.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createProductSchema } from "../shema/create.product";
@@ -22,6 +22,18 @@ function AddNewProduct({ categories }: AddProductProp) {
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
   const [error, setError] = useState<string | null>();
+  const methode = useForm<createProductType>({
+    resolver: zodResolver(createProductSchema),
+    mode: "onTouched",
+  });
+  const {
+    watch,
+    trigger,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = methode;
+  const cateId = watch("categoryId");
   const nextHandler = async () => {
     const isValid = await trigger(["categoryId", "description", "name"]);
     if (isValid) {
@@ -29,19 +41,6 @@ function AddNewProduct({ categories }: AddProductProp) {
     }
   };
   const prevHandler = () => setStep(1);
-  const methode = useForm<createProductType>({
-    resolver: zodResolver(createProductSchema),
-    mode: "onTouched",
-  });
-  const {
-    getValues,
-    watch,
-    trigger,
-    setValue,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = methode;
 
   return (
     <>
@@ -84,13 +83,14 @@ function AddNewProduct({ categories }: AddProductProp) {
         {error ? (
           <span>{error}</span>
         ) : (
-          <>
+          <FormProvider {...methode}>
             {step === 1 ? (
               <SelectCategory categories={categories} />
             ) : (
-              <FillAttributeValue categoryId={getValues("categoryId")} />
+              //   <FillAttributeValue categoryId={getValues("categoryId")} />
+              ""
             )}
-          </>
+          </FormProvider>
         )}
 
         <div className="mt-6 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 pt-4">
@@ -112,9 +112,6 @@ function AddNewProduct({ categories }: AddProductProp) {
           {step === 1 ? (
             <button
               type="button"
-              disabled={
-                !!(errors.name || errors.description || errors.categoryId)
-              }
               onClick={nextHandler}
               className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all
                  bg-teal-600 hover:bg-teal-700 active:scale-95 

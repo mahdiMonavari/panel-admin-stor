@@ -13,6 +13,7 @@ import {
 } from "../../category/type/category.type";
 import {
   FieldErrors,
+  useFormContext,
   UseFormHandleSubmit,
   UseFormRegister,
   UseFormSetValue,
@@ -56,21 +57,14 @@ const getCategoryPath = (
 
 type SelectCategoryProps = {
   categories: CategoryWithRelations[];
-  onSelect?: (categoryId: string) => void;
-  register: UseFormRegister<createProductType>;
-  handleSubmit: UseFormHandleSubmit<createProductType>;
-  errors: FieldErrors<createProductType>;
-  setValue: UseFormSetValue<createProductType>;
 };
 
-export default function SelectCategory({
-  categories,
-  onSelect,
-  errors,
-  handleSubmit,
-  register,
-  setValue,
-}: SelectCategoryProps) {
+export default function SelectCategory({ categories }: SelectCategoryProps) {
+  const {
+    register,
+    formState: { errors },
+    setValue,
+  } = useFormContext<createProductType>();
   const [currentCategoryId, setCurrentCategoryId] = useState("");
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -131,7 +125,6 @@ export default function SelectCategory({
         shouldValidate: true,
         shouldDirty: true,
       });
-      onSelect?.(cate.id);
     } else {
       setValue("categoryId", "", {
         shouldValidate: true,

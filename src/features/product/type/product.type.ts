@@ -1,7 +1,12 @@
 import { Prisma } from "@/generated/prisma/client";
-import z from "zod";
-import { createProductSchema } from "../shema/create.product";
 
 export type prodcut = Prisma.ProductGetPayload<{}>;
 
-export type createProductType = z.infer<typeof createProductSchema>;
+type ProductAttributes = Record<string, string | string[] | number>;
+
+export type createProductType = {
+  name: string;
+  description: string;
+  categoryId: string;
+  attributes: ProductAttributes;
+};

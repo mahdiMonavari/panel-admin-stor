@@ -1,18 +1,20 @@
 "use client";
 import NavyButton from "@/src/components/navyButton/NavyButton";
 import { CategoryWithRelations } from "../../category/type/category.type";
-import { useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { FaPlus } from "react-icons/fa";
 import Modal from "@/src/components/modal/Modal";
 import SelectCategory from "./SelectCategory";
 import FillAttributeValue, {
+  AttributeItem,
   SelectedAttributesState,
 } from "./FillAttributeValue";
 import { FormProvider, useForm } from "react-hook-form";
 import { createProductType } from "../type/product.type";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createProductSchema } from "../shema/create.product";
 import { HiArrowLeft, HiArrowRight, HiCheck } from "react-icons/hi2";
+import { productBaseSchema } from "../shema/create.product";
+import { GetAttributesByCategoryId } from "../../attrebute/actions/attributesById.get";
 
 type AddProductProp = {
   categories: CategoryWithRelations[];
@@ -20,20 +22,60 @@ type AddProductProp = {
 
 function AddNewProduct({ categories }: AddProductProp) {
   const [isOpen, setIsOpen] = useState(false);
+  const [attributes, setAttributes] = useState<AttributeItem[]>([]);
+  const [isPending, startTransition] = useTransition();
   const [step, setStep] = useState<1 | 2>(1);
   const [error, setError] = useState<string | null>();
   const methode = useForm<createProductType>({
-    resolver: zodResolver(createProductSchema),
+    resolver: zodResolver(productBaseSchema),
     mode: "onTouched",
   });
   const {
     watch,
     trigger,
     register,
+    getValues,
     handleSubmit,
     formState: { errors },
   } = methode;
-  const cateId = watch("categoryId");
+  const categoryId = watch("categoryId");
+  useEffect(() => {
+    if (!categoryId) return;
+
+    setError(null);
+    console.log(getValues("attributes"));
+
+    startTransition(async () => {
+      try {
+        const map = new Map<string, CategoryWithRelations>();
+        categories.map((category) => map.set(category.id, category));
+        const path: string[] = [];
+        let currentId: string | undefined = categoryId;
+
+        while (currentId) {
+          const node = map.get(currentId);
+          if (node) {
+            path.push(node.id);
+            currentId = node.parentId ?? undefined;
+          } else {
+            break;
+          }
+        }
+        const res = await GetAttributesByCategoryId(path);
+
+        if (!res.success) {
+          setError(res.message || "خطا در دریافت ویژگی‌ها");
+          return;
+        }
+
+        if (res.attributes) {
+          setAttributes(res.attributes);
+        }
+      } catch {
+        setError("مشکلی در برقراری ارتباط با سرور رخ داد");
+      }
+    });
+  }, [categoryId]);
   const nextHandler = async () => {
     const isValid = await trigger(["categoryId", "description", "name"]);
     if (isValid) {
@@ -87,7 +129,7 @@ function AddNewProduct({ categories }: AddProductProp) {
             {step === 1 ? (
               <SelectCategory categories={categories} />
             ) : (
-              <FillAttributeValue categoryId={cateId} categories={categories} />
+              <FillAttributeValue attributes={attributes} />
             )}
           </FormProvider>
         )}

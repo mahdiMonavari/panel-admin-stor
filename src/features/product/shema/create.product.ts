@@ -1,8 +1,6 @@
 import z from "zod";
 
-// type AttributeValue = Record<string , >
-
-export const createProductSchema = z.object({
+export const productBaseSchema = z.object({
   name: z
     .string()
     .trim()
@@ -14,8 +12,4 @@ export const createProductSchema = z.object({
     .min(3, { message: "توضیحات کوتاه محصول باید حداقل ۳ کاراکتر باشد" })
     .max(40, "توضیحات کوتاه محصول باید حداکثر 40 کاراکتر باشد"),
   categoryId: z.string().uuid(),
-  attributes: z.record(
-    z.string(),
-    z.union([z.string(), z.array(z.string()), z.number()]),
-  ),
 });

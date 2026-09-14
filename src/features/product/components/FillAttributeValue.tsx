@@ -1,16 +1,14 @@
 "use client";
 
-import React, { useEffect, useState, useTransition } from "react";
-import { GetAttributesByCategoryId } from "../../attrebute/actions/attributesById.get";
+import { useState, useTransition } from "react";
 import { ClipLoader } from "react-spinners";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
 import { Prisma } from "@/generated/prisma/client";
 import { CategoryWithRelations } from "../../category/type/category.type";
 import { useFormContext } from "react-hook-form";
 import { createProductType } from "../type/product.type";
-import { register } from "module";
 
-type AttributeItem = Prisma.AttributeGetPayload<{
+export type AttributeItem = Prisma.AttributeGetPayload<{
   include: { values: true };
 }>;
 
@@ -19,60 +17,16 @@ export type SelectedAttributesState = {
 };
 
 interface FillAttributeValueProps {
-  categoryId: string;
-  categories: CategoryWithRelations[];
+  attributes: AttributeItem[];
 }
 
-function FillAttributeValue({
-  categoryId,
-  categories,
-}: FillAttributeValueProps) {
-  const [attributes, setAttributes] = useState<AttributeItem[]>([]);
-  const [isPending, startTransition] = useTransition();
-  const [error, setError] = useState<null | string>(null);
+function FillAttributeValue({ attributes }: FillAttributeValueProps) {
   const {
     setValue,
     formState: { errors },
     getValues,
     register,
   } = useFormContext<createProductType>();
-  useEffect(() => {
-    if (!categoryId) return;
-
-    setError(null);
-    console.log(getValues("attributes"));
-
-    startTransition(async () => {
-      try {
-        const map = new Map<string, CategoryWithRelations>();
-        categories.map((category) => map.set(category.id, category));
-        const path: string[] = [];
-        let currentId: string | undefined = categoryId;
-
-        while (currentId) {
-          const node = map.get(currentId);
-          if (node) {
-            path.push(node.id);
-            currentId = node.parentId ?? undefined;
-          } else {
-            break;
-          }
-        }
-        const res = await GetAttributesByCategoryId(path);
-
-        if (!res.success) {
-          setError(res.message || "خطا در دریافت ویژگی‌ها");
-          return;
-        }
-
-        if (res.attributes) {
-          setAttributes(res.attributes);
-        }
-      } catch {
-        setError("مشکلی در برقراری ارتباط با سرور رخ داد");
-      }
-    });
-  }, [categoryId]);
 
   const handleToggleSelectValue = (attributeId: string, valId: string) => {
     const prevAttributes = (getValues("attributes") || {}) as Record<
@@ -109,24 +63,6 @@ function FillAttributeValue({
     setValue("attributes", { ...prevAttributes, [attributeId]: val });
     console.log(getValues("attributes"));
   };
-
-  if (isPending) {
-    return (
-      <div className="flex flex-col items-center justify-center py-12 gap-3 text-slate-400">
-        <ClipLoader size={26} color="oklch(55% 0.18 250)" />
-        <span className="text-sm">در حال بارگذاری ویژگی‌های دسته...</span>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center gap-2.5 p-4 rounded-xl border border-rose-200 bg-rose-50 dark:bg-rose-950/30 dark:border-rose-900 text-rose-600 dark:text-rose-400 text-sm">
-        <HiOutlineExclamationCircle className="w-5 h-5 shrink-0" />
-        <span>{error}</span>
-      </div>
-    );
-  }
 
   if (!attributes.length) {
     return (
@@ -182,11 +118,12 @@ function FillAttributeValue({
                 <div className="grid grid-cols-2 gap-1">
                   {attr.values && attr.values.length > 0 ? (
                     attr.values.map((item) => {
-                      const x = getValues("attributes") as Record<
+                      const x = (getValues("attributes") || {}) as Record<
                         string,
                         string[]
                       >;
-                      const isSelected = x[attr.id].includes(item.id);
+                      const currentValues = x[attr.id] || [];
+                      const isSelected = currentValues.includes(item.id);
                       return (
                         <button
                           key={item.id}

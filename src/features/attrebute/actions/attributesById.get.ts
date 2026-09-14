@@ -13,29 +13,37 @@ type GetAttributesByCategoryIdResult =
     };
 
 export async function GetAttributesByCategoryId(
-  id: string,
+  id: string[],
 ): Promise<GetAttributesByCategoryIdResult> {
-  if (typeof id !== "string") {
-    return {
-      success: false,
-      message: "دیتا وارد شده صحیح نمیباشد",
-    };
-  }
-  const rawData = await prisma.categoryAttribute.findMany({
-    where: {
-      categoryId: id,
-    },
-    select: {
-      attribute: {
-        include: {
-          values: true,
+  try {
+    if (!id || id.length === 0) {
+      return { success: true, attributes: [] };
+    }
+
+    const attributes = await prisma.attribute.findMany({
+      where: {
+        categories: {
+          some: {
+            categoryId: {
+              in: id,
+            },
+          },
         },
       },
-    },
-  });
-  const attributes = rawData.map((item) => item.attribute);
-  return {
-    success: true,
-    attributes,
-  };
+      include: {
+        values: true,
+      },
+    });
+
+    return {
+      success: true,
+      attributes,
+    };
+  } catch (error) {
+    console.error("Error fetching attributes:", error);
+    return {
+      success: false,
+      message: "خطا در دریافت ویژگی‌ها",
+    };
+  }
 }

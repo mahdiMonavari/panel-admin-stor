@@ -87,8 +87,7 @@ function AddNewProduct({ categories }: AddProductProp) {
             {step === 1 ? (
               <SelectCategory categories={categories} />
             ) : (
-              //   <FillAttributeValue categoryId={getValues("categoryId")} />
-              ""
+              <FillAttributeValue categoryId={cateId} categories={categories} />
             )}
           </FormProvider>
         )}

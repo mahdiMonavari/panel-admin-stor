@@ -11,13 +11,7 @@ import {
   CategoryTreeNodeType,
   CategoryWithRelations,
 } from "../../category/type/category.type";
-import {
-  FieldErrors,
-  useFormContext,
-  UseFormHandleSubmit,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { createProductType } from "../type/product.type";
 import { createProductInput } from "./inputs/create";
 import Input from "@/src/components/input/Input";

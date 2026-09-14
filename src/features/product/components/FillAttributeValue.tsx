@@ -5,6 +5,7 @@ import { GetAttributesByCategoryId } from "../../attrebute/actions/attributesByI
 import { ClipLoader } from "react-spinners";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
 import { Prisma } from "@/generated/prisma/client";
+import { CategoryWithRelations } from "../../category/type/category.type";
 
 type AttributeItem = Prisma.AttributeGetPayload<{
   include: { values: true };
@@ -16,16 +17,12 @@ export type SelectedAttributesState = {
 
 interface FillAttributeValueProps {
   categoryId: string;
-  selectedValues: SelectedAttributesState;
-  setSelectedValues: React.Dispatch<
-    React.SetStateAction<SelectedAttributesState>
-  >;
+  categories: CategoryWithRelations[];
 }
 
 function FillAttributeValue({
   categoryId,
-  selectedValues,
-  setSelectedValues,
+  categories,
 }: FillAttributeValueProps) {
   const [attributes, setAttributes] = useState<AttributeItem[]>([]);
   const [isPending, startTransition] = useTransition();
@@ -38,7 +35,23 @@ function FillAttributeValue({
 
     startTransition(async () => {
       try {
-        const res = await GetAttributesByCategoryId(categoryId);
+        const map = new Map<string, CategoryWithRelations>();
+        categories.map((category) => map.set(category.id, category));
+        const path: string[] = [];
+        let currentId: string | undefined = categoryId;
+
+        while (currentId) {
+          const node = map.get(currentId);
+          if (node) {
+            path.push(node.id);
+            currentId = node.parentId ?? undefined;
+          } else {
+            break;
+          }
+        }
+        console.log(path);
+
+        const res = await GetAttributesByCategoryId(path);
 
         if (!res.success) {
           setError(res.message || "خطا در دریافت ویژگی‌ها");
@@ -54,29 +67,9 @@ function FillAttributeValue({
     });
   }, [categoryId]);
 
-  const handleToggleSelectValue = (attributeId: string, valId: string) => {
-    setSelectedValues((prev) => {
-      const current = (prev[attributeId] as string[]) || [];
-      const isSelected = current.includes(valId);
+  const handleToggleSelectValue = (attributeId: string, valId: string) => {};
 
-      const updatedList = isSelected
-        ? current.filter((id) => id !== valId)
-        : [...current, valId];
-
-      const nextState = {
-        ...prev,
-        [attributeId]: updatedList,
-      };
-      return nextState;
-    });
-  };
-
-  const handleInputChange = (attributeId: string, val: string) => {
-    setSelectedValues((prev) => {
-      const nextState = { ...prev, [attributeId]: val };
-      return nextState;
-    });
-  };
+  const handleInputChange = (attributeId: string, val: string) => {};
 
   if (isPending) {
     return (
@@ -110,9 +103,9 @@ function FillAttributeValue({
         {attributes.map((attr) => {
           const isSelectType = attr.type === "SELECT";
 
-          const currentSelected = (selectedValues[attr.id] as string[]) || [];
+          const currentSelected = [];
 
-          const currentInputVal = (selectedValues[attr.id] as string) || "";
+          const currentInputVal = "";
 
           return (
             <div

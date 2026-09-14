@@ -21,16 +21,19 @@ export async function GetAttributesByCategoryId(
       message: "دیتا وارد شده صحیح نمیباشد",
     };
   }
-  const attributes = await prisma.attribute.findMany({
-    include: {
-      values: true,
-      categories: {
-        where: {
-          categoryId: id,
+  const rawData = await prisma.categoryAttribute.findMany({
+    where: {
+      categoryId: id,
+    },
+    select: {
+      attribute: {
+        include: {
+          values: true,
         },
       },
     },
   });
+  const attributes = rawData.map((item) => item.attribute);
   return {
     success: true,
     attributes,

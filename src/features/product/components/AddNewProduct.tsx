@@ -22,22 +22,26 @@ function AddNewProduct({ categories }: AddProductProp) {
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
   const [error, setError] = useState<string | null>();
-  const [selectedValues, setSelectedValues] = useState<SelectedAttributesState>(
-    {},
-  );
-  const nextHandler = () => setStep(2);
+  const nextHandler = async () => {
+    const isValid = await trigger(["categoryId", "description", "name"]);
+    if (isValid) {
+      setStep(2);
+    }
+  };
   const prevHandler = () => setStep(1);
+  const methode = useForm<createProductType>({
+    resolver: zodResolver(createProductSchema),
+    mode: "onTouched",
+  });
   const {
     getValues,
+    watch,
+    trigger,
     setValue,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<createProductType>({
-    resolver: zodResolver(createProductSchema),
-    mode: "onTouched",
-  });
-  console.log(selectedValues);
+  } = methode;
 
   return (
     <>
@@ -77,20 +81,16 @@ function AddNewProduct({ categories }: AddProductProp) {
             </span>
           </div>
         </div>
-        {step === 1 ? (
-          <SelectCategory
-            categories={categories}
-            register={register}
-            handleSubmit={handleSubmit}
-            errors={errors}
-            setValue={setValue}
-          />
+        {error ? (
+          <span>{error}</span>
         ) : (
-          <FillAttributeValue
-            categoryId={getValues("categoryId")}
-            selectedValues={selectedValues}
-            setSelectedValues={setSelectedValues}
-          />
+          <>
+            {step === 1 ? (
+              <SelectCategory categories={categories} />
+            ) : (
+              <FillAttributeValue categoryId={getValues("categoryId")} />
+            )}
+          </>
         )}
 
         <div className="mt-6 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 pt-4">

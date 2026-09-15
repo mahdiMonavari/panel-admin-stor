@@ -1,7 +1,7 @@
 "use client";
 import NavyButton from "@/src/components/navyButton/NavyButton";
 import { CategoryWithRelations } from "../../category/type/category.type";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { FaPlus } from "react-icons/fa";
 import Modal from "@/src/components/modal/Modal";
 import SelectCategory from "./SelectCategory";
@@ -13,7 +13,10 @@ import { FormProvider, useForm } from "react-hook-form";
 import { createProductType } from "../type/product.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HiArrowLeft, HiArrowRight, HiCheck } from "react-icons/hi2";
-import { productBaseSchema } from "../shema/create.product";
+import {
+  createAttributesSchema,
+  productBaseSchema,
+} from "../shema/create.product";
 import { GetAttributesByCategoryId } from "../../attrebute/actions/attributesById.get";
 
 type AddProductProp = {
@@ -26,25 +29,28 @@ function AddNewProduct({ categories }: AddProductProp) {
   const [isPending, startTransition] = useTransition();
   const [step, setStep] = useState<1 | 2>(1);
   const [error, setError] = useState<string | null>();
+  const ProductSchema = useMemo(() => {
+    return productBaseSchema.extend({
+      attributes: createAttributesSchema(attributes),
+    });
+  }, [attributes]);
   const methode = useForm<createProductType>({
-    resolver: zodResolver(productBaseSchema),
+    resolver: zodResolver(ProductSchema),
     mode: "onTouched",
   });
   const {
     watch,
     trigger,
-    register,
     getValues,
     handleSubmit,
     formState: { errors },
   } = methode;
   const categoryId = watch("categoryId");
+  console.log(errors);
+
   useEffect(() => {
     if (!categoryId) return;
-
     setError(null);
-    console.log(getValues("attributes"));
-
     startTransition(async () => {
       try {
         const map = new Map<string, CategoryWithRelations>();
@@ -83,6 +89,9 @@ function AddNewProduct({ categories }: AddProductProp) {
     }
   };
   const prevHandler = () => setStep(1);
+  const startCreateProduct = (data: createProductType) => {
+    console.log(data);
+  };
 
   return (
     <>
@@ -164,7 +173,7 @@ function AddNewProduct({ categories }: AddProductProp) {
           ) : (
             <button
               type="button"
-              //   onClick={startCreateProduct}
+              onClick={handleSubmit(startCreateProduct)}
               className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all
                  bg-teal-600 hover:bg-teal-700 active:scale-95 
                  dark:bg-teal-500 dark:hover:bg-teal-600 focus:outline-none focus:ring-4 focus:ring-teal-500/20"

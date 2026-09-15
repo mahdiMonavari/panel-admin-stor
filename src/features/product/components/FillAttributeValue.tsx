@@ -45,23 +45,17 @@ function FillAttributeValue({ attributes }: FillAttributeValueProps) {
     const newAttributes = { ...prevAttributes };
 
     // اگر مقداری باقی نمونده بود، ویژگی کلاً حذف بشه؛ در غیر این صورت مقدار جدید بشینه
-    if (updatedValues.length === 0) {
-      delete newAttributes[attributeId];
-    } else {
-      newAttributes[attributeId] = updatedValues;
-    }
+
+    newAttributes[attributeId] = updatedValues;
 
     setValue("attributes", newAttributes, {
       shouldValidate: true,
       shouldDirty: true,
     });
-    console.log(getValues("attributes"));
   };
-
   const handleInputChange = (attributeId: string, val: string) => {
     const prevAttributes = getValues("attributes") || {};
     setValue("attributes", { ...prevAttributes, [attributeId]: val });
-    console.log(getValues("attributes"));
   };
 
   if (!attributes.length) {
@@ -184,6 +178,11 @@ function FillAttributeValue({ attributes }: FillAttributeValueProps) {
                     transition
                   "
                 />
+              )}
+              {errors.attributes && errors?.attributes[attr.id] && (
+                <span className="block text-xs font-medium text-rose-500 dark:text-rose-400">
+                  {errors?.attributes[attr.id]?.message}
+                </span>
               )}
             </div>
           );

@@ -1533,6 +1533,7 @@ export const ProductScalarFieldEnum = {
   name: 'name',
   description: 'description',
   categoryId: 'categoryId',
+  isActive: 'isActive',
   infoId: 'infoId'
 } as const
 
@@ -1550,6 +1551,9 @@ export type ProductInfoScalarFieldEnum = (typeof ProductInfoScalarFieldEnum)[key
 export const ProductVariantScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
+  signature: 'signature',
+  isActive: 'isActive',
+  deletedAt: 'deletedAt',
   price: 'price',
   stock: 'stock'
 } as const
@@ -1561,7 +1565,6 @@ export const ProductStaticAttributeScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
   attributeId: 'attributeId',
-  attributeValueId: 'attributeValueId',
   value: 'value'
 } as const
 

@@ -18,6 +18,7 @@ import {
   productBaseSchema,
 } from "../shema/create.product";
 import { GetAttributesByCategoryId } from "../../attrebute/actions/attributesById.get";
+import { createProduct } from "../action/create.action";
 
 type AddProductProp = {
   categories: CategoryWithRelations[];
@@ -41,12 +42,10 @@ function AddNewProduct({ categories }: AddProductProp) {
   const {
     watch,
     trigger,
-    getValues,
     handleSubmit,
     formState: { errors },
   } = methode;
   const categoryId = watch("categoryId");
-  console.log(errors);
 
   useEffect(() => {
     if (!categoryId) return;
@@ -90,7 +89,14 @@ function AddNewProduct({ categories }: AddProductProp) {
   };
   const prevHandler = () => setStep(1);
   const startCreateProduct = (data: createProductType) => {
-    console.log(data);
+    startTransition(async () => {
+      const res = await createProduct(data, attributes);
+      if (!res.success) {
+        setError(res.message);
+        return;
+      }
+      setIsOpen(false);
+    });
   };
 
   return (

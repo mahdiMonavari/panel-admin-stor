@@ -227,9 +227,9 @@ export type ProductInfoUncheckedUpdateManyInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
 }
 
-export type ProductInfoScalarRelationFilter = {
-  is?: Prisma.ProductInfoWhereInput
-  isNot?: Prisma.ProductInfoWhereInput
+export type ProductInfoNullableScalarRelationFilter = {
+  is?: Prisma.ProductInfoWhereInput | null
+  isNot?: Prisma.ProductInfoWhereInput | null
 }
 
 export type ProductInfoCountOrderByAggregateInput = {
@@ -251,10 +251,12 @@ export type ProductInfoCreateNestedOneWithoutProductInput = {
   connect?: Prisma.ProductInfoWhereUniqueInput
 }
 
-export type ProductInfoUpdateOneRequiredWithoutProductNestedInput = {
+export type ProductInfoUpdateOneWithoutProductNestedInput = {
   create?: Prisma.XOR<Prisma.ProductInfoCreateWithoutProductInput, Prisma.ProductInfoUncheckedCreateWithoutProductInput>
   connectOrCreate?: Prisma.ProductInfoCreateOrConnectWithoutProductInput
   upsert?: Prisma.ProductInfoUpsertWithoutProductInput
+  disconnect?: Prisma.ProductInfoWhereInput | boolean
+  delete?: Prisma.ProductInfoWhereInput | boolean
   connect?: Prisma.ProductInfoWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProductInfoUpdateToOneWithWhereWithoutProductInput, Prisma.ProductInfoUpdateWithoutProductInput>, Prisma.ProductInfoUncheckedUpdateWithoutProductInput>
 }

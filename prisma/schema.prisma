@@ -94,8 +94,7 @@ model AttributeValue {
   code        String?
   attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
 
-  variantValues    ProductVariantAttributeValue[]
-  staticAttributes ProductStaticAttribute[]
+  variantValues    ProductVariantAttributeValue[]  
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -113,14 +112,14 @@ model CategoryAttribute {
 
 // ---------- محصول ----------
 model Product {
-  id               String      @id @default(uuid())
+  id               String       @id @default(uuid())
   name             String
   description      String
   categoryId       String
-  category         Category    @relation(fields: [categoryId], references: [id])
-
-  infoId           String      @unique
-  info             ProductInfo @relation(fields: [infoId], references: [id], onDelete: Cascade)
+  category         Category     @relation(fields: [categoryId], references: [id])
+  isActive         Boolean      @default(false)
+  infoId           String?      @unique
+  info             ProductInfo? @relation(fields: [infoId], references: [id], onDelete: Cascade)
 
   variants         ProductVariant[]
   staticAttributes ProductStaticAttribute[]
@@ -139,22 +138,26 @@ model ProductVariant {
   productId String
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  price  Decimal
-  stock  Int
+  signature String
+  isActive  Boolean @default(false)
+  deletedAt DateTime?
+
+  price  Decimal?
+  stock  Int?
   values ProductVariantAttributeValue[]
+
+  @@unique([productId, signature])
+  @@index([productId, isActive])
 }
+
 
 // ---------- ویژگی ثابت محصول ----------
 model ProductStaticAttribute {
   id               String @id @default(uuid())
   productId        String
-  attributeId      String
-  attributeValueId String?
-
+  attributeId      String  
   product        Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
   attribute      Attribute       @relation(fields: [attributeId], references: [id])
-  attributeValue AttributeValue? @relation(fields: [attributeValueId], references: [id], onDelete: SetNull)
-
   value String?
 
   @@unique([productId, attributeId])

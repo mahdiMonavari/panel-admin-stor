@@ -200,7 +200,6 @@ export type AttributeValueWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"AttributeValue"> | Date | string
   attribute?: Prisma.XOR<Prisma.AttributeScalarRelationFilter, Prisma.AttributeWhereInput>
   variantValues?: Prisma.ProductVariantAttributeValueListRelationFilter
-  staticAttributes?: Prisma.ProductStaticAttributeListRelationFilter
 }
 
 export type AttributeValueOrderByWithRelationInput = {
@@ -213,7 +212,6 @@ export type AttributeValueOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   attribute?: Prisma.AttributeOrderByWithRelationInput
   variantValues?: Prisma.ProductVariantAttributeValueOrderByRelationAggregateInput
-  staticAttributes?: Prisma.ProductStaticAttributeOrderByRelationAggregateInput
 }
 
 export type AttributeValueWhereUniqueInput = Prisma.AtLeast<{
@@ -230,7 +228,6 @@ export type AttributeValueWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"AttributeValue"> | Date | string
   attribute?: Prisma.XOR<Prisma.AttributeScalarRelationFilter, Prisma.AttributeWhereInput>
   variantValues?: Prisma.ProductVariantAttributeValueListRelationFilter
-  staticAttributes?: Prisma.ProductStaticAttributeListRelationFilter
 }, "id" | "attributeId_value">
 
 export type AttributeValueOrderByWithAggregationInput = {
@@ -268,7 +265,6 @@ export type AttributeValueCreateInput = {
   updatedAt?: Date | string
   attribute: Prisma.AttributeCreateNestedOneWithoutValuesInput
   variantValues?: Prisma.ProductVariantAttributeValueCreateNestedManyWithoutAttributeValueInput
-  staticAttributes?: Prisma.ProductStaticAttributeCreateNestedManyWithoutAttributeValueInput
 }
 
 export type AttributeValueUncheckedCreateInput = {
@@ -280,7 +276,6 @@ export type AttributeValueUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   variantValues?: Prisma.ProductVariantAttributeValueUncheckedCreateNestedManyWithoutAttributeValueInput
-  staticAttributes?: Prisma.ProductStaticAttributeUncheckedCreateNestedManyWithoutAttributeValueInput
 }
 
 export type AttributeValueUpdateInput = {
@@ -292,7 +287,6 @@ export type AttributeValueUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attribute?: Prisma.AttributeUpdateOneRequiredWithoutValuesNestedInput
   variantValues?: Prisma.ProductVariantAttributeValueUpdateManyWithoutAttributeValueNestedInput
-  staticAttributes?: Prisma.ProductStaticAttributeUpdateManyWithoutAttributeValueNestedInput
 }
 
 export type AttributeValueUncheckedUpdateInput = {
@@ -304,7 +298,6 @@ export type AttributeValueUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   variantValues?: Prisma.ProductVariantAttributeValueUncheckedUpdateManyWithoutAttributeValueNestedInput
-  staticAttributes?: Prisma.ProductStaticAttributeUncheckedUpdateManyWithoutAttributeValueNestedInput
 }
 
 export type AttributeValueCreateManyInput = {
@@ -381,11 +374,6 @@ export type AttributeValueMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type AttributeValueNullableScalarRelationFilter = {
-  is?: Prisma.AttributeValueWhereInput | null
-  isNot?: Prisma.AttributeValueWhereInput | null
-}
-
 export type AttributeValueScalarRelationFilter = {
   is?: Prisma.AttributeValueWhereInput
   isNot?: Prisma.AttributeValueWhereInput
@@ -433,22 +421,6 @@ export type AttributeValueUncheckedUpdateManyWithoutAttributeNestedInput = {
   deleteMany?: Prisma.AttributeValueScalarWhereInput | Prisma.AttributeValueScalarWhereInput[]
 }
 
-export type AttributeValueCreateNestedOneWithoutStaticAttributesInput = {
-  create?: Prisma.XOR<Prisma.AttributeValueCreateWithoutStaticAttributesInput, Prisma.AttributeValueUncheckedCreateWithoutStaticAttributesInput>
-  connectOrCreate?: Prisma.AttributeValueCreateOrConnectWithoutStaticAttributesInput
-  connect?: Prisma.AttributeValueWhereUniqueInput
-}
-
-export type AttributeValueUpdateOneWithoutStaticAttributesNestedInput = {
-  create?: Prisma.XOR<Prisma.AttributeValueCreateWithoutStaticAttributesInput, Prisma.AttributeValueUncheckedCreateWithoutStaticAttributesInput>
-  connectOrCreate?: Prisma.AttributeValueCreateOrConnectWithoutStaticAttributesInput
-  upsert?: Prisma.AttributeValueUpsertWithoutStaticAttributesInput
-  disconnect?: Prisma.AttributeValueWhereInput | boolean
-  delete?: Prisma.AttributeValueWhereInput | boolean
-  connect?: Prisma.AttributeValueWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.AttributeValueUpdateToOneWithWhereWithoutStaticAttributesInput, Prisma.AttributeValueUpdateWithoutStaticAttributesInput>, Prisma.AttributeValueUncheckedUpdateWithoutStaticAttributesInput>
-}
-
 export type AttributeValueCreateNestedOneWithoutVariantValuesInput = {
   create?: Prisma.XOR<Prisma.AttributeValueCreateWithoutVariantValuesInput, Prisma.AttributeValueUncheckedCreateWithoutVariantValuesInput>
   connectOrCreate?: Prisma.AttributeValueCreateOrConnectWithoutVariantValuesInput
@@ -471,7 +443,6 @@ export type AttributeValueCreateWithoutAttributeInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   variantValues?: Prisma.ProductVariantAttributeValueCreateNestedManyWithoutAttributeValueInput
-  staticAttributes?: Prisma.ProductStaticAttributeCreateNestedManyWithoutAttributeValueInput
 }
 
 export type AttributeValueUncheckedCreateWithoutAttributeInput = {
@@ -482,7 +453,6 @@ export type AttributeValueUncheckedCreateWithoutAttributeInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   variantValues?: Prisma.ProductVariantAttributeValueUncheckedCreateNestedManyWithoutAttributeValueInput
-  staticAttributes?: Prisma.ProductStaticAttributeUncheckedCreateNestedManyWithoutAttributeValueInput
 }
 
 export type AttributeValueCreateOrConnectWithoutAttributeInput = {
@@ -524,66 +494,6 @@ export type AttributeValueScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"AttributeValue"> | Date | string
 }
 
-export type AttributeValueCreateWithoutStaticAttributesInput = {
-  id?: string
-  value: string
-  label: string
-  code?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  attribute: Prisma.AttributeCreateNestedOneWithoutValuesInput
-  variantValues?: Prisma.ProductVariantAttributeValueCreateNestedManyWithoutAttributeValueInput
-}
-
-export type AttributeValueUncheckedCreateWithoutStaticAttributesInput = {
-  id?: string
-  value: string
-  label: string
-  attributeId: string
-  code?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  variantValues?: Prisma.ProductVariantAttributeValueUncheckedCreateNestedManyWithoutAttributeValueInput
-}
-
-export type AttributeValueCreateOrConnectWithoutStaticAttributesInput = {
-  where: Prisma.AttributeValueWhereUniqueInput
-  create: Prisma.XOR<Prisma.AttributeValueCreateWithoutStaticAttributesInput, Prisma.AttributeValueUncheckedCreateWithoutStaticAttributesInput>
-}
-
-export type AttributeValueUpsertWithoutStaticAttributesInput = {
-  update: Prisma.XOR<Prisma.AttributeValueUpdateWithoutStaticAttributesInput, Prisma.AttributeValueUncheckedUpdateWithoutStaticAttributesInput>
-  create: Prisma.XOR<Prisma.AttributeValueCreateWithoutStaticAttributesInput, Prisma.AttributeValueUncheckedCreateWithoutStaticAttributesInput>
-  where?: Prisma.AttributeValueWhereInput
-}
-
-export type AttributeValueUpdateToOneWithWhereWithoutStaticAttributesInput = {
-  where?: Prisma.AttributeValueWhereInput
-  data: Prisma.XOR<Prisma.AttributeValueUpdateWithoutStaticAttributesInput, Prisma.AttributeValueUncheckedUpdateWithoutStaticAttributesInput>
-}
-
-export type AttributeValueUpdateWithoutStaticAttributesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  value?: Prisma.StringFieldUpdateOperationsInput | string
-  label?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  attribute?: Prisma.AttributeUpdateOneRequiredWithoutValuesNestedInput
-  variantValues?: Prisma.ProductVariantAttributeValueUpdateManyWithoutAttributeValueNestedInput
-}
-
-export type AttributeValueUncheckedUpdateWithoutStaticAttributesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  value?: Prisma.StringFieldUpdateOperationsInput | string
-  label?: Prisma.StringFieldUpdateOperationsInput | string
-  attributeId?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  variantValues?: Prisma.ProductVariantAttributeValueUncheckedUpdateManyWithoutAttributeValueNestedInput
-}
-
 export type AttributeValueCreateWithoutVariantValuesInput = {
   id?: string
   value: string
@@ -592,7 +502,6 @@ export type AttributeValueCreateWithoutVariantValuesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   attribute: Prisma.AttributeCreateNestedOneWithoutValuesInput
-  staticAttributes?: Prisma.ProductStaticAttributeCreateNestedManyWithoutAttributeValueInput
 }
 
 export type AttributeValueUncheckedCreateWithoutVariantValuesInput = {
@@ -603,7 +512,6 @@ export type AttributeValueUncheckedCreateWithoutVariantValuesInput = {
   code?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  staticAttributes?: Prisma.ProductStaticAttributeUncheckedCreateNestedManyWithoutAttributeValueInput
 }
 
 export type AttributeValueCreateOrConnectWithoutVariantValuesInput = {
@@ -630,7 +538,6 @@ export type AttributeValueUpdateWithoutVariantValuesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attribute?: Prisma.AttributeUpdateOneRequiredWithoutValuesNestedInput
-  staticAttributes?: Prisma.ProductStaticAttributeUpdateManyWithoutAttributeValueNestedInput
 }
 
 export type AttributeValueUncheckedUpdateWithoutVariantValuesInput = {
@@ -641,7 +548,6 @@ export type AttributeValueUncheckedUpdateWithoutVariantValuesInput = {
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  staticAttributes?: Prisma.ProductStaticAttributeUncheckedUpdateManyWithoutAttributeValueNestedInput
 }
 
 export type AttributeValueCreateManyAttributeInput = {
@@ -661,7 +567,6 @@ export type AttributeValueUpdateWithoutAttributeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   variantValues?: Prisma.ProductVariantAttributeValueUpdateManyWithoutAttributeValueNestedInput
-  staticAttributes?: Prisma.ProductStaticAttributeUpdateManyWithoutAttributeValueNestedInput
 }
 
 export type AttributeValueUncheckedUpdateWithoutAttributeInput = {
@@ -672,7 +577,6 @@ export type AttributeValueUncheckedUpdateWithoutAttributeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   variantValues?: Prisma.ProductVariantAttributeValueUncheckedUpdateManyWithoutAttributeValueNestedInput
-  staticAttributes?: Prisma.ProductStaticAttributeUncheckedUpdateManyWithoutAttributeValueNestedInput
 }
 
 export type AttributeValueUncheckedUpdateManyWithoutAttributeInput = {
@@ -691,12 +595,10 @@ export type AttributeValueUncheckedUpdateManyWithoutAttributeInput = {
 
 export type AttributeValueCountOutputType = {
   variantValues: number
-  staticAttributes: number
 }
 
 export type AttributeValueCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   variantValues?: boolean | AttributeValueCountOutputTypeCountVariantValuesArgs
-  staticAttributes?: boolean | AttributeValueCountOutputTypeCountStaticAttributesArgs
 }
 
 /**
@@ -716,13 +618,6 @@ export type AttributeValueCountOutputTypeCountVariantValuesArgs<ExtArgs extends 
   where?: Prisma.ProductVariantAttributeValueWhereInput
 }
 
-/**
- * AttributeValueCountOutputType without action
- */
-export type AttributeValueCountOutputTypeCountStaticAttributesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ProductStaticAttributeWhereInput
-}
-
 
 export type AttributeValueSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -734,7 +629,6 @@ export type AttributeValueSelect<ExtArgs extends runtime.Types.Extensions.Intern
   updatedAt?: boolean
   attribute?: boolean | Prisma.AttributeDefaultArgs<ExtArgs>
   variantValues?: boolean | Prisma.AttributeValue$variantValuesArgs<ExtArgs>
-  staticAttributes?: boolean | Prisma.AttributeValue$staticAttributesArgs<ExtArgs>
   _count?: boolean | Prisma.AttributeValueCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attributeValue"]>
 
@@ -774,7 +668,6 @@ export type AttributeValueOmit<ExtArgs extends runtime.Types.Extensions.Internal
 export type AttributeValueInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   attribute?: boolean | Prisma.AttributeDefaultArgs<ExtArgs>
   variantValues?: boolean | Prisma.AttributeValue$variantValuesArgs<ExtArgs>
-  staticAttributes?: boolean | Prisma.AttributeValue$staticAttributesArgs<ExtArgs>
   _count?: boolean | Prisma.AttributeValueCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AttributeValueIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -789,7 +682,6 @@ export type $AttributeValuePayload<ExtArgs extends runtime.Types.Extensions.Inte
   objects: {
     attribute: Prisma.$AttributePayload<ExtArgs>
     variantValues: Prisma.$ProductVariantAttributeValuePayload<ExtArgs>[]
-    staticAttributes: Prisma.$ProductStaticAttributePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1195,7 +1087,6 @@ export interface Prisma__AttributeValueClient<T, Null = never, ExtArgs extends r
   readonly [Symbol.toStringTag]: "PrismaPromise"
   attribute<T extends Prisma.AttributeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AttributeDefaultArgs<ExtArgs>>): Prisma.Prisma__AttributeClient<runtime.Types.Result.GetResult<Prisma.$AttributePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   variantValues<T extends Prisma.AttributeValue$variantValuesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AttributeValue$variantValuesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductVariantAttributeValuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  staticAttributes<T extends Prisma.AttributeValue$staticAttributesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AttributeValue$staticAttributesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductStaticAttributePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1654,30 +1545,6 @@ export type AttributeValue$variantValuesArgs<ExtArgs extends runtime.Types.Exten
   take?: number
   skip?: number
   distinct?: Prisma.ProductVariantAttributeValueScalarFieldEnum | Prisma.ProductVariantAttributeValueScalarFieldEnum[]
-}
-
-/**
- * AttributeValue.staticAttributes
- */
-export type AttributeValue$staticAttributesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the ProductStaticAttribute
-   */
-  select?: Prisma.ProductStaticAttributeSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the ProductStaticAttribute
-   */
-  omit?: Prisma.ProductStaticAttributeOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ProductStaticAttributeInclude<ExtArgs> | null
-  where?: Prisma.ProductStaticAttributeWhereInput
-  orderBy?: Prisma.ProductStaticAttributeOrderByWithRelationInput | Prisma.ProductStaticAttributeOrderByWithRelationInput[]
-  cursor?: Prisma.ProductStaticAttributeWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.ProductStaticAttributeScalarFieldEnum | Prisma.ProductStaticAttributeScalarFieldEnum[]
 }
 
 /**

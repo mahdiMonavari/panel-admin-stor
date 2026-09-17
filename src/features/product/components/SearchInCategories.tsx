@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { CategoryWithRelations } from "../../category/type/category.type";
 import { FiLoader, FiSearch, FiX } from "react-icons/fi";
 import { useEffect, useMemo, useState, useTransition } from "react";
@@ -10,9 +11,6 @@ type SearchInCategoriesProp = {
 };
 const queryKey = "categories";
 function SearchInCategories({ categories }: SearchInCategoriesProp) {
-  const [selected, setSelected] = useState<Map<string, CategoryWithRelations>>(
-    new Map(),
-  );
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
@@ -21,32 +19,42 @@ function SearchInCategories({ categories }: SearchInCategoriesProp) {
   const handleClear = () => setSearch("");
   const params = new URLSearchParams(searchParams);
   const categoriesShow = useMemo(() => {
-    return categories.filter((category) => category.name.startsWith(search));
+    return categories.filter((category) =>
+      category.name.toLowerCase().includes(search.trim().toLowerCase()),
+    );
   }, [categories, search]);
-  useEffect(() => {
-    const existCategories = params.getAll(queryKey);
-    existCategories.forEach((categoryId) => {
-      const category = categories.find((cate) => cate.id === categoryId);
-      if (category) {
-        selected.set(categoryId, category);
-      }
-    });
-  }, []);
+  const [selected, setSelected] = useState<Map<string, CategoryWithRelations>>(
+    () => {
+      const map = new Map<string, CategoryWithRelations>();
+      const raw = searchParams.get(queryKey);
+      if (!raw) return map;
+      const ids = raw.split(",");
+      ids.forEach((id) => {
+        const cat = categories.find((c) => c.id === id);
+        if (cat) map.set(id, cat);
+      });
+      return map;
+    },
+  );
   useEffect(() => {
     const timer = setTimeout(() => {
       startTransition(() => {
-        if (search === (searchParams.get(queryKey) ?? "")) return;
-        // if (search.trim()) {
-        //   params.set(queryKey, search.trim());
-        // } else {
-        //   params.delete(queryKey);
-        // }
-        // params.set("page", "1");
-        // router.replace(`${pathName}?${params.toString()}`);
+        if (selected.size > 0) {
+          const values = Array.from(selected.values())
+            .map((item) => (typeof item === "object" ? item.id : item))
+            .join(",");
+          params.set(queryKey, values);
+        } else {
+          params.delete(queryKey);
+        }
+
+        params.set("page", "1");
+
+        router.replace(`${pathName}?${params.toString()}`, { scroll: false });
       });
     }, 500);
     return () => clearTimeout(timer);
-  }, [search]);
+  }, [selected]);
   const toggleSelect = (id: string) => {
     const category = categories.find((cate) => cate.id === id);
     if (category) {
@@ -64,7 +72,7 @@ function SearchInCategories({ categories }: SearchInCategoriesProp) {
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       <div className="relative flex items-center h-11 w-full max-w-55">
         {/* آیکون ذره‌بین سمت راست (شروع اینپوت در زبان فارسی) */}
         <div className="pointer-events-none absolute right-3.5 flex items-center text-neutral-400 dark:text-neutral-500">
@@ -85,27 +93,36 @@ function SearchInCategories({ categories }: SearchInCategoriesProp) {
         max-h-72 overflow-y-auto"
         >
           <div className="pt-2 bg-transparent w-2xs">
-            <ul className="space-y-1 bg-white dark:bg-slate-900  p-2 rounded-2xl">
-              {categoriesShow.map((cate) => (
-                <li
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => toggleSelect(cate.id)}
-                  key={cate.id}
-                  className={`hover:bg-teal-400/20 transition-all duration-200 px-5 py-1 rounded-md text-slate-800 cursor-pointer relative
-                  ${selected.has(cate.id) ? "bg-teal-200/30" : ""}`}
-                >
-                  {cate.name}
-                  {selected.has(cate.id) ? (
-                    <IoClose
-                      className="size-3.5 text-zinc-400 group-hover:text-zinc-600
-                       dark:group-hover:text-zinc-300 absolute top-1/2 left-2 -translate-y-1/2
-                      "
-                    />
-                  ) : (
-                    ""
-                  )}
-                </li>
-              ))}
+            <ul className="space-y-1 bg-white dark:bg-slate-900 p-2 rounded-2xl">
+              {categoriesShow.length ? (
+                categoriesShow.map((cate, index) => (
+                  <React.Fragment key={cate.id}>
+                    <li
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => toggleSelect(cate.id)}
+                      className={`hover:bg-teal-400/20 transition-all duration-200 px-5 py-1.5 rounded-md text-slate-800 dark:text-slate-200 cursor-pointer relative                      
+              ${selected.has(cate.id) ? "bg-teal-200/30 font-medium" : ""}`}
+                    >
+                      {cate.name}
+                      {selected.has(cate.id) && (
+                        <IoClose
+                          className="size-3.5 text-zinc-400 group-hover:text-zinc-600
+                  dark:group-hover:text-zinc-300 absolute top-1/2 left-2 -translate-y-1/2"
+                        />
+                      )}
+                    </li>
+
+                    {/* دیوایدر با تگ span - به جز آیتم آخر */}
+                    {index < categoriesShow.length - 1 && (
+                      <span className="block h-px w-full bg-zinc-100 dark:bg-slate-800 my-1" />
+                    )}
+                  </React.Fragment>
+                ))
+              ) : (
+                <span className="block p-2 text-rose-300 text-center text-xs">
+                  چیزی پیدا نشد
+                </span>
+              )}
             </ul>
           </div>
         </div>

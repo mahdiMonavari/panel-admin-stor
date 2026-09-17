@@ -44,7 +44,7 @@ function SearchInput({
   };
 
   return (
-    <div className="relative flex items-center h-11 w-full max-w-50">
+    <div className="relative flex items-center h-11 w-full max-w-55">
       {/* آیکون ذره‌بین سمت راست (شروع اینپوت در زبان فارسی) */}
       <div className="pointer-events-none absolute right-3.5 flex items-center text-neutral-400 dark:text-neutral-500">
         <FiSearch className="h-4 w-4" />
@@ -56,7 +56,8 @@ function SearchInput({
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder={placeholder}
-        className="h-full w-full rounded-xl border border-neutral-200 bg-white pr-10 pl-10 text-sm font-medium text-neutral-800 placeholder-neutral-400 shadow-sm outline-none transition-all duration-200 hover:border-neutral-300 focus:border-neutral-900 focus:ring-4 focus:ring-neutral-900/5 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 dark:placeholder-neutral-600 dark:hover:border-neutral-700 dark:focus:border-neutral-100 dark:focus:ring-white/5"
+        className="h-full w-full rounded-xl border border-neutral-200 bg-white pr-10
+         pl-10 text-sm font-medium text-neutral-800 placeholder-neutral-400 shadow-sm outline-none transition-all duration-200 hover:border-neutral-300 focus:border-neutral-900 focus:ring-4 focus:ring-neutral-900/5 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 dark:placeholder-neutral-600 dark:hover:border-neutral-700 dark:focus:border-neutral-100 dark:focus:ring-white/5 placeholder:text-xs placeholder:font-shabnam-bold placeholder:tracking-[-0.15rem]"
       />
 
       {/* وضعیت لودینگ یا دکمه پاک کردن در سمت چپ */}

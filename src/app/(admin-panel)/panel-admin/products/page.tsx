@@ -1,8 +1,10 @@
 import getCategories from "@/src/features/category/query/categories.get";
 import ProductLayout from "@/src/features/product/components/ProductLayout";
 
-async function page() {
+async function page({ searchParams }: { searchParams: Promise<string> }) {
   const categories = await getCategories();
+  const params = await searchParams;
+
   if (!categories.success) {
     return (
       <div className="h-10 text-center font-Dana-Medium text-gray-200 bg-red-500/50 border-red-600/80">

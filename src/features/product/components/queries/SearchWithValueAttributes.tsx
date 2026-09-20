@@ -39,7 +39,6 @@ function SearchWithValueAttributes() {
     }
 
     startTransition(async () => {
-      await new Promise((res) => setTimeout(res, 1000));
       setError(null);
       const res = await getAttributeValueWithCategoryIds(searchParams);
       if (!res.success) {
@@ -126,7 +125,7 @@ function SearchWithValueAttributes() {
 
                   <div className="flex flex-wrap gap-2">
                     {attr.values.map((v) => {
-                      const isSelected = selectedValues.includes(v.value);
+                      const isSelected = selectedValues.includes(v.id);
 
                       return (
                         <label
@@ -141,7 +140,7 @@ function SearchWithValueAttributes() {
                             type="checkbox"
                             checked={isSelected}
                             onChange={() =>
-                              handleCheckboxChange(attr.name, v.value)
+                              handleCheckboxChange(attr.name, v.id)
                             }
                             className="hidden"
                           />

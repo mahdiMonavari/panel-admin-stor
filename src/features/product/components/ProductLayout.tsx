@@ -6,6 +6,7 @@ import { CategoryWithRelations } from "../../category/type/category.type";
 import SearchInCategories from "./queries/SearchInCategories";
 import SearchInput from "@/src/components/searchInput/SearchInput";
 import SearchWithValueAttributes from "./queries/SearchWithValueAttributes";
+import Products from "./Products";
 
 type ProductLayoutProp = {
   categories: CategoryWithRelations[];
@@ -13,23 +14,33 @@ type ProductLayoutProp = {
 
 function ProductLayout({ categories }: ProductLayoutProp) {
   return (
-    <div className="space-y-5">
-      <div className="relative z-30 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200/80 bg-white/60 p-4 shadow-sm backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/60">
-        <div className="flex items-center gap-3">
+    <div className="space-y-5 overflow-x-hidden overflow-y-clip">
+      <div
+        className="relative z-30 flex w-full flex-wrap items-center justify-between 
+      gap-4 rounded-2xl border border-slate-200/80 bg-white/60 p-4
+       shadow-sm backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/60"
+      >
+        <div className="flex w-full flex-wrap items-center gap-3 md:w-auto">
           <SortSelect options={ORDER_OPTIONS} queryKey="order" />
-          {/* <SortSelect options={ORDER_OPTIONS} queryKey="price" /> */}
-          <SearchInput
-            placeholder="جستجو بر اثاث نام محصول"
-            queryKey="search"
-          />
+
+          <div className="flex-1 min-w-50">
+            {" "}
+            <SearchInput
+              placeholder="جستجو بر اساس نام محصول"
+              queryKey="search"
+            />
+          </div>
+
           <SearchInCategories categories={categories} />
         </div>
       </div>
+
       <SearchWithValueAttributes />
       <AddNewProduct categories={categories} />
       <h1 className="text-3xl text-slate-700 dark:text-slate-100 font-Morabba-Bold">
         محصولات فروشگاه
       </h1>
+      <Products />
     </div>
   );
 }

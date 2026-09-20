@@ -19,7 +19,7 @@ async function page({
   }
 
   return (
-    <div className="p-8 dark:bg-neutral-900 min-h-screen bg-gray-50">
+    <div className="p-8 pr-10 dark:bg-neutral-900 min-h-screen bg-gray-50 overflow-x-hidden">
       <AttrebuteLayout attrebutes={res.data} totla={res.meta.totla} />
     </div>
   );

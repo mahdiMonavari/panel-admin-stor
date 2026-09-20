@@ -4,6 +4,7 @@ import ProductLayout from "@/src/features/product/components/ProductLayout";
 async function page({ searchParams }: { searchParams: Promise<string> }) {
   const categories = await getCategories();
   const params = await searchParams;
+  console.log(params);
 
   if (!categories.success) {
     return (
@@ -13,7 +14,7 @@ async function page({ searchParams }: { searchParams: Promise<string> }) {
     );
   }
   return (
-    <div className="min-h-screen bg-gray-50 p-8 dark:bg-neutral-900 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gray-50 pr-10 dark:bg-neutral-900 p-8">
       <ProductLayout categories={categories.data} />
     </div>
   );

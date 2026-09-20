@@ -116,8 +116,7 @@ function SearchWithValueAttributes() {
             )}
 
             {attributes.map((attr) => {
-              const selectedValues =
-                queries.get(attr.name.toLowerCase())?.split(",") || [];
+              const selectedValues = queries.get(attr.name)?.split(",") || [];
 
               return (
                 <div key={attr.id} className="py-3 first:pt-0 last:pb-0">
@@ -125,7 +124,6 @@ function SearchWithValueAttributes() {
                     {attr.label || attr.name}
                   </span>
 
-                  {/* لیست مقادیر (چک‌باکس‌ها یا دکمه‌های رنگ) */}
                   <div className="flex flex-wrap gap-2">
                     {attr.values.map((v) => {
                       const isSelected = selectedValues.includes(v.value);
@@ -143,10 +141,7 @@ function SearchWithValueAttributes() {
                             type="checkbox"
                             checked={isSelected}
                             onChange={() =>
-                              handleCheckboxChange(
-                                attr.name.toLowerCase(),
-                                v.value,
-                              )
+                              handleCheckboxChange(attr.name, v.value)
                             }
                             className="hidden"
                           />

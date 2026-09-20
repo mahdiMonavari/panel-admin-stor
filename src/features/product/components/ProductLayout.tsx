@@ -3,8 +3,9 @@ import SortSelect from "@/src/components/sortSelect/SortSelect";
 import { ORDER_OPTIONS } from "../../user/components/UsersLayout";
 import AddNewProduct from "./AddNewProduct";
 import { CategoryWithRelations } from "../../category/type/category.type";
-import SearchInCategories from "./SearchInCategories";
+import SearchInCategories from "./queries/SearchInCategories";
 import SearchInput from "@/src/components/searchInput/SearchInput";
+import SearchWithValueAttributes from "./queries/SearchWithValueAttributes";
 
 type ProductLayoutProp = {
   categories: CategoryWithRelations[];
@@ -24,7 +25,11 @@ function ProductLayout({ categories }: ProductLayoutProp) {
           <SearchInCategories categories={categories} />
         </div>
       </div>
+      <SearchWithValueAttributes />
       <AddNewProduct categories={categories} />
+      <h1 className="text-3xl text-slate-700 dark:text-slate-100 font-Morabba-Bold">
+        محصولات فروشگاه
+      </h1>
     </div>
   );
 }

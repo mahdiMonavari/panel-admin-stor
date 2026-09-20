@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { CategoryWithRelations } from "../../category/type/category.type";
+import { CategoryWithRelations } from "../../../category/type/category.type";
 import { FiLoader, FiSearch, FiX } from "react-icons/fi";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

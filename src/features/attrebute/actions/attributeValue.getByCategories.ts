@@ -60,9 +60,11 @@ export default async function getAttributeValueWithCategoryIds(
         Prisma.AttributeGetPayload<{ include: { values: true } }>
       >();
       attributeValues.forEach((item) =>
-        item.attributes.forEach((x) =>
-          attributes.set(x.attribute.id, x.attribute),
-        ),
+        item.attributes.forEach((x) => {
+          if (x.attribute.type === "SELECT") {
+            attributes.set(x.attribute.id, x.attribute);
+          }
+        }),
       );
 
       return {

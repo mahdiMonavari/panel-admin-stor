@@ -7,12 +7,14 @@ import SearchInCategories from "./queries/SearchInCategories";
 import SearchInput from "@/src/components/searchInput/SearchInput";
 import SearchWithValueAttributes from "./queries/SearchWithValueAttributes";
 import Products from "./Products";
+import { ProductFilterType } from "../shema/productFilter";
 
 type ProductLayoutProp = {
   categories: CategoryWithRelations[];
+  filterParams: ProductFilterType;
 };
 
-function ProductLayout({ categories }: ProductLayoutProp) {
+function ProductLayout({ categories, filterParams }: ProductLayoutProp) {
   return (
     <div className="space-y-5 overflow-x-hidden overflow-y-clip">
       <div
@@ -40,7 +42,7 @@ function ProductLayout({ categories }: ProductLayoutProp) {
       <h1 className="text-3xl text-slate-700 dark:text-slate-100 font-Morabba-Bold">
         محصولات فروشگاه
       </h1>
-      <Products />
+      <Products filterParams={filterParams} />
     </div>
   );
 }

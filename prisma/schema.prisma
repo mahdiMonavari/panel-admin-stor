@@ -112,17 +112,21 @@ model CategoryAttribute {
 
 // ---------- محصول ----------
 model Product {
-  id               String       @id @default(uuid())
-  name             String
-  description      String
-  categoryId       String
-  category         Category     @relation(fields: [categoryId], references: [id])
-  isActive         Boolean      @default(false)
-  infoId           String?      @unique
-  info             ProductInfo? @relation(fields: [infoId], references: [id], onDelete: Cascade)
-
-  variants         ProductVariant[]
-  staticAttributes ProductStaticAttribute[]
+  id                 String       @id @default(uuid())
+  name               String
+  description        String
+  categoryId         String
+  totalStock         Int          @default(0)
+  minPrice           Decimal?
+  category           Category     @relation(fields: [categoryId], references: [id])
+  isActive           Boolean      @default(false)
+  infoId             String?      @unique
+  info               ProductInfo? @relation(fields: [infoId], references: [id], onDelete: Cascade)
+  
+  variants           ProductVariant[]
+  staticAttributes   ProductStaticAttribute[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 // ---------- اطلاعات تکمیلی محصول ----------
@@ -138,13 +142,13 @@ model ProductVariant {
   productId String
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  signature String
-  isActive  Boolean @default(false)
-  deletedAt DateTime?
-
-  price  Decimal?
-  stock  Int?
-  values ProductVariantAttributeValue[]
+  signature       String
+  isActive        Boolean @default(false)
+  deletedAt       DateTime?
+  discountPercent Decimal?
+  price           Decimal?
+  stock           Int?
+  values          ProductVariantAttributeValue[]
 
   @@unique([productId, signature])
   @@index([productId, isActive])

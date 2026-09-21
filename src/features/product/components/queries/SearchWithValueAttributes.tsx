@@ -115,7 +115,7 @@ function SearchWithValueAttributes() {
             )}
 
             {attributes.map((attr) => {
-              const selectedValues = queries.get(attr.name)?.split(",") || [];
+              const selectedValues = queries.get(attr.id)?.split(",") || [];
 
               return (
                 <div key={attr.id} className="py-3 first:pt-0 last:pb-0">
@@ -139,9 +139,7 @@ function SearchWithValueAttributes() {
                           <input
                             type="checkbox"
                             checked={isSelected}
-                            onChange={() =>
-                              handleCheckboxChange(attr.name, v.id)
-                            }
+                            onChange={() => handleCheckboxChange(attr.id, v.id)}
                             className="hidden"
                           />
 

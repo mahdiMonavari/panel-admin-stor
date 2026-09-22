@@ -1,10 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { ClipLoader } from "react-spinners";
-import { HiOutlineExclamationCircle } from "react-icons/hi2";
 import { Prisma } from "@/generated/prisma/client";
-import { CategoryWithRelations } from "../../category/type/category.type";
 import { useFormContext } from "react-hook-form";
 import { createProductType } from "../type/product.type";
 

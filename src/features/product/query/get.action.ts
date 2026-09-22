@@ -28,8 +28,17 @@ export default async function getProducts(
     };
   }
 
-  const { categories, limit, order, page, sort, search, ...attributes } =
-    parsed.data;
+  const {
+    categories,
+    limit,
+    order,
+    startPrice,
+    endPrice,
+    page,
+    sort,
+    search,
+    ...attributes
+  } = parsed.data;
   let allChildrenCategories: undefined | string[] = undefined;
   if (categories) {
     const res = await getChildrenCategories(categories);

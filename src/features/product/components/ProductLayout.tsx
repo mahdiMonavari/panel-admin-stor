@@ -8,6 +8,7 @@ import SearchInput from "@/src/components/searchInput/SearchInput";
 import SearchWithValueAttributes from "./queries/SearchWithValueAttributes";
 import Products from "./Products";
 import { ProductFilterType } from "../shema/productFilter";
+import RengePrice from "./queries/RengePrice";
 
 type ProductLayoutProp = {
   categories: CategoryWithRelations[];
@@ -34,6 +35,7 @@ function ProductLayout({ categories, filterParams }: ProductLayoutProp) {
           </div>
 
           <SearchInCategories categories={categories} />
+          <RengePrice />
         </div>
       </div>
 

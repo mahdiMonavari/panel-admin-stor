@@ -3,8 +3,6 @@ import { compare, hash } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { prisma } from "../prisma";
-import { CategoryWithRelations } from "@/src/features/category/type/category.type";
-import { CategoryTreeItem } from "@/src/features/category/actions/generateIntermediateTabel";
 
 const ACCESS_SECRET = process.env.ACCESS_TOKEN_PRIVATE_KEY;
 const REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET_KEY;

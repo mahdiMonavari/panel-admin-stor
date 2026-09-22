@@ -1,5 +1,6 @@
 import z from "zod";
 import { SORT_ORDERS } from "../../user/types/userFilter.type";
+import { toEnglishDigits } from "@/src/lib/utiles/normalNumber";
 
 const sortFields = {
   totalStock: "تعداد موجودی",
@@ -14,7 +15,18 @@ const SORTFIELDS = Object.keys(sortFields) as [
 
 const baseProductFilterSchema = z.object({
   categories: z.string().optional(),
-  search: z.string().optional(),
+  startPrice: z
+    .string()
+    .transform((value) => toEnglishDigits(value))
+    .optional(),
+  endPrice: z
+    .string()
+    .transform((value) => toEnglishDigits(value))
+    .optional(),
+  search: z
+    .string()
+    .transform((value) => toEnglishDigits(value))
+    .optional(),
   order: z.enum(SORT_ORDERS).optional().default("desc"),
   sort: z.enum(SORTFIELDS).optional().default("createdAt"),
   page: z.coerce.number().int().min(1).default(1),

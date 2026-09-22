@@ -41,7 +41,6 @@ export default async function getProducts(
     }
     allChildrenCategories = res.data;
   }
-  console.log("all children", allChildrenCategories);
 
   const attributesFilter: Prisma.ProductWhereInput[] = Object.entries(
     attributes,
@@ -78,7 +77,7 @@ export default async function getProducts(
     where,
     include: {
       category: true,
-      variants: true,
+      variants: { include: { values: { include: { attributeValue: true } } } },
     },
     orderBy,
     skip: (page - 1) * limit,

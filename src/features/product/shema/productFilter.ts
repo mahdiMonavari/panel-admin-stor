@@ -20,10 +20,11 @@ const baseProductFilterSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(100).default(10),
 });
-export const productFilterSchema = baseProductFilterSchema
-  .extend({
-    attributes: z.array(z.string()).optional(),
-  })
-  .catchall(z.array(z.string()));
+
+// آیدی‌های اتریبیوت مستقیماً روی ریشه می‌شینن، پس فیلد جدای "attributes" حذف شد
+// و catchall مقدار رشته‌ای (کاما جدا شده) می‌گیره
+export const productFilterSchema = baseProductFilterSchema.catchall(
+  z.string().optional(),
+);
 
 export type ProductFilterType = z.infer<typeof productFilterSchema>;

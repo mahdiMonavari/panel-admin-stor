@@ -2,6 +2,7 @@
 import { Prisma } from "@/generated/prisma/client";
 import { productFilterSchema } from "../shema/productFilter";
 import { prisma } from "@/src/lib/prisma";
+import getChildrenCategories from "../../category/actions/getChildren.action";
 
 type getProductsResult =
   | {
@@ -14,50 +15,64 @@ type getProductsResult =
         include: { category: true; variants: true };
       }>[];
     };
+
 export default async function getProducts(
   rowData: unknown,
 ): Promise<getProductsResult> {
-  console.log(rowData);
-
   const parsed = productFilterSchema.safeParse(rowData);
+
   if (!parsed.success) {
-    {
-      return {
-        success: false,
-        message: parsed.error.issues[0].message,
-      };
-    }
+    return {
+      success: false,
+      message: parsed.error.issues[0].message,
+    };
   }
+
   const { categories, limit, order, page, sort, search, ...attributes } =
     parsed.data;
-  const attributesFilter = Object.entries(attributes).map(
-    ([attributeId, ids]) => ({
+  let allChildrenCategories: undefined | string[] = undefined;
+  if (categories) {
+    const res = await getChildrenCategories(categories);
+    if (!res.success) {
+      return {
+        success: false,
+        message: res.message,
+      };
+    }
+    allChildrenCategories = res.data;
+  }
+  console.log("all children", allChildrenCategories);
+
+  const attributesFilter: Prisma.ProductWhereInput[] = Object.entries(
+    attributes,
+  )
+    .filter((entry): entry is [string, string] => Boolean(entry[1]))
+    .map(([, ids]) => ({
       variants: {
         some: {
           values: {
             some: {
-              attributeValueId: { in: ids },
+              attributeValueId: { in: ids.split(",") },
             },
           },
         },
       },
-    }),
-  );
+    }));
 
-  const where = {
+  const where: Prisma.ProductWhereInput = {
     ...(search && { name: { startsWith: search } }),
-    AND: attributesFilter,
-    ...(categories && { categoryId: { in: categories.split(",") } }),
+    ...(attributesFilter.length > 0 && { AND: attributesFilter }),
+    ...(allChildrenCategories && { categoryId: { in: allChildrenCategories } }),
     ...(sort === "minPrice" && {
       minPrice: {
         not: null,
       },
     }),
   };
-  const orderBy = {
+
+  const orderBy: Prisma.ProductOrderByWithRelationInput = {
     [sort]: order,
   };
-  console.log(order);
 
   const products = await prisma.product.findMany({
     where,
@@ -69,6 +84,7 @@ export default async function getProducts(
     skip: (page - 1) * limit,
     take: limit,
   });
+
   return {
     success: true,
     data: products,

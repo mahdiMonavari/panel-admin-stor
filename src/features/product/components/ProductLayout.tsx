@@ -7,13 +7,17 @@ import SearchInCategories from "./queries/SearchInCategories";
 import SearchInput from "@/src/components/searchInput/SearchInput";
 import SearchWithValueAttributes from "./queries/SearchWithValueAttributes";
 import Products from "./Products";
-import { ProductFilterType } from "../shema/productFilter";
+import { ProductFilterType, sortFields } from "../shema/productFilter";
 import RengePrice from "./queries/RengePrice";
 
 type ProductLayoutProp = {
   categories: CategoryWithRelations[];
   filterParams: ProductFilterType;
 };
+const SORT_OPTION = Object.entries(sortFields).map(([value, label]) => ({
+  value,
+  label,
+}));
 
 function ProductLayout({ categories, filterParams }: ProductLayoutProp) {
   return (
@@ -25,7 +29,7 @@ function ProductLayout({ categories, filterParams }: ProductLayoutProp) {
       >
         <div className="flex w-full flex-wrap items-center gap-3 md:w-auto">
           <SortSelect options={ORDER_OPTIONS} queryKey="order" />
-
+          <SortSelect options={SORT_OPTION} queryKey="sort" />
           <div className="flex-1 min-w-50">
             {" "}
             <SearchInput

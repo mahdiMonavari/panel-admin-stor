@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import num2persian from "num2persian";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { MdAttachMoney } from "react-icons/md";
 
@@ -72,7 +73,7 @@ function RangePrice() {
 
   const inputClass = (hasError: boolean) => `
     flex-1 rounded-lg px-3 py-2 text-sm text-right
-    bg-white dark:bg-slate-900
+    bg-white dark:bg-slate-900 w-30
     border transition-colors duration-150
     placeholder:text-slate-400 dark:placeholder:text-slate-600
     text-slate-700 dark:text-slate-200
@@ -82,43 +83,59 @@ function RangePrice() {
   `;
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2">
-        <MdAttachMoney
-          size={18}
-          className="text-slate-400 dark:text-slate-500 shrink-0"
-        />
-        <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
-          بازه قیمت (تومان)
-        </span>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <input
-          value={startPrice}
-          type="text"
-          inputMode="numeric"
-          placeholder="از"
-          onChange={(e) =>
-            handleChange(e.target.value, setStartPrice, endPrice, true)
-          }
-          className={inputClass(!!error)}
-        />
-
+    <div className="flex flex-col gap-1 flex-wrap">
+      <div className="flex items-center gap-5 flex-wrap">
+        <div className="flex flex-col gap-1 relative">
+          <input
+            value={startPrice}
+            type="text"
+            inputMode="numeric"
+            placeholder="از"
+            onChange={(e) =>
+              handleChange(e.target.value, setStartPrice, endPrice, true)
+            }
+            className={inputClass(!!error)}
+          />
+          {startPrice ? (
+            <span className="text-[10px] text-pink-600 absolute top-full text-nowrap">
+              {num2persian(Number(startPrice))} تومان
+            </span>
+          ) : (
+            ""
+          )}
+        </div>
         <span className="text-slate-400 dark:text-slate-600 text-xs shrink-0">
           تا
         </span>
-
-        <input
-          value={endPrice}
-          type="text"
-          inputMode="numeric"
-          placeholder="تا"
-          onChange={(e) =>
-            handleChange(e.target.value, setEndPrice, startPrice, false)
-          }
-          className={inputClass(!!error)}
-        />
+        <div className="flex flex-col gap-1 relative">
+          <input
+            value={endPrice}
+            type="text"
+            inputMode="numeric"
+            placeholder="تا"
+            onChange={(e) =>
+              handleChange(e.target.value, setEndPrice, startPrice, false)
+            }
+            className={inputClass(!!error)}
+          />
+          {endPrice ? (
+            <span className="text-[10px] text-pink-600 absolute top-full text-nowrap">
+              {num2persian(endPrice)}
+              تومان
+            </span>
+          ) : (
+            ""
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <MdAttachMoney
+            size={18}
+            className="text-slate-400 dark:text-slate-500 shrink-0"
+          />
+          <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
+            بازه قیمت (تومان)
+          </span>
+        </div>
 
         {isPending && (
           <div className="w-4 h-4 rounded-full border-2 border-violet-500 border-t-transparent animate-spin shrink-0" />

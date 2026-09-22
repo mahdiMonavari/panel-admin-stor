@@ -66,11 +66,22 @@ export default async function getProducts(
         },
       },
     }));
-
+  const start = startPrice ? Number(startPrice) : undefined;
+  const end = endPrice ? Number(endPrice) : undefined;
   const where: Prisma.ProductWhereInput = {
     ...(search && { name: { startsWith: search } }),
     ...(attributesFilter.length > 0 && { AND: attributesFilter }),
     ...(allChildrenCategories && { categoryId: { in: allChildrenCategories } }),
+    ...((start || end) && {
+      variants: {
+        some: {
+          price: {
+            ...(start && { gte: start }),
+            ...(end && { lte: end }),
+          },
+        },
+      },
+    }),
     ...(sort === "minPrice" && {
       minPrice: {
         not: null,

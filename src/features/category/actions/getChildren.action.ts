@@ -1,4 +1,5 @@
 "use server";
+import { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/src/lib/prisma";
 
 type getChildrenCategoriesResult =
@@ -10,19 +11,32 @@ type getChildrenCategoriesResult =
       success: true;
       data: string[];
     };
+
 export default async function getChildrenCategories(
   id: string,
 ): Promise<getChildrenCategoriesResult> {
+  const ids = id
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+  if (ids.length === 0) {
+    return {
+      success: true,
+      data: [],
+    };
+  }
+
   try {
-    // استفاده از Recursive CTE برای پیدا کردن تمام فرزندان
+    // استفاده از Recursive CTE برای پیدا کردن تمام فرزندان یک یا چند دسته‌بندی
     const result = (await prisma.$queryRaw`
       WITH RECURSIVE category_tree AS (
-        SELECT id FROM "Category" WHERE id = ${id}
+        SELECT id FROM "Category" WHERE id IN (${Prisma.join(ids)})
         UNION ALL
         SELECT c.id FROM "Category" c
         INNER JOIN category_tree ct ON c."parentId" = ct.id
       )
-      SELECT id FROM category_tree;
+      SELECT DISTINCT id FROM category_tree;
     `) as { id: string }[];
 
     return {

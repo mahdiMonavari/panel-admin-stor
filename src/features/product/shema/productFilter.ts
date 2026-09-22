@@ -2,7 +2,7 @@ import z from "zod";
 import { SORT_ORDERS } from "../../user/types/userFilter.type";
 import { toEnglishDigits } from "@/src/lib/utiles/normalNumber";
 
-const sortFields = {
+export const sortFields = {
   totalStock: "تعداد موجودی",
   minPrice: "قیمت",
   createdAt: "تاریخ ایجاد",

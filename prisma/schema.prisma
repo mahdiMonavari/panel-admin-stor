@@ -118,6 +118,7 @@ model Product {
   categoryId         String
   totalStock         Int          @default(0)
   minPrice           Decimal?
+  maxPrice           Decimal?
   category           Category     @relation(fields: [categoryId], references: [id])
   isActive           Boolean      @default(false)
   infoId             String?      @unique

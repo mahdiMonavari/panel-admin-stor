@@ -76,7 +76,7 @@ async function Products({ filterParams }: ProductsProps) {
         return (
           <Link
             key={product.id}
-            href={`/products/${product.id}`}
+            href={`/panel-admin/products/${product.id}`}
             className="block group outline-none"
           >
             <article
@@ -97,7 +97,7 @@ async function Products({ filterParams }: ProductsProps) {
               <div
                 className={`h-1 w-full ${
                   isActive
-                    ? "bg-gradient-to-l from-violet-500 via-fuchsia-500 to-pink-500"
+                    ? "bg-linear-to-l from-violet-500 via-fuchsia-500 to-pink-500"
                     : "bg-slate-300 dark:bg-slate-700"
                 }`}
               />
@@ -137,7 +137,7 @@ async function Products({ filterParams }: ProductsProps) {
 
                 {/* توضیحات */}
                 {product.description && (
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-5 line-clamp-2 flex-shrink-0">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-5 line-clamp-2 shrink-0">
                     {product.description}
                   </p>
                 )}

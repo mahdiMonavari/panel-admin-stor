@@ -89,9 +89,8 @@ export default async function getProducts(
     }),
   };
 
-  const orderBy: Prisma.ProductOrderByWithRelationInput = {
-    [sort]: order,
-  };
+  const orderBy: Prisma.ProductOrderByWithRelationInput =
+    order === "desc" ? { maxPrice: order } : { minPrice: order };
 
   const products = await prisma.product.findMany({
     where,

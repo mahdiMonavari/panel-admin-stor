@@ -1556,6 +1556,7 @@ export type ProductInfoScalarFieldEnum = (typeof ProductInfoScalarFieldEnum)[key
 export const ProductVariantScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
+  img: 'img',
   signature: 'signature',
   isActive: 'isActive',
   deletedAt: 'deletedAt',

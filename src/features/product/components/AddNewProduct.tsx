@@ -1,60 +1,62 @@
 "use client";
-import NavyButton from "@/src/components/navyButton/NavyButton";
-import { CategoryWithRelations } from "../../category/type/category.type";
+
 import { useEffect, useMemo, useState, useTransition } from "react";
-import { FaPlus } from "react-icons/fa";
-import Modal from "@/src/components/modal/Modal";
-import SelectCategory from "./SelectCategory";
-import FillAttributeValue, {
-  AttributeItem,
-  SelectedAttributesState,
-} from "./FillAttributeValue";
 import { FormProvider, useForm } from "react-hook-form";
-import { createProductType } from "../type/product.type";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { HiArrowLeft, HiArrowRight, HiCheck } from "react-icons/hi2";
+import { FaPlus } from "react-icons/fa";
+import NavyButton from "@/src/components/navyButton/NavyButton";
+import ProductModalContent from "./ProductModalContent";
+import { AttributeItem } from "./FillAttributeValue";
+import { CategoryWithRelations } from "../../category/type/category.type";
+import { createProductType } from "../type/product.type";
 import {
   createAttributesSchema,
   productBaseSchema,
 } from "../shema/create.product";
 import { GetAttributesByCategoryId } from "../../attrebute/actions/attributesById.get";
 import { createProduct } from "../action/create.action";
-import ProductModalContent from "./ProductModalContent";
 
 type AddProductProp = {
   categories: CategoryWithRelations[];
 };
 
-function AddNewProduct({ categories }: AddProductProp) {
+export default function AddNewProduct({ categories }: AddProductProp) {
   const [isOpen, setIsOpen] = useState(false);
   const [attributes, setAttributes] = useState<AttributeItem[]>([]);
   const [isPending, startTransition] = useTransition();
-  const [step, setStep] = useState<1 | 2>(1);
-  const [error, setError] = useState<string | null>();
+  const [error, setError] = useState<string | null>(null);
+
   const ProductSchema = useMemo(() => {
     return productBaseSchema.extend({
       attributes: createAttributesSchema(attributes),
     });
   }, [attributes]);
-  const methode = useForm<createProductType>({
+
+  const methods = useForm<createProductType>({
     resolver: zodResolver(ProductSchema),
     mode: "onTouched",
+    defaultValues: {
+      name: "",
+      description: "",
+      categoryId: "",
+      attributes: {},
+    },
   });
-  const {
-    watch,
-    trigger,
-    handleSubmit,
-    formState: { errors },
-  } = methode;
+
+  const { watch, reset } = methods;
   const categoryId = watch("categoryId");
 
   useEffect(() => {
-    if (!categoryId) return;
+    if (!categoryId) {
+      setAttributes([]);
+      return;
+    }
+
     setError(null);
     startTransition(async () => {
       try {
         const map = new Map<string, CategoryWithRelations>();
-        categories.map((category) => map.set(category.id, category));
+        categories.forEach((cat) => map.set(cat.id, cat));
         const path: string[] = [];
         let currentId: string | undefined = categoryId;
 
@@ -67,8 +69,8 @@ function AddNewProduct({ categories }: AddProductProp) {
             break;
           }
         }
-        const res = await GetAttributesByCategoryId(path);
 
+        const res = await GetAttributesByCategoryId(path);
         if (!res.success) {
           setError(res.message || "خطا در دریافت ویژگی‌ها");
           return;
@@ -81,47 +83,41 @@ function AddNewProduct({ categories }: AddProductProp) {
         setError("مشکلی در برقراری ارتباط با سرور رخ داد");
       }
     });
-  }, [categoryId]);
-  const nextHandler = async () => {
-    const isValid = await trigger(["categoryId", "description", "name"]);
-    if (isValid) {
-      setStep(2);
-    }
-  };
-  const prevHandler = () => setStep(1);
-  const startCreateProduct = (data: createProductType) => {
+  }, [categoryId, categories]);
+
+  const handleCreateProduct = (data: createProductType) => {
     startTransition(async () => {
       const res = await createProduct(data, attributes);
       if (!res.success) {
         setError(res.message);
         return;
       }
+      reset();
       setIsOpen(false);
     });
   };
 
   return (
     <>
-      <div>
-        <NavyButton
-          text="ساخت محصول جدید"
-          onClick={() => setIsOpen(true)}
-          Icon={<FaPlus />}
-        />
-      </div>
-      <FormProvider {...methode}>
+      <NavyButton
+        text="ساخت محصول جدید"
+        onClick={() => setIsOpen(true)}
+        Icon={<FaPlus />}
+      />
+
+      <FormProvider {...methods}>
         <ProductModalContent
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          title="ایجاد محصول جدید"
+          submitButtonText="تایید و ثبت محصول"
           categories={categories}
           attributes={attributes}
+          isPending={isPending}
           error={error}
-          startCreateProduct={startCreateProduct}
-          methode={methode}
-          isOpen={isOpen}
-          setIsOpen={() => setIsOpen(!isOpen)}
+          onSubmit={handleCreateProduct}
         />
       </FormProvider>
     </>
   );
 }
-
-export default AddNewProduct;

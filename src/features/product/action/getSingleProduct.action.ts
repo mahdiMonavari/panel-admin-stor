@@ -48,7 +48,7 @@ export async function getSingleProduct(
         staticAttributes: {
           include: { attribute: { select: { label: true, name: true } } },
         },
-        category: { select: { name: true } },
+        category: { select: { name: true, id: true } },
       },
     });
 

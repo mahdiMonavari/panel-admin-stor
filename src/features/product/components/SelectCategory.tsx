@@ -58,7 +58,11 @@ export default function SelectCategory({ categories }: SelectCategoryProps) {
     register,
     formState: { errors },
     setValue,
+    watch, // ۱. اضافه شد
   } = useFormContext<createProductType>();
+
+  const selectedCategoryId = watch("categoryId"); // ۲. گوش دادن به تغییرات فیلد فرم
+
   const [currentCategoryId, setCurrentCategoryId] = useState("");
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -75,6 +79,20 @@ export default function SelectCategory({ categories }: SelectCategoryProps) {
     });
     return map;
   }, [categories]);
+
+  // ۳. این useEffect در زمان ویرایش (وقتی فرم reset شد) مقدار input و دسته‌بندی را سینک می‌کند
+  useEffect(() => {
+    if (selectedCategoryId) {
+      setCurrentCategoryId(selectedCategoryId);
+      const cat = categoryMap.get(selectedCategoryId);
+      if (cat) {
+        setInput(cat.name);
+      }
+    } else {
+      setCurrentCategoryId("");
+      setInput("");
+    }
+  }, [selectedCategoryId, categoryMap]);
 
   const children = useMemo(() => {
     if (!currentCategoryId) return [];
@@ -262,8 +280,8 @@ export default function SelectCategory({ categories }: SelectCategoryProps) {
         </div>
       )}
 
-      {/* سایر فیلدهای فرم */}
-      <form className="mt-4 space-y-3">
+      {/* تبدیل شده به div به جای form */}
+      <div className="mt-4 space-y-3">
         {createProductInput.map((inputItem) =>
           inputItem.type === "text" ? (
             <Input
@@ -297,7 +315,7 @@ export default function SelectCategory({ categories }: SelectCategoryProps) {
             </div>
           ),
         )}
-      </form>
+      </div>
     </div>
   );
 }

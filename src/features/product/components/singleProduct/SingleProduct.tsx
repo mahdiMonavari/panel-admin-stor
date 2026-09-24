@@ -12,13 +12,15 @@ import {
 import { SerializedProduct } from "../../action/getSingleProduct.action";
 import DeleteSingleProduct from "./DeleteSingleProduct";
 import EditSingleProduct from "./EditSingleProduct";
+import { CategoryWithRelations } from "@/src/features/category/type/category.type";
 
 type Props = {
   product: SerializedProduct;
   id: string;
+  categories: CategoryWithRelations[];
 };
 
-export default function SingleProductAdmin({ product, id }: Props) {
+export default function SingleProductAdmin({ product, id, categories }: Props) {
   const toFa = (num: number | string) => Number(num).toLocaleString("fa-IR");
 
   return (
@@ -67,7 +69,11 @@ export default function SingleProductAdmin({ product, id }: Props) {
           >
             {product.isActive ? "غیرفعال کردن" : "فعال کردن"}
           </button> */}
-          <EditSingleProduct id={id} productName={product.name} />
+          <EditSingleProduct
+            id={id}
+            productName={product.name}
+            categories={categories}
+          />
           <DeleteSingleProduct
             id={id}
             productName={product.name}

@@ -1,3 +1,4 @@
+import getCategories from "@/src/features/category/query/categories.get";
 import { getSingleProduct } from "@/src/features/product/action/getSingleProduct.action";
 import SingleProduct from "@/src/features/product/components/singleProduct/SingleProduct";
 import { notFound } from "next/navigation"; // اضافه کردن این
@@ -9,7 +10,10 @@ type pageType = {
 async function page({ params }: pageType) {
   const { id } = await params;
   const res = await getSingleProduct(id);
-
+  const categories = await getCategories();
+  if (!categories.success) {
+    notFound();
+  }
   if (!res.success) {
     if (res.message === "محصولی با این آیدی یافت نشد") {
       notFound();
@@ -34,7 +38,11 @@ async function page({ params }: pageType) {
   };
   return (
     <div className="p-8 pr-10 min-h-screen bg-gray-50 dark:bg-neutral-900">
-      <SingleProduct product={serializedProduct} id={id} />
+      <SingleProduct
+        product={serializedProduct}
+        id={id}
+        categories={categories.data}
+      />
     </div>
   );
 }

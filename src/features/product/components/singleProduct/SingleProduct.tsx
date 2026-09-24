@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import {
   HiOutlinePencilSquare,
@@ -11,28 +9,15 @@ import {
   HiOutlineRectangleStack,
 } from "react-icons/hi2";
 
-import {
-  ProductWithRelations,
-  SerializedProduct,
-} from "../../action/getSingleProduct.action";
-
-type VariantWithImg = ProductWithRelations["variants"][number] & {
-  img?: string | null;
-};
+import { SerializedProduct } from "../../action/getSingleProduct.action";
+import DeleteSingleProduct from "./DeleteSingleProduct";
 
 type Props = {
   product: SerializedProduct;
-  onEdit?: (id: string) => void;
-  onDelete?: (id: string) => void;
-  onToggleActive?: (id: string, current: boolean) => void;
+  id: string;
 };
 
-export default function SingleProductAdmin({
-  product,
-  onEdit,
-  onDelete,
-  onToggleActive,
-}: Props) {
+export default function SingleProductAdmin({ product, id }: Props) {
   const toFa = (num: number | string) => Number(num).toLocaleString("fa-IR");
 
   return (
@@ -81,18 +66,14 @@ export default function SingleProductAdmin({
           >
             {product.isActive ? "غیرفعال کردن" : "فعال کردن"}
           </button> */}
-          <button
-            onClick={() => onEdit?.(product.id)}
-            className="px-5 py-2.5 text-sm font-medium rounded-2xl bg-violet-600 text-white hover:bg-violet-700 active:scale-[0.985] transition-all"
-          >
+          <button className="px-5 py-2.5 text-sm font-medium rounded-2xl bg-violet-600 text-white hover:bg-violet-700 active:scale-[0.985] transition-all">
             ویرایش محصول
           </button>
-          <button
-            onClick={() => onDelete?.(product.id)}
-            className="px-5 py-2.5 text-sm font-medium rounded-2xl border border-rose-200 text-rose-600 hover:bg-rose-50 active:scale-[0.985] transition-all"
-          >
-            حذف
-          </button>
+          <DeleteSingleProduct
+            id={id}
+            productName={product.name}
+            variants={product.variants}
+          />
         </div>
       </div>
 
@@ -102,16 +83,16 @@ export default function SingleProductAdmin({
           <div className="flex items-center gap-3">
             <HiOutlineRectangleStack className="w-6 h-6 text-violet-600 dark:text-violet-400" />
             <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">
-              واریانت‌ها
+              انواع گونها
             </h2>
           </div>
           <span className="text-sm font-semibold px-4 py-1.5 rounded-2xl bg-violet-100 dark:bg-violet-950 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-800">
-            {toFa(product.variants.length)} واریانت
+            {toFa(product.variants.length)} گونه
           </span>
         </div>
 
         {product.variants.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {product.variants.map((variant) => {
               const isAvailable = variant.stock && variant.stock > 0;
               const discount = variant.discountPercent
@@ -210,26 +191,16 @@ export default function SingleProductAdmin({
                     </div>
                   </div>
 
-                  {/* اکشن‌ها */}
                   <div className="border-t border-slate-100 dark:border-neutral-800 p-4 flex gap-2 bg-slate-50/50 dark:bg-neutral-950/50">
-                    <button
-                      onClick={() => onEdit?.(variant.id)}
-                      className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium rounded-2xl bg-white dark:bg-neutral-900 border border-slate-200 dark:border-neutral-700 hover:bg-violet-50 hover:border-violet-200 active:scale-[0.985] transition-all"
-                    >
+                    <button className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium rounded-2xl bg-white dark:bg-neutral-900 border border-slate-200 dark:border-neutral-700 hover:bg-violet-50 hover:border-violet-200 active:scale-[0.985] transition-all">
                       <HiOutlinePencilSquare className="w-4 h-4" /> ویرایش
                     </button>
                     {variant.isActive && (
-                      <button
-                        onClick={() => onToggleActive?.(variant.id, true)}
-                        className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium rounded-2xl bg-white dark:bg-neutral-900 border border-slate-200 dark:border-neutral-700 hover:bg-amber-50 hover:border-amber-200 active:scale-[0.985] transition-all"
-                      >
+                      <button className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium rounded-2xl bg-white dark:bg-neutral-900 border border-slate-200 dark:border-neutral-700 hover:bg-amber-50 hover:border-amber-200 active:scale-[0.985] transition-all">
                         <HiOutlineEyeSlash className="w-4 h-4" /> غیرفعال
                       </button>
                     )}
-                    <button
-                      onClick={() => onDelete?.(variant.id)}
-                      className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-2xl text-rose-600 hover:bg-rose-50 border border-rose-200 active:scale-[0.985] transition-all"
-                    >
+                    <button className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-2xl text-rose-600 hover:bg-rose-50 border border-rose-200 active:scale-[0.985] transition-all">
                       <HiOutlineTrash className="w-4 h-4" />
                     </button>
                   </div>
@@ -241,19 +212,12 @@ export default function SingleProductAdmin({
           <div className="flex flex-col items-center justify-center gap-4 py-16 text-center bg-white dark:bg-neutral-900 rounded-3xl border border-slate-200 dark:border-neutral-800">
             <HiOutlineClipboardDocument className="w-12 h-12 text-slate-300 dark:text-neutral-700" />
             <p className="text-slate-500">
-              هیچ واریانتی برای این محصول تعریف نشده است.
+              هیچ تنوعی برای این محصول تعریف نشده است.
             </p>
-            <button
-              onClick={() => onEdit?.(product.id)}
-              className="mt-2 px-6 py-3 rounded-2xl bg-violet-600 text-white text-sm font-medium hover:bg-violet-700 active:scale-[0.985] transition-all"
-            >
-              + افزودن واریانت جدید
-            </button>
           </div>
         )}
       </div>
 
-      {/* مشخصات فنی */}
       {product.staticAttributes && product.staticAttributes.length > 0 && (
         <div className="bg-white dark:bg-neutral-900 p-6 rounded-3xl border border-slate-200 dark:border-neutral-800 shadow-sm">
           <h3 className="font-extrabold text-xl mb-5 text-slate-900 dark:text-white">

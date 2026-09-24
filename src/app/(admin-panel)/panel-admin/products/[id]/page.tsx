@@ -34,7 +34,7 @@ async function page({ params }: pageType) {
   };
   return (
     <div className="p-8 pr-10 min-h-screen bg-gray-50 dark:bg-neutral-900">
-      <SingleProduct product={serializedProduct} />
+      <SingleProduct product={serializedProduct} id={id} />
     </div>
   );
 }

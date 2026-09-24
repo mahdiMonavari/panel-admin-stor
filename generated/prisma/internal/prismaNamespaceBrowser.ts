@@ -63,7 +63,8 @@ export const ModelName = {
   ProductInfo: 'ProductInfo',
   ProductVariant: 'ProductVariant',
   ProductStaticAttribute: 'ProductStaticAttribute',
-  ProductVariantAttributeValue: 'ProductVariantAttributeValue'
+  ProductVariantAttributeValue: 'ProductVariantAttributeValue',
+  OrderItem: 'OrderItem'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -236,6 +237,14 @@ export const ProductVariantAttributeValueScalarFieldEnum = {
 } as const
 
 export type ProductVariantAttributeValueScalarFieldEnum = (typeof ProductVariantAttributeValueScalarFieldEnum)[keyof typeof ProductVariantAttributeValueScalarFieldEnum]
+
+
+export const OrderItemScalarFieldEnum = {
+  id: 'id',
+  productVariantId: 'productVariantId'
+} as const
+
+export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
 export const SortOrder = {

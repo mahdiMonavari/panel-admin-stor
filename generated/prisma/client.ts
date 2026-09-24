@@ -106,3 +106,8 @@ export type ProductStaticAttribute = Prisma.ProductStaticAttributeModel
  * 
  */
 export type ProductVariantAttributeValue = Prisma.ProductVariantAttributeValueModel
+/**
+ * Model OrderItem
+ * 
+ */
+export type OrderItem = Prisma.OrderItemModel

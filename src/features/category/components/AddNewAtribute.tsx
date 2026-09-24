@@ -88,7 +88,6 @@ export default function AddNewAtribute({ id, title }: AddNewAttributeProps) {
         const categoryMap = new Map(categories.data.map((c) => [c.id, c]));
         const inheritedAttributes = new Set<string>();
         let current = categoryMap.get(id);
-        console.log(current);
 
         while (current) {
           current.attributes?.forEach((attr) =>

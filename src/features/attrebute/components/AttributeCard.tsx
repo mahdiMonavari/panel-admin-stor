@@ -33,7 +33,6 @@ type AttributeCardProps = {
 
 export default function AttributeCard({ attr, onError }: AttributeCardProps) {
   const [isPending, startTransition] = useTransition();
-  console.log(attr);
 
   const isVariable = attr.type === "SELECT";
   const hasCategories = attr.categories.length > 0;

@@ -46,6 +46,7 @@ function SearchInCategories({ categories }: SearchInCategoriesProp) {
           params.set(queryKey, values);
         } else {
           params.delete(queryKey);
+          Array.from(params.keys()).forEach((key) => params.delete(key));
         }
 
         params.set("page", "1");

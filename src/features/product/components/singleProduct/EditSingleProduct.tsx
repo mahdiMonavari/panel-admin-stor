@@ -14,6 +14,8 @@ import {
   productBaseSchema,
 } from "../../shema/create.product";
 import { getSingleProduct } from "../../action/getSingleProduct.action";
+import updateProduct from "../../action/update.action";
+
 // import { getProductById, updateProduct } from ;
 
 export type EditSingleProductProps = {
@@ -57,7 +59,7 @@ export default function EditSingleProduct({
           setError(res.message || "خطا در دریافت اطلاعات محصول");
         }
         if (res.success && res.data) {
-          const formattedAttributes: Record<string, string[]> = {};
+          const formattedAttributes: Record<string, string | string[]> = {};
 
           res.data.variants.forEach((variant) => {
             variant.values.forEach((value) => {
@@ -74,10 +76,9 @@ export default function EditSingleProduct({
           });
           res.data.staticAttributes.forEach((item) => {
             if (item.value) {
-              formattedAttributes[item.attributeId] = [item.value];
+              formattedAttributes[item.attributeId] = item.value;
             }
           });
-          console.log(formattedAttributes);
 
           reset({
             name: res.data.name,
@@ -126,16 +127,16 @@ export default function EditSingleProduct({
     });
   }, [categoryId, categories]);
 
-  //   const handleUpdateProduct = (data: createProductType) => {
-  //     startTransition(async () => {
-  //       const res = await updateProduct(id, data, attributes);
-  //       if (!res.success) {
-  //         setError(res.message);
-  //         return;
-  //       }
-  //       setIsOpen(false);
-  //     });
-  //   };
+  const handleUpdateProduct = (data: createProductType) => {
+    startTransition(async () => {
+      const res = await updateProduct(id, data, attributes);
+      //   if (!res.success) {
+      //     setError(res.message);
+      //     return;
+      //   }
+      //   setIsOpen(false);
+    });
+  };
 
   return (
     <>
@@ -158,7 +159,7 @@ export default function EditSingleProduct({
           attributes={attributes}
           isPending={isPending}
           error={error}
-          onSubmit={() => {}}
+          onSubmit={handleUpdateProduct}
         />
       </FormProvider>
     </>

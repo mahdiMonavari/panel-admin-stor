@@ -178,3 +178,8 @@ model ProductVariantAttributeValue {
 
   @@id([productVariantId, attributeValueId])
 }
+
+model OrderItem{
+  id  String   @id @default(uuid())
+  productVariantId String 
+}

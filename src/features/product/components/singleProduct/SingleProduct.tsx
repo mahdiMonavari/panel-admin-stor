@@ -11,6 +11,7 @@ import {
 
 import { SerializedProduct } from "../../action/getSingleProduct.action";
 import DeleteSingleProduct from "./DeleteSingleProduct";
+import EditSingleProduct from "./EditSingleProduct";
 
 type Props = {
   product: SerializedProduct;
@@ -66,9 +67,7 @@ export default function SingleProductAdmin({ product, id }: Props) {
           >
             {product.isActive ? "غیرفعال کردن" : "فعال کردن"}
           </button> */}
-          <button className="px-5 py-2.5 text-sm font-medium rounded-2xl bg-violet-600 text-white hover:bg-violet-700 active:scale-[0.985] transition-all">
-            ویرایش محصول
-          </button>
+          <EditSingleProduct id={id} productName={product.name} />
           <DeleteSingleProduct
             id={id}
             productName={product.name}
